@@ -1,0 +1,32 @@
+.header {
+  padding: 0 20px;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  height: 54px;
+  &__left {
+    display: flex;
+    align-items: center;
+    button {
+      background-color: #95a9c7;
+      border: none;
+      border-radius: 100%;
+      width: 40px;
+      height: 40px;
+      outline: none;
+      cursor: pointer;
+      mat-icon {
+        vertical-align: middle;
+        color: #fff;
+      }
+    }
+  }
+  .logo {
+    margin-left: 15px;
+    height: 40px;
+    width: 40px;
+    img {
+      width: 100%;
+    }
+  }
+}

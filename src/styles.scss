@@ -1,1 +1,73 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+ul,
+p,
+li {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+// drop list
+.drop-list {
+  transition-property: opacity, transform;
+  transition-duration: 0.4s;
+  overflow: hidden;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-10px);
+}
+
+.list-item {
+  position: relative;
+  color: #a6a8a9;
+  background-color: #f0f3f8;
+  &:hover {
+    background-color: #e7ebee;
+    color: #95a9c7;
+  }
+  a {
+    padding: 15px 25px 15px 15px;
+    display: flex;
+    color: inherit;
+    align-items: center;
+    span {
+      margin: 3px 0 0 11px;
+    }
+  }
+  &_active {
+    background-color: #e7ebee !important;
+    color: #95a9c7;
+  }
+}
+
+.badge {
+  width: 15px;
+  top: 11px;
+  text-align: center;
+  left: 103px;
+  position: absolute;
+  height: 15px;
+  font-size: 13px;
+  color: #fff;
+  border-radius: 100%;
+  background-color: #a6a8a9;
+}
+
+@keyframes drop {
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

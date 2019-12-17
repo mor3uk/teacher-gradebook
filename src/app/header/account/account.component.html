@@ -1,0 +1,24 @@
+<div class="account">
+  <div 
+    class="account__image" 
+    (click)="onToggleDetails()" 
+    [ngClass]="{'account__image_active': detailesOpen}"
+  >
+    <img src="../../../assets/no-image.png" title="Details" alt="image">
+    <ul class="account__details drop-list" *ngIf="detailesOpen">
+      <div class="account__name">Шурыгин Д.О.</div>
+      <li class="list-item">
+        <a>
+          <mat-icon>settings_applications</mat-icon>
+          <span>Настройки</span>
+        </a>
+      </li>
+      <li class="list-item">
+        <a [routerLink]="['/auth']">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Выход</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<header class="header">
+  <div class="header__left">
+    <button (click)="onToggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <a class="logo" [routerLink]="['/']">
+      <img src="../../assets/logo.png" alt="logo">
+    </a>
+  </div>
+  <app-nav-menu fxHide.lt-md></app-nav-menu>
+  <app-account></app-account>
+</header>

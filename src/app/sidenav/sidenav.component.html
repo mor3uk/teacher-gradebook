@@ -1,0 +1,53 @@
+<mat-nav-list>
+  <ul>
+    <li routerLinkActive="list-item_active" class="list-item">
+      <a (click)="onCloseSidenav()" [routerLink]="['/lessons']" mat-list-item>
+        <mat-icon>schedule</mat-icon>
+        <span>Занятия</span>
+        <span class="badge">4</span>
+      </a>
+    </li>
+    <li routerLinkActive="list-item_active" class="list-item">
+      <a (click)="onCloseSidenav()" [routerLink]="['/reports']" mat-list-item>
+        <mat-icon>description</mat-icon>
+        <span>Отчеты</span>
+      </a>
+    </li>
+    <li routerLinkActive="list-item_active" class="list-item">
+      <a (click)="onCloseSidenav()" [routerLink]="['/catalog', 'groups']" mat-list-item>
+        <mat-icon>group</mat-icon>
+        <span>Группы</span>
+      </a>
+    </li>
+    <li routerLinkActive="list-item_active" class="list-item">
+      <a (click)="onCloseSidenav()" [routerLink]="['/catalog', 'students']" mat-list-item>
+        <mat-icon>person</mat-icon>
+        <span>Ученики</span>
+      </a>
+    </li>
+    <li routerLinkActive="list-item_active" class="list-item">
+      <a (click)="onCloseSidenav()" [routerLink]="['/catalog', 'calendar']" mat-list-item>
+        <mat-icon>calendar_today</mat-icon>
+        <span>Календарь</span>
+      </a>
+    </li>
+    <li routerLinkActive="list-item_active" class="list-item">
+      <a (click)="onCloseSidenav()" [routerLink]="['/catalog', 'patterns']" mat-list-item>
+        <mat-icon>note</mat-icon>
+        <span>Шаблоны</span>
+      </a>
+    </li>
+    <li routerLinkActive="list-item_active" class="list-item">
+      <a (click)="onCloseSidenav()" [routerLink]="['/catalog', 'payment']" mat-list-item>
+        <mat-icon>payment</mat-icon>
+        <span>Оплата</span>
+      </a>
+    </li>
+    <li class="list-item">
+      <a (click)="onCloseSidenav()" [routerLink]="['/auth']" mat-list-item>
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Выход</span>
+      </a>
+    </li>
+  </ul>
+</mat-nav-list>

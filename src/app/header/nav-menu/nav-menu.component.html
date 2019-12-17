@@ -1,0 +1,56 @@
+<nav>
+  <ul class="menu">
+    <li routerLinkActive="list-item_active" class="list-item menu__item">
+      <a [routerLink]="['/lessons']">
+        <mat-icon>schedule</mat-icon>
+        <span>Занятия</span>
+        <span class="badge">4</span>
+      </a>
+    </li>
+    <li routerLinkActive="list-item_active" class="list-item menu__item">
+      <a [routerLink]="['/reports']">
+        <mat-icon>description</mat-icon>
+        <span>Отчеты</span>
+      </a>
+    </li>
+    <li routerLinkActive="list-item_active" class="list-item menu__item menu__list">
+      <a [routerLink]="['/catalog']">
+        <mat-icon>chrome_reader_mode</mat-icon>
+        <span>Справочник</span>
+      </a>
+      <mat-icon class="menu__details">details</mat-icon>
+      <ul class="menu__drop drop-list">
+        <li routerLinkActive="list-item_active" class="list-item">
+          <a [routerLink]="['/catalog', 'groups']">
+            <mat-icon>group</mat-icon>
+            <span>Группы</span>
+          </a>
+        </li>
+        <li routerLinkActive="list-item_active" class="list-item">
+          <a [routerLink]="['/catalog', 'students']">
+            <mat-icon>person</mat-icon>
+            <span>Ученики</span>
+          </a>
+        </li>
+        <li routerLinkActive="list-item_active" class="list-item">
+          <a [routerLink]="['/catalog', 'calendar']">
+            <mat-icon>calendar_today</mat-icon>
+            <span>Календарь</span>
+          </a>
+        </li>
+        <li routerLinkActive="list-item_active" class="list-item">
+          <a [routerLink]="['/catalog', 'patterns']">
+            <mat-icon>note</mat-icon>
+            <span>Шаблоны</span>
+          </a>
+        </li>
+        <li routerLinkActive="list-item_active" class="list-item">
+          <a [routerLink]="['/catalog', 'payment']">
+            <mat-icon>payment</mat-icon>
+            <span>Оплата</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>

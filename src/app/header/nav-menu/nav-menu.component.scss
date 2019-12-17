@@ -1,0 +1,39 @@
+.menu {
+  display: flex;
+  &__list {
+    padding-right: 20px;
+    position: relative;
+    .menu__details {
+      transition-duration: 0.5s;
+      transform: translateY(10px);
+      top: calc(50% - 14px);
+      right: 7px;
+      position: absolute;
+      font-size: 13px;
+    }
+    &:hover .menu__details {
+      transform: scaleY(-1);
+    }
+    &:hover > .menu__drop {
+      transform: translateY(0);
+      top: 54px;
+      opacity: 1;
+    }
+  }
+  &__item {
+    background-color: transparent;
+    &:hover {
+      background-color: #f0f3f8;
+    }
+  }
+  &__drop {
+    top: -9999px;
+    position: absolute;
+    opacity: 0;
+    left: 0;
+    border-radius: 0 0 10px 10px;
+    li {
+      width: 210px;
+    }
+  }
+}
