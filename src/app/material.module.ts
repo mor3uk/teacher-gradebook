@@ -14,7 +14,7 @@ const materialModules = [
   MatButtonModule,
   MatSidenavModule,
   MatToolbarModule,
-  MatListModule
+  MatListModule,
 ];
 
 const globalRippleConfig: RippleGlobalOptions = {

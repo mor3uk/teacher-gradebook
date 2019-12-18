@@ -15,6 +15,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { AuthComponent } from './auth/auth.component';
 import { MainComponent } from './main/main.component';
 import { GroupsComponent } from './catalog/groups/groups.component';
+import { CommonLessonComponent } from './lessons/common-lesson/common-lesson.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { GroupsComponent } from './catalog/groups/groups.component';
     ReportsComponent,
     AuthComponent,
     MainComponent,
-    GroupsComponent
+    GroupsComponent,
+    CommonLessonComponent
   ],
   imports: [
     MaterialModule,

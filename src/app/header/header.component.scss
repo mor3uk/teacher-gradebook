@@ -1,9 +1,10 @@
 .header {
   padding: 0 20px;
   justify-content: space-between;
-  display: flex;
-  align-items: center;
   height: 54px;
+  display: flex;
+  border-bottom: 1px #e7ebee solid;
+  align-items: center;
   &__left {
     display: flex;
     align-items: center;
@@ -15,6 +16,9 @@
       height: 40px;
       outline: none;
       cursor: pointer;
+      &:hover {
+        background-color: #72849e;
+      }
       mat-icon {
         vertical-align: middle;
         color: #fff;

@@ -1,0 +1,42 @@
+.lessons {
+  max-width: 960px;
+  margin: 0 auto 40px auto;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  background-color: #fff;
+  min-height: calc(100% - 175px);
+  padding-bottom: 15px;
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__item {
+    border: 1px rgb(221, 220, 220) solid;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin: 20px 20px 0 20px;
+    width: 277px;
+    height: 180px;
+    cursor: pointer;
+    transition-duration: 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    mat-icon {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+      color: #3c4958;
+    }
+    &:hover {
+      background-color: #f0f3f8;
+    }
+  }
+}
+
+@media (max-width: 951px) {
+  .lessons__list {
+    justify-content: center;
+  }
+}
