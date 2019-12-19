@@ -1,0 +1,66 @@
+.students {
+  padding-bottom: 0;
+  color: #3c4958;
+  position: relative;
+  button {
+    border: none;
+  }
+  table {
+    box-shadow: none;
+    text-align: center;
+    border-radius: 3px;
+    width: 100%;
+    td,
+    th {
+      padding: 10px 0;
+      border: 2px #e7ebee solid;
+    }
+    thead {
+      background-color: #e7ebee;
+    }
+    tbody {
+      background-color: #f0f3f8;
+    }
+  }
+  &__add {
+    position: absolute;
+    right: 19px;
+    top: -47px;
+    padding: 9px 12px;
+    font-size: 14px;
+  }
+  &__btn {
+    padding: 0 !important;
+    button {
+      height: 41px;
+      width: 100%;
+      font-size: 16px;
+    }
+    &_little {
+      button {
+        height: 31px;
+        width: 50%;
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+@media (max-width: 959px) {
+  .students {
+    table {
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-width: 599px) {
+  .students {
+    table {
+      font-size: 13px;
+    }
+  }
+  .title {
+    text-align: left;
+  }
+}

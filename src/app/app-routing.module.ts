@@ -6,6 +6,7 @@ import { MainComponent } from './main/main.component';
 import { ReportsComponent } from './reports/reports.component';
 import { LessonsComponent } from './lessons/lessons.component';
 import { GroupsComponent } from './catalog/groups/groups.component';
+import { StudentsComponent } from './catalog/students/students.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
         path: 'catalog', children: [
           { path: '', redirectTo: 'groups', pathMatch: 'full' },
           { path: 'groups', component: GroupsComponent },
+          { path: 'students', component: StudentsComponent },
         ]
       },
     ]

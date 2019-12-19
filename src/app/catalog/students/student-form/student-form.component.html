@@ -1,0 +1,81 @@
+<form (submit)="onSubmit($event)" class="form student-form">
+  <div class="form__label">
+    Информация об ученике
+  </div>
+  <div class="form__container">
+    <input 
+      name="name" 
+      class="form__input" 
+      type="text" 
+      placeholder="Имя"
+      [(ngModel)]="student.name"
+    >
+    <input 
+      name="surname" 
+      class="form__input" 
+      type="text" 
+      placeholder="Фамилия"
+      [(ngModel)]="student.surname"
+    >
+    <input 
+      name="fatherName" 
+      class="form__input" 
+      type="text" 
+      placeholder="Отчество (если есть)"
+      [(ngModel)]="student.fatherName"
+    >
+    <input 
+      name="group" 
+      class="form__input" 
+      type="text" 
+      placeholder="Название / № группы"
+      [(ngModel)]="student.group"      
+    >
+    <input 
+      matInput 
+      class="form__input" 
+      [matDatepicker]="studentPicker" 
+      placeholder="Дата рождения"
+      name="birthDate"
+      [max]="maxDate"
+      [(ngModel)]="birthDate"
+      style="margin: 10px 5px 10px 10px"
+    >
+    <mat-datepicker-toggle matSuffix [for]="studentPicker"></mat-datepicker-toggle>
+    <mat-datepicker #studentPicker></mat-datepicker>
+  </div>
+  <div class="student-form__relatives">
+    <div class="form__label">
+      Родственники ученика
+    </div>
+    <div *ngIf="relatives.length === 0">
+      <mat-icon>warning</mat-icon> 
+      <div>Нет указанных родственников</div>
+    </div>
+    <div class="student-form__relatives-list">
+      <div *ngFor="let relative of relatives" class="student-form__relative">
+        {{ relative.kind | titlecase }}:
+        {{ relative.surname | fullname:relative.name:relative.fatherName }}
+        <button type="button" mat-icon-button>
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button type="button" mat-icon-button>
+          <mat-icon>remove_circle_outline</mat-icon>
+        </button>
+      </div>
+    </div>
+    <button 
+      type="button" 
+      class="btn btn_primary form__btn"
+      (click)="onAddRelative()"
+    >Добавить родственника</button>
+  </div>
+  <div class="form__controls">
+    <button class="btn btn_success form__btn">Добавить</button>
+    <button 
+      (click)="onCancel()" 
+      type="button" 
+      class="btn btn_danger form__btn"
+    >Отменить</button>
+  </div>
+</form>

@@ -1,0 +1,54 @@
+<form (submit)="onSubmit($event)" class="form relative-form">
+  <div class="form__label">
+    Информация о родственнике
+  </div>
+  <div class="form__container">
+    <input 
+      name="kind" 
+      class="form__input" 
+      type="text" 
+      placeholder="Кем приходится"
+      [(ngModel)]="relative.kind"      
+    >
+    <input 
+      name="name" 
+      class="form__input" 
+      type="text" 
+      placeholder="Имя"
+      [(ngModel)]="relative.name"
+    >
+    <input 
+      name="surname" 
+      class="form__input" 
+      type="text" 
+      placeholder="Фамилия"
+      [(ngModel)]="relative.surname"
+    >
+    <input 
+      name="fatherName" 
+      class="form__input" 
+      type="text" 
+      placeholder="Отчество (если есть)"
+      [(ngModel)]="relative.fatherName"
+    >
+    <input 
+      matInput 
+      class="form__input" 
+      [matDatepicker]="relativePicker" 
+      placeholder="Дата рождения"
+      name="birthDate"
+      [max]="maxDate"
+      [(ngModel)]="birthDate"
+      style="margin: 10px 5px 10px 10px"
+    >
+    <mat-datepicker-toggle matSuffix [for]="relativePicker"></mat-datepicker-toggle>
+    <mat-datepicker #relativePicker></mat-datepicker>
+  </div>
+  <button class="btn btn_success form__btn">Добавить</button>
+  <button 
+    (click)="onCancel()" 
+    type="button" 
+    class="btn btn_danger form__btn"
+  >Отменить</button>
+
+</form>

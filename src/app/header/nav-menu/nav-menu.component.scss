@@ -27,6 +27,7 @@
     }
   }
   &__drop {
+    z-index: 10;
     top: -9999px;
     position: absolute;
     opacity: 0;

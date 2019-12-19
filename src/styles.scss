@@ -15,9 +15,27 @@ li {
   list-style-type: none;
 }
 
+button,
 a {
   text-decoration: none;
   cursor: pointer;
+  outline: none;
+}
+
+input,
+select,
+textarea {
+  outline: none;
+}
+
+.section {
+  max-width: 960px;
+  margin: 0 auto 40px auto;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  background-color: #fff;
+  min-height: calc(100% - 175px);
+  padding-bottom: 15px;
 }
 
 // drop list
@@ -76,7 +94,81 @@ a {
   text-align: center;
   color: #3c4958;
   font-size: 25px;
+  padding: 0 25px;
   margin: 0;
   line-height: 60px;
   height: 60px;
+}
+
+.btn {
+  border: none;
+  color: #fff;
+  &_danger {
+    background-color: #fd715a;
+    &:hover {
+      background-color: #da6250;
+    }
+  }
+  &_primary {
+    background-color: #95a9c7;
+    &:hover {
+      background-color: #72849e;
+    }
+  }
+  &_success {
+    background-color: #44d18d;
+    &:hover {
+      background-color: #35b678;
+    }
+  }
+}
+
+.not-found {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  height: 100%;
+  div {
+    font-size: 25px;
+    margin-top: 7px;
+  }
+  mat-icon {
+    font-size: 60px;
+    width: 60px;
+    height: 60px;
+    // margin: -4px 0 0 6px;
+  }
+}
+
+.form {
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  &__input {
+    box-sizing: border-box;
+    flex-grow: 2;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px #95a9c7 solid;
+    margin: 10px;
+    color: #3c4958;
+  }
+  &__label {
+    font-size: 16px;
+    color: #3c4958;
+    margin: 5px 10px;
+    text-align: center;
+  }
+  &__btn {
+    margin: 5px 5px 0 10px;
+    font-size: 15px;
+    padding: 12px 15px;
+  }
+  &__controls {
+    text-align: center;
+  }
 }
