@@ -19,7 +19,7 @@
           <td>{{ student.birthDate | age }}</td>
           <td>{{ student.passedLessons | attendance:student.visitedLessons }}</td>
           <td fxHide.lt-sm class="students__btn">
-            <button class="btn btn_primary">Править</button>
+            <button (click)="onEditStudent(student.id)" class="btn btn_primary">Править</button>
           </td>
           <td fxHide.lt-sm class="students__btn">
             <button (click)="onDeleteStudent(student.id)" class="btn btn_danger">Удалить</button>
@@ -27,7 +27,7 @@
         </tr>
         <tr fxHide.gt-xs>
           <td colspan="4" class="students__btn students__btn_little">
-            <button class="btn btn_primary">Править</button>
+            <button (click)="onEditStudent(student.id)" class="btn btn_primary">Править</button>
             <button (click)="onDeleteStudent(student.id)" class="btn btn_danger">Удалить</button>
           </td>
         </tr>

@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
 
-import * as uuid from 'uuid';
-import * as moment from 'moment';
+import uuid from 'uuid';
 
 import { Student } from '../../shared/models/student.model';
 import { StudentService } from '../../shared/services/student.service';
@@ -21,17 +20,7 @@ export class StudentsComponent implements OnInit {
   constructor(
     private sw: StudentService,
     private dialog: MatDialog,
-  ) {
-    // sw.addStudent({
-    //   id: uuid(),
-    //   name: 'Шурыгин',
-    //   surname: 'Данила',
-    //   fatherName: 'Олегович',
-    //   birthDate: +moment().subtract(19, 'years'),
-    //   passedLessons: 15,
-    //   visitedLessons: 11,
-    // });
-  }
+  ) { }
 
   async ngOnInit() {
     this.students = await this.sw.getStudents();
@@ -46,10 +35,20 @@ export class StudentsComponent implements OnInit {
     });
   }
 
+  async onEditStudent(id: string) {
+    const student = await this.sw.getStudent(id);
+    this.openDialog('edit', student).subscribe(async (student) => {
+      if (student) {
+        this.sw.updateStudent(student);
+        this.students = await this.sw.getStudents();
+      }
+    });
+  }
+
   onDeleteStudent(id: string) {
     this.openDialog('delete').subscribe(async (res) => {
       if (res) {
-        this.sw.deleteStudent(id);
+        await this.sw.deleteStudent(id);
         this.students = await this.sw.getStudents();
       }
     });
@@ -59,14 +58,18 @@ export class StudentsComponent implements OnInit {
     return 'Супер группа';
   }
 
-  openDialog(operation: 'delete' | 'add'): Observable<any> {
-    let dialogRef;
-    if (operation === 'delete') {
-      dialogRef = this.dialog.open(ConfirmDialog);
-    } else {
-      dialogRef = this.dialog.open(StudentFormComponent);
+  openDialog(operation: 'delete' | 'add' | 'edit', student?: Student): Observable<any> {
+    switch (operation) {
+      case 'delete':
+        return this.dialog.open(ConfirmDialog).afterClosed();
+      case 'add':
+        return this.dialog.open(StudentFormComponent).afterClosed();
+      case 'edit':
+        return this.dialog.open(
+          StudentFormComponent, {
+          data: { student }
+        }).afterClosed();
     }
-    return dialogRef.afterClosed();
   }
 
 }

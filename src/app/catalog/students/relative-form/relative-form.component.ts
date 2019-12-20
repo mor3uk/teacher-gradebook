@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 
 import { Moment } from 'moment';
@@ -14,21 +14,49 @@ import { Relative, RelativeKind } from '../../../shared/models/relative.model';
 })
 export class RelativeFormComponent implements OnInit {
   maxDate: Moment = moment().subtract(16, 'years').add(1, 'day');
-  kindList = Object.values(RelativeKind);
+  kindList: RelativeKind[];
+  editMode: boolean = false;
 
   relative: Relative
   relativeForm: FormGroup;
 
-  constructor(private dialogRef: MatDialogRef<RelativeFormComponent>) { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) private data: any,
+    private dialogRef: MatDialogRef<RelativeFormComponent>,
+  ) { }
 
   ngOnInit() {
+    if (this.data.relative) {
+      this.editMode = true;
+    }
+
+    this.kindList = this.data.leftRelatives;
+
     this.relativeForm = new FormGroup({
-      name: new FormControl(null, [Validators.required, Validators.maxLength(30)]),
-      surname: new FormControl(null, [Validators.required, Validators.maxLength(30)]),
-      fatherName: new FormControl(null, [Validators.maxLength(30)]),
-      birthDate: new FormControl(null, [Validators.required]),
-      number: new FormControl(null, [Validators.pattern(/^((\+7|7|8)+([0-9]){10})$/)]),
-      kind: new FormControl(null, [Validators.required, this.kindValidator]),
+      name: new FormControl(
+        this.editMode ? this.data.relative.name : null,
+        [Validators.required, Validators.maxLength(30)]
+      ),
+      surname: new FormControl(
+        this.editMode ? this.data.relative.surname : null,
+        [Validators.required, Validators.maxLength(30)]
+      ),
+      fatherName: new FormControl(
+        this.editMode ? this.data.relative.fatherName : null,
+        [Validators.maxLength(30)]
+      ),
+      birthDate: new FormControl(
+        this.editMode ? moment(this.data.relative.birthDate) : null,
+        [Validators.required]
+      ),
+      number: new FormControl(
+        this.editMode ? this.data.relative.number : null,
+        [Validators.pattern(/^((\+7|7|8)+([0-9]){10})$/)]
+      ),
+      kind: new FormControl(
+        this.editMode ? this.data.relative.kind : null,
+        [Validators.required, this.kindValidator]
+      ),
     });
   }
 
@@ -48,9 +76,12 @@ export class RelativeFormComponent implements OnInit {
         ...this.relativeForm.value,
         birthDate: +this.relativeForm.value.birthDate,
       }
-      this.dialogRef.close(this.relative);
 
-      console.log(this.relativeForm);
+      if (this.editMode) {
+        this.relative.id = this.data.relative.id;
+      }
+
+      this.dialogRef.close(this.relative);
     }
   }
 

@@ -9,7 +9,7 @@
         class="form__input" 
         type="text" 
       >
-      <option value="" disabled [selected]="true">Кем приходится</option>
+      <option value="" disabled [selected]="!editMode">Кем приходится</option>
       <option *ngFor="let kind of kindList;" [value]="kind">{{ kind }}</option>
       </select>
       <div
@@ -108,7 +108,8 @@
     </div>
   </div>
   <div class="form__controls">
-    <button class="btn btn_success form__btn">Добавить</button>
+    <button *ngIf="!editMode" class="btn btn_success form__btn">Добавить</button>
+    <button *ngIf="editMode" class="btn btn_primary form__btn">Сохранить</button>
     <button 
       (click)="onCancel()" 
       type="button" 

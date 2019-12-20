@@ -102,16 +102,19 @@
       <div *ngFor="let relative of relatives" class="student-form__relative">
         {{ relative.kind | titlecase }}:
         {{ relative.surname | fullname:relative.name:relative.fatherName }}
-        <button type="button" mat-icon-button>
+        <button (click)="onEditRelative(relative.id)" type="button" mat-icon-button>
             <mat-icon>edit</mat-icon>
         </button>
-        <button type="button" mat-icon-button>
+        <button (click)="onDeleteRelative(relative.id)" type="button" mat-icon-button>
           <mat-icon>remove_circle_outline</mat-icon>
         </button>
       </div>
     </div>
     <div *ngIf="studentForm.errors?.parentRequired && submissionTriggered" class="error-message">
       Укажите хотя бы 1 родителя
+    </div>
+    <div *ngIf="studentForm.errors?.studentExists" class="error-message">
+      Данный студент уже в базе
     </div>
     <button 
       type="button" 
@@ -120,7 +123,8 @@
     >Добавить родственника</button>
   </div>
   <div class="form__controls">
-    <button class="btn btn_success form__btn">Добавить</button>
+    <button *ngIf="!editMode" class="btn btn_success form__btn">Добавить</button>
+    <button *ngIf="editMode" class="btn btn_primary form__btn">Сохранить</button>
     <button 
       (click)="onCancel()" 
       type="button" 

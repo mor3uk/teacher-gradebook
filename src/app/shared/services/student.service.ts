@@ -16,8 +16,20 @@ export class StudentService {
   }
 
   addStudent(student: Student): Promise<any> {
+    if (!student.fatherName) {
+      student.fatherName = '';
+    }
     student.id = uuid();
+    student.passedLessons = 0;
+    student.visitedLessons = 0;
     return this.db.students.add(student);
+  }
+
+  updateStudent(student: Student): Promise<any> {
+    if (!student.fatherName) {
+      student.fatherName = '';
+    }
+    return this.db.students.put(student);
   }
 
   getStudent(id: string): Promise<Student> {
@@ -30,6 +42,17 @@ export class StudentService {
 
   deleteStudent(id: string): Promise<any> {
     return this.db.students.delete(id);
+  }
+
+  findExistingStudent(student: Student): Promise<Student> {
+    return this.db.students
+      .where({
+        name: student.name,
+        surname: student.surname,
+        fatherName: student.fatherName,
+        birthDate: student.birthDate,
+      })
+      .first();
   }
 
 }
