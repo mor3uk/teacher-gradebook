@@ -9,16 +9,10 @@
     display: flex;
     align-items: center;
     button {
-      background-color: #95a9c7;
       border: none;
       border-radius: 100%;
       width: 40px;
       height: 40px;
-      outline: none;
-      cursor: pointer;
-      &:hover {
-        background-color: #72849e;
-      }
       mat-icon {
         vertical-align: middle;
         color: #fff;

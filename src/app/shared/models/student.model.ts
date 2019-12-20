@@ -1,3 +1,5 @@
+import { Relative } from './relative.model';
+
 export interface Student {
   id?: string;
   name: string;
@@ -7,4 +9,5 @@ export interface Student {
   birthDate: number;
   passedLessons?: number;
   visitedLessons?: number;
+  relatives: Relative[];
 }

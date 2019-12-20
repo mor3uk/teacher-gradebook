@@ -23,4 +23,12 @@
       }
     }
   }
+  &__no-relatives {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    mat-icon {
+      margin: 0 6px 5px 0;
+    }
+  }
 }

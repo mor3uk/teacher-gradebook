@@ -1,56 +1,102 @@
-<form (submit)="onSubmit($event)" class="form student-form">
+<form (submit)="onSubmit($event)" [formGroup]="studentForm" class="form student-form">
   <div class="form__label">
     Информация об ученике
   </div>
   <div class="form__container">
-    <input 
-      name="name" 
-      class="form__input" 
-      type="text" 
-      placeholder="Имя"
-      [(ngModel)]="student.name"
-    >
-    <input 
-      name="surname" 
-      class="form__input" 
-      type="text" 
-      placeholder="Фамилия"
-      [(ngModel)]="student.surname"
-    >
-    <input 
-      name="fatherName" 
-      class="form__input" 
-      type="text" 
-      placeholder="Отчество (если есть)"
-      [(ngModel)]="student.fatherName"
-    >
-    <input 
-      name="group" 
-      class="form__input" 
-      type="text" 
-      placeholder="Название / № группы"
-      [(ngModel)]="student.group"      
-    >
-    <input 
-      matInput 
-      class="form__input" 
-      [matDatepicker]="studentPicker" 
-      placeholder="Дата рождения"
-      name="birthDate"
-      [max]="maxDate"
-      [(ngModel)]="birthDate"
-      style="margin: 10px 5px 10px 10px"
-    >
-    <mat-datepicker-toggle matSuffix [for]="studentPicker"></mat-datepicker-toggle>
-    <mat-datepicker #studentPicker></mat-datepicker>
+    <div class="form__input-container">
+      <input 
+        class="form__input" 
+        type="text" 
+        placeholder="Фамилия"
+        formControlName="surname"
+        trim
+      >
+      <div
+        *ngIf="studentForm.controls.surname.errors?.required && studentForm.controls.surname.touched" 
+        class="error-message"
+      >Укажите фамилию</div>
+      <div
+        *ngIf="studentForm.controls.surname.errors?.maxlength" 
+        class="error-message"
+      >Максимум {{ studentForm.controls.surname.errors.maxlength.requiredLength }} символов</div>
+    </div>
+    <div class="form__input-container">
+      <input 
+        class="form__input" 
+        type="text" 
+        placeholder="Имя"
+        formControlName="name"
+        trim
+      >
+      <div
+        *ngIf="studentForm.controls.name.errors?.required && studentForm.controls.name.touched" 
+        class="error-message"
+      >Укажите имя</div>
+      <div
+        *ngIf="studentForm.controls.name.errors?.maxlength" 
+        class="error-message"
+      >Максимум {{ studentForm.controls.name.errors.maxlength.requiredLength }} символов</div>
+    </div>
+    <div class="form__input-container">
+      <input 
+        class="form__input" 
+        type="text" 
+        placeholder="Отчество (если есть)"
+        formControlName="fatherName"
+        trim
+      >
+      <div
+        *ngIf="studentForm.controls.fatherName.errors?.maxlength" 
+        class="error-message"
+      >Максимум {{ studentForm.controls.fatherName.errors.maxlength.requiredLength }} символов</div>
+    </div>
+    <div class="form__input-container">
+      <input 
+        class="form__input" 
+        type="text" 
+        placeholder="Название / № группы"
+        formControlName="group"
+        trim="blur"
+      >
+      <div
+        *ngIf="studentForm.controls.group.errors?.maxlength" 
+        class="error-message"
+      >Максимум {{ studentForm.controls.group.errors.maxlength.requiredLength }} символов</div>
+    </div>
+    <div class="form__input-container">
+      <input 
+        matInput 
+        class="form__input" 
+        [matDatepicker]="studentPicker" 
+        placeholder="Дата рождения"
+        [max]="maxDate"
+        formControlName="birthDate"
+      >
+      <div
+        *ngIf="studentForm.controls.birthDate.errors?.required 
+          && studentForm.controls.birthDate.touched
+          && !studentForm.controls.birthDate.errors?.matDatepickerParse" 
+        class="error-message"
+      >Укажите дату рождения</div>
+      <div
+        *ngIf="studentForm.controls.birthDate.errors?.matDatepickerParse" 
+        class="error-message"
+      >Укажите корректную дату</div>
+      <div
+        *ngIf="studentForm.controls.birthDate.errors?.matDatepickerMax" 
+        class="error-message"
+      >Учащемуся должно быть не менее 6 лет</div>
+      <mat-datepicker-toggle matSuffix [for]="studentPicker"></mat-datepicker-toggle>
+      <mat-datepicker #studentPicker></mat-datepicker>
+    </div>
   </div>
   <div class="student-form__relatives">
-    <div class="form__label">
+    <div *ngIf="relatives.length !== 0" class="form__label">
       Родственники ученика
     </div>
-    <div *ngIf="relatives.length === 0">
+    <div class="student-form__no-relatives" *ngIf="relatives.length === 0">
       <mat-icon>warning</mat-icon> 
-      <div>Нет указанных родственников</div>
+      <span>Нет указанных родственников</span>
     </div>
     <div class="student-form__relatives-list">
       <div *ngFor="let relative of relatives" class="student-form__relative">
@@ -63,6 +109,9 @@
           <mat-icon>remove_circle_outline</mat-icon>
         </button>
       </div>
+    </div>
+    <div *ngIf="studentForm.errors?.parentRequired && submissionTriggered" class="error-message">
+      Укажите хотя бы 1 родителя
     </div>
     <button 
       type="button" 
