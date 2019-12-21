@@ -142,6 +142,9 @@ textarea {
 }
 
 .form {
+  width: 600px;
+  max-height: 85vh;
+  overflow-y: auto;
   &__container {
     display: flex;
     justify-content: space-between;
@@ -185,4 +188,36 @@ textarea {
   color: #dc3545;
   font-size: 12px;
   margin: 5px 0 0 5px;
+}
+
+.spinner {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  .mat-spinner {
+    circle {
+      stroke: #4c87fd;
+    }
+  }
+}
+
+@media (max-width: 860px) {
+  .cdk-overlay-pane {
+    width: 85%;
+    max-width: none !important;
+  }
+  .form {
+    width: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .cdk-overlay-pane {
+    width: 95%;
+  }
+  .form {
+    &__input-container {
+      flex: 100%;
+    }
+  }
 }

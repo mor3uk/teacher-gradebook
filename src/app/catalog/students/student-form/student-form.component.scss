@@ -1,7 +1,4 @@
 .student-form {
-  width: 600px;
-  max-height: 85vh;
-  overflow-y: auto;
   mat-datepicker-toggle {
     display: flex;
     align-items: center;
@@ -29,6 +26,30 @@
     align-items: center;
     mat-icon {
       margin: 0 6px 5px 0;
+    }
+  }
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  background: transparent;
+}
+
+@media (max-width: 600px) {
+  .student-form {
+    &__no-relatives {
+      span {
+        font-size: 14px;
+      }
+    }
+    &__relative {
+      span {
+        display: block;
+      }
     }
   }
 }

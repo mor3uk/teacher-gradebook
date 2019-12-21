@@ -102,12 +102,14 @@
       <div *ngFor="let relative of relatives" class="student-form__relative">
         {{ relative.kind | titlecase }}:
         {{ relative.surname | fullname:relative.name:relative.fatherName }}
-        <button (click)="onEditRelative(relative.id)" type="button" mat-icon-button>
-            <mat-icon>edit</mat-icon>
-        </button>
-        <button (click)="onDeleteRelative(relative.id)" type="button" mat-icon-button>
-          <mat-icon>remove_circle_outline</mat-icon>
-        </button>
+        <span>
+          <button (click)="onEditRelative(relative.id)" type="button" mat-icon-button>
+              <mat-icon>edit</mat-icon>
+          </button>
+          <button (click)="onDeleteRelative(relative.id)" type="button" mat-icon-button>
+            <mat-icon>remove_circle_outline</mat-icon>
+          </button>
+        </span>
       </div>
     </div>
     <div *ngIf="studentForm.errors?.parentRequired && submissionTriggered" class="error-message">
@@ -117,6 +119,7 @@
       Данный студент уже в базе
     </div>
     <button 
+      *ngIf="leftRelatives.length !== 0"
       type="button" 
       class="btn btn_primary form__btn"
       (click)="onAddRelative()"

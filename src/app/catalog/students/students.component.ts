@@ -16,6 +16,7 @@ import { StudentFormComponent } from './student-form/student-form.component';
 })
 export class StudentsComponent implements OnInit {
   students: Student[] = [];
+  pending: boolean = false;
 
   constructor(
     private sw: StudentService,
@@ -23,7 +24,9 @@ export class StudentsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.pending = true;
     this.students = await this.sw.getStudents();
+    this.pending = false;
   }
 
   onAddStudent() {

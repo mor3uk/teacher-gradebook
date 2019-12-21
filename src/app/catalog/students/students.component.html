@@ -34,10 +34,13 @@
       </ng-container>
     </tbody>
   </table>
-  <div class="not-found" *ngIf="students.length === 0">
+  <div class="not-found" *ngIf="students.length === 0 && !pending">
     <mat-icon>warning</mat-icon>
     <div>
       Список учеников пуст
     </div>
+  </div>
+  <div *ngIf="pending" class="spinner">
+    <mat-spinner diameter="60"></mat-spinner>
   </div>
 </section>

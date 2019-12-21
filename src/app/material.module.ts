@@ -10,6 +10,7 @@ import {
   MatDialogModule,
   MatDatepickerModule,
   MatInputModule,
+  MatProgressSpinnerModule,
 } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 
@@ -22,7 +23,8 @@ const materialModules = [
   MatDialogModule,
   MatDatepickerModule,
   MomentDateModule,
-  MatInputModule
+  MatInputModule,
+  MatProgressSpinnerModule,
 ];
 
 const globalRippleConfig: RippleGlobalOptions = {
