@@ -58,7 +58,7 @@
       >
         <option [value]="null" disabled [selected]="!editMode">Название / № группы</option>
         <option [value]="null">Нет группы</option>
-        <option *ngFor="let group of groups" value="{{ group.name }}">{{ group.name | group }}</option>
+        <option *ngFor="let group of groups" value="{{ group.id }}">{{ group.name }}</option>
       </select>
       <div
         *ngIf="studentForm.controls.group.touched &&

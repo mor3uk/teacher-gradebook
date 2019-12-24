@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Student } from '../../../shared/models/student.model';
 import { StudentService } from '../../../shared/services/student.service';
+import { Group } from '../../../shared/models/group.model';
 
 @Component({
   selector: 'app-group-form',
@@ -10,20 +11,44 @@ import { StudentService } from '../../../shared/services/student.service';
   styleUrls: ['./group-form.component.scss']
 })
 export class GroupFormComponent implements OnInit {
+  name: string;
+
   students: Student[] = [];
   pickedStudents: Student[] = [];
   selectedStudent: Student = null;
   editMode: boolean = false;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) private data: any,
     private ss: StudentService,
     private dialogRef: MatDialogRef<GroupFormComponent>,
   ) { }
 
   ngOnInit() {
+    if (this.data && this.data.group) {
+      this.editMode = true;
+      this.name = this.data.group.name;
+      this.ss.getStudents().then(students => {
+        this.pickedStudents = students.filter(student => student.group === this.data.group.id);
+      });
+    }
     this.ss.getStudents().then(students => {
       this.students = students.filter(student => !student.group);
     });
+  }
+
+  onSubmit() {
+    if (this.editMode) {
+      this.ss.unsetStudentsGroup(this.students.map(student => student.id));
+    }
+
+    const group: Group = {
+      id: this.editMode ? this.data.group.id : null,
+      name: this.name,
+      studentIdList: this.pickedStudents.map(student => student.id),
+    };
+
+    this.dialogRef.close(group);
   }
 
   onDeleteStudent(id: string) {
@@ -36,8 +61,9 @@ export class GroupFormComponent implements OnInit {
     });
   }
 
-  async onSelectStudent(e: Event) {
-    this.selectedStudent = await this.ss.getStudent((<HTMLInputElement>e.target).value);
+  onSelectStudent(e: Event) {
+    this.selectedStudent = this.students
+      .find(student => student.id === (<HTMLInputElement>e.target).value);
     (<HTMLInputElement>e.target).value = '';
   }
 

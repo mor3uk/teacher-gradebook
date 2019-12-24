@@ -19,6 +19,7 @@ export class StudentsComponent implements OnInit {
 
   constructor(
     private ss: StudentService,
+    private gs: GroupService,
     private dialog: MatDialog,
   ) { }
 

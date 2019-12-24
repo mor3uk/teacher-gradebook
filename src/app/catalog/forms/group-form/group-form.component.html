@@ -1,9 +1,15 @@
-<form class="form group-form">
+<form (submit)="onSubmit()" class="form group-form">
   <div class="form__label">
     Информация о группе
   </div>
   <div class="form__input-container">
-    <input type="text" placeholder="Название / № группы" class="form__input">
+    <input 
+      type="text"
+      placeholder="Название / № группы" 
+      class="form__input"
+      name="name"
+      [(ngModel)]="name"
+    >
   </div>
   <div class="form__label">
     Выберите учащегося

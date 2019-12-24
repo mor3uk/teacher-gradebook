@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import uuid from 'uuid';
+
 import { DB } from '../db';
 import { Group } from '../models/group.model';
 
@@ -14,45 +16,38 @@ export class GroupService {
   }
 
   addGroup(group: Group): Promise<any> {
-    if (!group.studentIdList) {
-      group.studentIdList = [];
-    }
+    group.id = uuid();
     group.name = group.name.trim();
-
     return this.db.groups.add(group);
   }
 
   updateGroup(group: Group): Promise<any> {
-    if (!group.studentIdList) {
-      group.studentIdList = [];
-    }
     group.name = group.name.trim();
-
     return this.db.groups.put(group);
   }
 
-  getGroup(name: string): Promise<Group> {
-    return this.db.groups.get(name);
+  getGroup(id: string): Promise<Group> {
+    return this.db.groups.get(id);
   }
 
   getGroups(): Promise<Group[]> {
     return this.db.groups.toArray();
   }
 
-  deleteGroup(name: string): Promise<any> {
-    return this.db.groups.delete(name);
+  deleteGroup(id: string): Promise<any> {
+    return this.db.groups.delete(id);
   }
 
-  async replaceStudent(prevGroupName: string, newGroupName: string, studentId: string) {
+  async replaceStudent(prevGroupId: string, newGroupId: string, studentId: string) {
     const promiseArray = [];
-    if (prevGroupName !== null) {
-      const prevGroup = await this.getGroup(prevGroupName);
+    if (prevGroupId !== null) {
+      const prevGroup = await this.getGroup(prevGroupId);
       prevGroup.studentIdList = prevGroup.studentIdList.filter((id => id !== studentId));
       promiseArray.push(this.db.groups.put(prevGroup));
     }
 
-    if (newGroupName !== null) {
-      const newGroup = await this.getGroup(newGroupName);
+    if (newGroupId !== null) {
+      const newGroup = await this.getGroup(newGroupId);
       newGroup.studentIdList.push(studentId);
       promiseArray.push(this.db.groups.put(newGroup));
 

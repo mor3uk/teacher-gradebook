@@ -12,7 +12,7 @@
     <tbody>
       <ng-container *ngFor="let group of groups">
         <tr>
-          <td>{{ group.name | group }}</td>
+          <td>{{ group.name }}</td>
           <td>
             <ng-container *ngIf="!group.studentIdList.length">
               Нет учеников
@@ -26,13 +26,13 @@
             <button (click)="onEditGroup(group)" class="btn btn_primary">Править</button>
           </td>
           <td fxHide.lt-sm class="table__btn">
-            <button (click)="onDeleteGroup(group.name)" class="btn btn_danger">Удалить</button>
+            <button (click)="onDeleteGroup(group.id)" class="btn btn_danger">Удалить</button>
           </td>
         </tr>
         <tr fxHide.gt-xs>
           <td colspan="4" class="table__btn table__btn_little">
             <button (click)="onEditGroup(group)" class="btn btn_primary">Править</button>
-            <button (click)="onDeleteGroup(group.name)" class="btn btn_danger">Удалить</button>
+            <button (click)="onDeleteGroup(group.id)" class="btn btn_danger">Удалить</button>
           </td>
         </tr>
       </ng-container>

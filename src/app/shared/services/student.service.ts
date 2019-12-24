@@ -4,6 +4,7 @@ import * as uuid from 'uuid';
 
 import { GroupService } from './group.service';
 import { Student } from '../models/student.model';
+import { Group } from '../models/group.model';
 import { DB } from '../db';
 
 @Injectable({
@@ -29,9 +30,11 @@ export class StudentService {
     return this.db.students.add(student);
   }
 
-  async updateStudent(student: Student): Promise<any> {
-    const studentToUpdate = await this.getStudent(student.id);
-    this.gs.replaceStudent(studentToUpdate.group, student.group, student.id);
+  async updateStudent(student: Student, studentMode: boolean = true): Promise<any> {
+    if (studentMode) {
+      const studentToUpdate = await this.getStudent(student.id);
+      this.gs.replaceStudent(studentToUpdate.group, student.group, student.id);
+    }
 
     if (!student.fatherName) {
       student.fatherName = '';
@@ -63,6 +66,24 @@ export class StudentService {
         birthDate: student.birthDate,
       })
       .first();
+  }
+
+  setStudentsGroup(group: Group) {
+    group.studentIdList.forEach(id => {
+      this.getStudent(id).then(student => {
+        student.group = group.id;
+        this.updateStudent(student, false);
+      });
+    });
+  }
+
+  unsetStudentsGroup(idList: string[]) {
+    idList.forEach(id => {
+      this.getStudent(id).then(student => {
+        student.group = null;
+        this.updateStudent(student, false);
+      });
+    });
   }
 
 }

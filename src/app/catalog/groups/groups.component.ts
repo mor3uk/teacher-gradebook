@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Group } from '../../shared/models/group.model';
 import { GroupService } from '../../shared/services/group.service';
+import { StudentService } from '../../shared/services/student.service';
 import { ConfirmDialog } from '../../shared/modals/confirm.component';
 import { GroupFormComponent } from '../forms/group-form/group-form.component';
 
@@ -18,6 +19,7 @@ export class GroupsComponent implements OnInit {
 
   constructor(
     private gs: GroupService,
+    private ss: StudentService,
     private dialog: MatDialog,
   ) { }
 
@@ -28,17 +30,34 @@ export class GroupsComponent implements OnInit {
   }
 
   onAddGroup() {
-    this.openDialog('add').subscribe((group) => {
-
+    this.openDialog('add').subscribe(async group => {
+      if (group) {
+        this.ss.setStudentsGroup(group);
+        await this.gs.addGroup(group);
+        this.groups = await this.gs.getGroups();
+      }
     });
   }
 
   onEditGroup(group: Group) {
-    alert('edit ' + group.name);
+    this.openDialog('edit', group).subscribe(async group => {
+      if (group) {
+        this.ss.setStudentsGroup(group);
+        await this.gs.updateGroup(group);
+        this.groups = await this.gs.getGroups();
+      }
+    });
   }
 
-  onDeleteGroup(name: string) {
-    alert('delete ' + name);
+  onDeleteGroup(id: string) {
+    this.openDialog('delete').subscribe(async res => {
+      if (res) {
+        const group = await this.gs.getGroup(id);
+        this.ss.unsetStudentsGroup(group.studentIdList);
+        await this.gs.deleteGroup(id);
+        this.groups = await this.gs.getGroups();
+      }
+    });
   }
 
   openDialog(operation: 'delete' | 'add' | 'edit', group?: Group): Observable<any> {
@@ -52,8 +71,7 @@ export class GroupsComponent implements OnInit {
           GroupFormComponent, {
           panelClass: 'overlay-narrow',
           data: { group }
-        })
-          .afterClosed();
+        }).afterClosed();
     }
   }
 

@@ -15,7 +15,7 @@
       <ng-container *ngFor="let student of students">
         <tr>
           <td>{{ student.surname | fullname:student.name:student.fatherName }}</td>
-          <td>{{ student.group | group }}</td>
+          <td>{{ student.group | group | async }}</td>
           <td>{{ student.birthDate | age }}</td>
           <td>{{ student.passedLessons | attendance:student.visitedLessons }}</td>
           <td fxHide.lt-sm class="table__btn">

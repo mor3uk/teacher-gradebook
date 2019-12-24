@@ -13,7 +13,7 @@ export class DB extends Dexie {
     super('teacher-gradebook');
     this.version(1).stores({
       students: 'id,name,surname,fatherName,birthDate,group,[name+surname+fatherName+birthDate]',
-      groups: 'name',
+      groups: 'id,name',
       lessons: 'id,kind',
     });
   }
