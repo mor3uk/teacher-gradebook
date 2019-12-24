@@ -1,4 +1,4 @@
-<form (submit)="onSubmit($event)" [formGroup]="studentForm" class="form student-form">
+<form (submit)="onSubmit($event)" [formGroup]="studentForm" class="form form_wide student-form">
   <div class="form__label">
     Информация об ученике
   </div>
@@ -51,17 +51,20 @@
       >Максимум {{ studentForm.controls.fatherName.errors.maxlength.requiredLength }} символов</div>
     </div>
     <div class="form__input-container">
-      <input 
+      <select 
+        formControlName="group" 
         class="form__input" 
         type="text" 
-        placeholder="Название / № группы"
-        formControlName="group"
-        trim="blur"
       >
+        <option [value]="null" disabled [selected]="!editMode">Название / № группы</option>
+        <option [value]="null">Нет группы</option>
+        <option *ngFor="let group of groups" value="{{ group.name }}">{{ group.name | group }}</option>
+      </select>
       <div
-        *ngIf="studentForm.controls.group.errors?.maxlength" 
+        *ngIf="studentForm.controls.group.touched &&
+          studentForm.controls.group.errors?.groupDoesNotExist" 
         class="error-message"
-      >Максимум {{ studentForm.controls.group.errors.maxlength.requiredLength }} символов</div>
+      >Выберите группу из списка</div>
     </div>
     <div class="form__input-container">
       <input 
@@ -94,12 +97,12 @@
     <div *ngIf="relatives.length !== 0" class="form__label">
       Родственники ученика
     </div>
-    <div class="student-form__no-relatives" *ngIf="relatives.length === 0">
+    <div class="form__no-items" *ngIf="relatives.length === 0">
       <mat-icon>warning</mat-icon> 
       <span>Нет указанных родственников</span>
     </div>
-    <div class="student-form__relatives-list">
-      <div *ngFor="let relative of relatives" class="student-form__relative">
+    <div class="form__list">
+      <div *ngFor="let relative of relatives" class="form__list-item">
         {{ relative.kind | titlecase }}:
         {{ relative.surname | fullname:relative.name:relative.fatherName }}
         <span>

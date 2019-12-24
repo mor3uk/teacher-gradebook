@@ -142,9 +142,11 @@ textarea {
 }
 
 .form {
-  width: 600px;
   max-height: 85vh;
   overflow-y: auto;
+  &_wide {
+    width: 600px;
+  }
   &__container {
     display: flex;
     justify-content: space-between;
@@ -182,6 +184,35 @@ textarea {
   &__controls {
     text-align: center;
   }
+  &__list {
+    color: #3c4958;
+    text-align: center;
+    margin-top: 10px;
+    button {
+      margin-top: 15px;
+    }
+  }
+  &__list-item {
+    margin-top: 7px;
+    button {
+      margin: 0;
+      &:hover {
+        color: #72849e;
+      }
+    }
+  }
+  &__no-items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    mat-icon {
+      margin: 0 6px 5px 0;
+    }
+  }
+  hr {
+    margin: 10px 15px;
+    border-bottom: none;
+  }
 }
 
 .error-message {
@@ -201,23 +232,93 @@ textarea {
   }
 }
 
+.table {
+  box-shadow: none;
+  text-align: center;
+  border-radius: 3px;
+  width: 100%;
+  position: relative;
+  td,
+  th {
+    padding: 10px 0;
+    border: 2px #e7ebee solid;
+  }
+  thead {
+    background-color: #e7ebee;
+  }
+  tbody {
+    background-color: #f0f3f8;
+  }
+  &__btn {
+    padding: 0 !important;
+    button {
+      height: 41px;
+      width: 100%;
+      font-size: 16px;
+    }
+    &_little {
+      button {
+        height: 31px;
+        width: 50%;
+        font-size: 13px;
+      }
+    }
+  }
+  &__add {
+    position: absolute;
+    right: 19px;
+    top: -47px;
+    padding: 9px 12px;
+    font-size: 14px;
+  }
+}
+
+.overlay-narrow {
+  max-width: none !important;
+  width: 320px;
+  mat-dialog-container {
+    padding: 24px 12px;
+  }
+}
+
+@media (max-width: 959px) {
+  .table {
+    font-size: 14px;
+  }
+}
+
 @media (max-width: 860px) {
-  .cdk-overlay-pane {
+  .overlay-wide {
     width: 85%;
     max-width: none !important;
   }
   .form {
-    width: auto;
+    &_wide {
+      width: auto;
+    }
   }
 }
 
-@media (max-width: 600px) {
-  .cdk-overlay-pane {
+@media (max-width: 599px) {
+  .overlay-wide {
     width: 95%;
   }
   .form {
-    &__input-container {
-      flex: 100%;
+    &_wide {
+      .form__input-container {
+        flex: 100%;
+      }
     }
+    &__no-items {
+      span {
+        font-size: 13px;
+      }
+    }
+  }
+  .table {
+    font-size: 13px;
+  }
+  .title {
+    text-align: left;
   }
 }

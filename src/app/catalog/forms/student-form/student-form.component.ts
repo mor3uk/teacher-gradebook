@@ -6,11 +6,13 @@ import * as moment from 'moment';
 import uuid from 'uuid';
 import { Moment } from 'moment';
 
+import { GroupService } from '../../../shared/services/group.service';
 import { StudentService } from '../../../shared/services/student.service';
+import { Group } from '../../../shared/models/group.model';
 import { Student } from '../../../shared/models/student.model';
 import { Relative, RelativeKind } from '../../../shared/models/relative.model';
 import { RelativeFormComponent } from '../relative-form/relative-form.component';
-import { existsValidator, parentsValidator } from './student-form.validators';
+import { existsValidator, parentsValidator, groupExistsValidator } from './student-form.validators';
 
 @Component({
   selector: 'app-student-form',
@@ -27,12 +29,14 @@ export class StudentFormComponent implements OnInit {
 
   relatives: Relative[] = [];
   leftRelatives: RelativeKind[] = [];
+  groups: Group[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
     private dialogRef: MatDialogRef<StudentFormComponent>,
     private dialog: MatDialog,
-    private sw: StudentService,
+    private ss: StudentService,
+    private gs: GroupService,
   ) { }
 
   ngOnInit() {
@@ -40,6 +44,8 @@ export class StudentFormComponent implements OnInit {
       this.editMode = true;
       this.relatives = this.data.student.relatives;
     }
+
+    this.gs.getGroups().then((groups) => (this.groups = groups));
 
     this.setLeftRelatives();
 
@@ -58,7 +64,8 @@ export class StudentFormComponent implements OnInit {
       ),
       group: new FormControl(
         this.editMode ? this.data.student.group : null,
-        [Validators.maxLength(30)]
+        [],
+        [groupExistsValidator.bind(this)],
       ),
       birthDate: new FormControl(
         this.editMode ? moment(this.data.student.birthDate) : null,
@@ -84,11 +91,9 @@ export class StudentFormComponent implements OnInit {
         ...this.studentForm.value,
         birthDate: +this.studentForm.value.birthDate,
         relatives: this.relatives,
+        group: this.studentForm.value.group === 'null' ? null : this.studentForm.value.group,
+        id: this.editMode && this.data.student.id,
       };
-
-      if (this.editMode) {
-        this.student.id = this.data.student.id;
-      }
 
       this.dialogRef.close(this.student);
     }
@@ -118,6 +123,7 @@ export class StudentFormComponent implements OnInit {
   onEditRelative(id: string) {
     const relative = this.relatives.find(relative => relative.id === id);
     const dialogRef = this.dialog.open(RelativeFormComponent, {
+      panelClass: 'overlay-wide',
       data: {
         relative,
         leftRelatives: [...this.leftRelatives, relative.kind],

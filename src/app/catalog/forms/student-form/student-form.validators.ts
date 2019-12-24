@@ -1,4 +1,4 @@
-import { ValidationErrors, FormGroup } from '@angular/forms';
+import { ValidationErrors, FormGroup, FormControl } from '@angular/forms';
 
 import { RelativeKind } from '../../../shared/models/relative.model';
 
@@ -23,7 +23,7 @@ export function existsValidator({ value }: FormGroup): Promise<ValidationErrors>
       resolve(null);
     }
 
-    const student = await this.sw.findExistingStudent({
+    const student = await this.ss.findExistingStudent({
       ...value,
       birthDate: +value.birthDate,
       fatherName: value.fatherName || '',
@@ -34,5 +34,20 @@ export function existsValidator({ value }: FormGroup): Promise<ValidationErrors>
     }
 
     resolve(null);
+  });
+}
+
+export function groupExistsValidator({ value }: FormControl): Promise<ValidationErrors> {
+  return new Promise(async resolve => {
+    if (!value || value === 'null') {
+      return resolve(null);
+    }
+    const group = await this.gs.getGroup(value);
+
+    if (group) {
+      resolve(null);
+    }
+
+    resolve({ groupDoesNotExist: true });
   });
 }

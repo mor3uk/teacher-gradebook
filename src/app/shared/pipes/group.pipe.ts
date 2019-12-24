@@ -5,10 +5,18 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class GroupPipe implements PipeTransform {
   transform(group: string | number): string {
+    if (group === null) {
+      return '-';
+    }
+
     if (!isNaN(+group)) {
       return '№' + group;
     }
 
-    return (<string>group).substr(0, 15);
+    if ((group + '').length > 14) {
+      return (group + '').substr(0, 11) + '...';
+    }
+
+    return (<string>group).substr(0, 12);
   }
 }

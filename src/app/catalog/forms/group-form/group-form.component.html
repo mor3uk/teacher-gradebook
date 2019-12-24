@@ -1,0 +1,67 @@
+<form class="form group-form">
+  <div class="form__label">
+    Информация о группе
+  </div>
+  <div class="form__input-container">
+    <input type="text" placeholder="Название / № группы" class="form__input">
+  </div>
+  <div class="form__label">
+    Выберите учащегося
+  </div>
+  <div class="form__input-container">
+    <select [disabled]="students.length === 0" (change)="onSelectStudent($event)" class="form__input">
+      <option value="" disabled [selected]="true">
+        {{ students.length === 0 ? 'Список пуст' : 'Список учащихся' }}
+      </option>
+      <option *ngFor="let student of students" [value]="student.id">
+        {{ student.surname | fullname:student.name:student.fatherName }}
+      </option>
+    </select>
+  </div>
+  <div class="group-form__students">
+    <div *ngIf="selectedStudent" class="group-form__selected-student">
+      <div>
+        {{ selectedStudent.surname }}
+        {{ selectedStudent.name }}
+        {{ selectedStudent.fatherName || '' }}
+      </div>
+      <div>
+        Дата рождения: {{ selectedStudent.birthDate | birthdate }}
+      </div>
+      <div>
+        <button mat-icon-button (click)="onUnselectStudent()">
+          <mat-icon>remove_circle</mat-icon>
+        </button>
+        <button mat-icon-button (click)="onPickStudent()">
+          <mat-icon>add_box</mat-icon>
+        </button>
+      </div>
+      <hr>
+    </div>
+    <div class="form__no-items" *ngIf="pickedStudents.length === 0">
+      <mat-icon>warning</mat-icon>
+      <span>В группе нет учащихся</span>
+    </div>
+    <div *ngIf="pickedStudents.length !== 0" class="form__label">
+      Ученики группы:
+    </div>
+    <div class="form__list group-form__student-list">
+      <div *ngFor="let student of pickedStudents" class="form__list-item group-form__student">
+        {{ student.surname | fullname:student.name:student.fatherName }}
+        <span>
+          <button (click)="onEditStudent(student.id)" type="button" mat-icon-button>
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button (click)="onDeleteStudent(student.id)" type="button" mat-icon-button>
+            <mat-icon>remove_circle_outline</mat-icon>
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="form__controls">
+    <button *ngIf="!editMode" class="btn btn_success form__btn">Добавить</button>
+    <button *ngIf="editMode" class="btn btn_primary form__btn">Сохранить</button>
+    <button (click)="onCancel()" type="button" class="btn btn_danger form__btn">Отменить</button>
+  </div>
+</form>

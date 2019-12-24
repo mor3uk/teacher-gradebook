@@ -27,8 +27,11 @@ import { AttendancePipe } from './shared/pipes/attendance.pipe';
 import { FullnamePipe } from './shared/pipes/fullname.pipe';
 import { GroupPipe } from './shared/pipes/group.pipe';
 import { ConfirmDialog } from './shared/modals/confirm.component';
-import { StudentFormComponent } from './catalog/students/student-form/student-form.component';
-import { RelativeFormComponent } from './catalog/students/relative-form/relative-form.component';
+import { StudentFormComponent } from './catalog/forms/student-form/student-form.component';
+import { RelativeFormComponent } from './catalog/forms/relative-form/relative-form.component';
+import { PluralPipe } from './shared/pipes/plural.pipe';
+import { GroupFormComponent } from './catalog/forms/group-form/group-form.component';
+import { BitrhDatePipe } from './shared/pipes/birth-date.pipe';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,10 @@ import { RelativeFormComponent } from './catalog/students/relative-form/relative
     AttendancePipe,
     FullnamePipe,
     GroupPipe,
+    PluralPipe,
     RelativeFormComponent,
+    GroupFormComponent,
+    BitrhDatePipe,
   ],
   imports: [
     MaterialModule,
@@ -67,6 +73,7 @@ import { RelativeFormComponent } from './catalog/students/relative-form/relative
     ConfirmDialog,
     StudentFormComponent,
     RelativeFormComponent,
+    GroupFormComponent,
   ],
   providers: [
     {

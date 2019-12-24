@@ -5,7 +5,7 @@ export interface Student {
   name: string;
   surname: string;
   fatherName?: string;
-  groupId?: string;
+  group?: string;
   birthDate: number;
   passedLessons?: number;
   visitedLessons?: number;

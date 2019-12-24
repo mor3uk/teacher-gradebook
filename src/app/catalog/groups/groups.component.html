@@ -1,1 +1,50 @@
-<p>groups works!</p>
+<h2 class="title">Группы</h2>
+<section class="section groups">
+  <table class="groups__table table">
+    <button (click)="onAddGroup()" class="btn btn_success table__add">Добавить</button>
+    <thead>
+      <tr>
+        <th>№ / Название</th>
+        <th>Размер группы</th>
+        <th colspan="2" fxHide.lt-sm>Править / удалить</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let group of groups">
+        <tr>
+          <td>{{ group.name | group }}</td>
+          <td>
+            <ng-container *ngIf="!group.studentIdList.length">
+              Нет учеников
+            </ng-container>
+            <ng-container *ngIf="group.studentIdList.length">
+              {{ group.studentIdList.length }}
+              {{ 'ученик' | plural:group.studentIdList.length:['', 'а', 'ов'] }}
+            </ng-container>
+          </td>
+          <td fxHide.lt-sm class="table__btn">
+            <button (click)="onEditGroup(group)" class="btn btn_primary">Править</button>
+          </td>
+          <td fxHide.lt-sm class="table__btn">
+            <button (click)="onDeleteGroup(group.name)" class="btn btn_danger">Удалить</button>
+          </td>
+        </tr>
+        <tr fxHide.gt-xs>
+          <td colspan="4" class="table__btn table__btn_little">
+            <button (click)="onEditGroup(group)" class="btn btn_primary">Править</button>
+            <button (click)="onDeleteGroup(group.name)" class="btn btn_danger">Удалить</button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  <div *ngIf="groups.length === 0 && !pending" class="not-found">
+    <mat-icon>warning</mat-icon>
+    <div>
+      Список групп пуст
+    </div>
+  </div>
+  <div *ngIf="pending" class="spinner">
+    <mat-spinner diameter="60"></mat-spinner>
+  </div>
+</section>

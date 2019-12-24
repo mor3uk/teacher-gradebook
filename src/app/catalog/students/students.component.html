@@ -1,7 +1,7 @@
 <h2 class="title">Ученики</h2>
 <section class="section students">
-  <button (click)="onAddStudent()" class="btn btn_success students__add">Добавить</button>
-  <table>
+  <table class="students__table table">
+    <button (click)="onAddStudent()" class="btn btn_success table__add">Добавить</button>
     <thead>
       <tr>
         <th>ФИО</th>
@@ -15,18 +15,18 @@
       <ng-container *ngFor="let student of students">
         <tr>
           <td>{{ student.surname | fullname:student.name:student.fatherName }}</td>
-          <td>{{ getGroupName(student.group) | group }}</td>
+          <td>{{ student.group | group }}</td>
           <td>{{ student.birthDate | age }}</td>
           <td>{{ student.passedLessons | attendance:student.visitedLessons }}</td>
-          <td fxHide.lt-sm class="students__btn">
+          <td fxHide.lt-sm class="table__btn">
             <button (click)="onEditStudent(student.id)" class="btn btn_primary">Править</button>
           </td>
-          <td fxHide.lt-sm class="students__btn">
+          <td fxHide.lt-sm class="table__btn">
             <button (click)="onDeleteStudent(student.id)" class="btn btn_danger">Удалить</button>
           </td>
         </tr>
         <tr fxHide.gt-xs>
-          <td colspan="4" class="students__btn students__btn_little">
+          <td colspan="4" class="table__btn table__btn_little">
             <button (click)="onEditStudent(student.id)" class="btn btn_primary">Править</button>
             <button (click)="onDeleteStudent(student.id)" class="btn btn_danger">Удалить</button>
           </td>

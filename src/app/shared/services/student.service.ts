@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import * as uuid from 'uuid';
 
+import { GroupService } from './group.service';
 import { Student } from '../models/student.model';
 import { DB } from '../db';
 
@@ -11,7 +12,7 @@ import { DB } from '../db';
 export class StudentService {
   private db: DB;
 
-  constructor() {
+  constructor(private gs: GroupService) {
     this.db = new DB();
   }
 
@@ -22,13 +23,20 @@ export class StudentService {
     student.id = uuid();
     student.passedLessons = 0;
     student.visitedLessons = 0;
+
+    this.gs.replaceStudent(null, student.group, student.id);
+
     return this.db.students.add(student);
   }
 
-  updateStudent(student: Student): Promise<any> {
+  async updateStudent(student: Student): Promise<any> {
+    const studentToUpdate = await this.getStudent(student.id);
+    this.gs.replaceStudent(studentToUpdate.group, student.group, student.id);
+
     if (!student.fatherName) {
       student.fatherName = '';
     }
+
     return this.db.students.put(student);
   }
 
@@ -40,7 +48,9 @@ export class StudentService {
     return this.db.students.toArray();
   }
 
-  deleteStudent(id: string): Promise<any> {
+  async deleteStudent(id: string): Promise<any> {
+    const student = await this.getStudent(id);
+    this.gs.replaceStudent(student.group, null, id);
     return this.db.students.delete(id);
   }
 
