@@ -1,4 +1,4 @@
-<form (submit)="onSubmit()" class="form group-form">
+<form [formGroup]="groupForm" (submit)="onSubmit()" class="form group-form">
   <div class="form__label">
     Информация о группе
   </div>
@@ -7,9 +7,24 @@
       type="text"
       placeholder="Название / № группы" 
       class="form__input"
-      name="name"
-      [(ngModel)]="name"
+      formControlName="name"
+      trim="blur"
     >
+    <span 
+      *ngIf="groupForm.controls.name.errors?.required && groupForm.controls.name.touched"
+      class="error-message"
+    >Укажите название / № группы
+    </span>
+    <span 
+      *ngIf="groupForm.controls.name.errors?.maxlength"
+      class="error-message"
+    >{{ 'Максимум ' + groupForm.controls.name.errors.maxlength.requiredLength  + ' символов' }}
+    </span>
+    <span 
+      *ngIf="groupForm.controls.name.errors?.groupNameTaken"
+      class="error-message"
+    >Название группы занято
+    </span>
   </div>
   <div class="form__label">
     Выберите учащегося
@@ -23,6 +38,20 @@
         {{ student.surname | fullname:student.name:student.fatherName }}
       </option>
     </select>
+  </div>
+  <div *ngIf="!selectedStudent" class="group-form__helpers">
+    <button 
+      [disabled]="students.length === 0"
+      class="btn btn_primary"
+      type="button"
+      (click)="onPickAll()"
+    >Добавить всех</button>
+    <button 
+      *ngIf="data ? !data.studentMode : true"
+      class="btn btn_success"
+      type="button"
+      (click)="onAddNewStudent()"
+    >Добавить нового</button>
   </div>
   <div class="group-form__students">
     <div *ngIf="selectedStudent" class="group-form__selected-student">
@@ -49,15 +78,12 @@
       <span>В группе нет учащихся</span>
     </div>
     <div *ngIf="pickedStudents.length !== 0" class="form__label">
-      Ученики группы:
+      Учащиеся группы:
     </div>
     <div class="form__list group-form__student-list">
       <div *ngFor="let student of pickedStudents" class="form__list-item group-form__student">
         {{ student.surname | fullname:student.name:student.fatherName }}
         <span>
-          <button (click)="onEditStudent(student.id)" type="button" mat-icon-button>
-            <mat-icon>edit</mat-icon>
-          </button>
           <button (click)="onDeleteStudent(student.id)" type="button" mat-icon-button>
             <mat-icon>remove_circle_outline</mat-icon>
           </button>

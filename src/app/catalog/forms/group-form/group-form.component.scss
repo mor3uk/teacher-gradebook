@@ -9,6 +9,14 @@
   &__students {
     color: #3c4958;
   }
+  &__helpers {
+    padding: 5px 0;
+    justify-content: center;
+    display: flex;
+    button {
+      padding: 10px 15px;
+    }
+  }
   &__selected-student {
     position: relative;
     text-align: center;

@@ -15,11 +15,11 @@
           <td>{{ group.name }}</td>
           <td>
             <ng-container *ngIf="!group.studentIdList.length">
-              Нет учеников
+              Нет учащихся
             </ng-container>
             <ng-container *ngIf="group.studentIdList.length">
               {{ group.studentIdList.length }}
-              {{ 'ученик' | plural:group.studentIdList.length:['', 'а', 'ов'] }}
+              {{ 'учащи' | plural:group.studentIdList.length:['йся', 'хся', 'хся'] }}
             </ng-container>
           </td>
           <td fxHide.lt-sm class="table__btn">

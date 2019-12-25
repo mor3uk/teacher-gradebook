@@ -25,7 +25,7 @@ export class StudentService {
     student.passedLessons = 0;
     student.visitedLessons = 0;
 
-    this.gs.replaceStudent(null, student.group, student.id);
+    this.gs.replaceStudent(null, student.groupId, student.id);
 
     return this.db.students.add(student);
   }
@@ -33,7 +33,7 @@ export class StudentService {
   async updateStudent(student: Student, studentMode: boolean = true): Promise<any> {
     if (studentMode) {
       const studentToUpdate = await this.getStudent(student.id);
-      this.gs.replaceStudent(studentToUpdate.group, student.group, student.id);
+      this.gs.replaceStudent(studentToUpdate.groupId, student.groupId, student.id);
     }
 
     if (!student.fatherName) {
@@ -53,7 +53,7 @@ export class StudentService {
 
   async deleteStudent(id: string): Promise<any> {
     const student = await this.getStudent(id);
-    this.gs.replaceStudent(student.group, null, id);
+    this.gs.replaceStudent(student.groupId, null, id);
     return this.db.students.delete(id);
   }
 
@@ -71,7 +71,7 @@ export class StudentService {
   setStudentsGroup(group: Group) {
     group.studentIdList.forEach(id => {
       this.getStudent(id).then(student => {
-        student.group = group.id;
+        student.groupId = group.id;
         this.updateStudent(student, false);
       });
     });
@@ -80,7 +80,7 @@ export class StudentService {
   unsetStudentsGroup(idList: string[]) {
     idList.forEach(id => {
       this.getStudent(id).then(student => {
-        student.group = null;
+        student.groupId = null;
         this.updateStudent(student, false);
       });
     });

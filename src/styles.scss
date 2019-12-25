@@ -144,6 +144,7 @@ textarea {
 .form {
   max-height: 85vh;
   overflow-y: auto;
+  position: relative;
   &_wide {
     width: 600px;
   }
@@ -273,11 +274,13 @@ textarea {
   }
 }
 
-.overlay-narrow {
-  max-width: none !important;
-  width: 320px;
-  mat-dialog-container {
-    padding: 24px 12px;
+.overlay {
+  &-narrow {
+    max-width: none !important;
+    width: 320px;
+    mat-dialog-container {
+      padding: 24px 12px;
+    }
   }
 }
 

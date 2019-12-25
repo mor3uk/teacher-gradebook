@@ -12,6 +12,7 @@ import { Group } from '../../../shared/models/group.model';
 import { Student } from '../../../shared/models/student.model';
 import { Relative, RelativeKind } from '../../../shared/models/relative.model';
 import { RelativeFormComponent } from '../relative-form/relative-form.component';
+import { GroupFormComponent } from '../group-form/group-form.component';
 import { existsValidator, parentsValidator, groupExistsValidator } from './student-form.validators';
 
 @Component({
@@ -62,8 +63,8 @@ export class StudentFormComponent implements OnInit {
         this.editMode ? this.data.student.fatherName : null,
         Validators.maxLength(30)
       ),
-      group: new FormControl(
-        this.editMode ? this.data.student.group : null,
+      groupId: new FormControl(
+        this.editMode ? this.data.student.groupId : null,
         [],
         [groupExistsValidator.bind(this)],
       ),
@@ -91,7 +92,7 @@ export class StudentFormComponent implements OnInit {
         ...this.studentForm.value,
         birthDate: +this.studentForm.value.birthDate,
         relatives: this.relatives,
-        group: this.studentForm.value.group === 'null' ? null : this.studentForm.value.group,
+        groupId: this.studentForm.value.groupId === 'null' ? null : this.studentForm.value.groupId,
         id: this.editMode && this.data.student.id,
       };
 
@@ -101,6 +102,7 @@ export class StudentFormComponent implements OnInit {
 
   onAddRelative() {
     const dialogRef = this.dialog.open(RelativeFormComponent, {
+      panelClass: 'overlay-wide',
       data: { leftRelatives: this.leftRelatives }
     });
 
@@ -118,6 +120,22 @@ export class StudentFormComponent implements OnInit {
     this.relatives = this.relatives.filter(relative => id !== relative.id);
     this.studentForm.updateValueAndValidity();
     this.setLeftRelatives();
+  }
+
+  onCreateGroup() {
+    const dialogRef = this.dialog.open(GroupFormComponent, {
+      panelClass: 'overlay-narrow',
+      data: { studentMode: true },
+    });
+
+    dialogRef.afterClosed().subscribe(async group => {
+      if (group) {
+        await this.gs.addGroup(group);
+        this.groups = await this.gs.getGroups();
+        const addedGroup = await this.gs.getGroupByName(group.name);
+        this.studentForm.controls.groupId.setValue(addedGroup.id);
+      }
+    });
   }
 
   onEditRelative(id: string) {

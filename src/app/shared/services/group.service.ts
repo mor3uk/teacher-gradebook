@@ -30,6 +30,13 @@ export class GroupService {
     return this.db.groups.get(id);
   }
 
+  getGroupByName(name: string): Promise<Group> {
+    return this.db.groups
+      .where('name')
+      .equals(name)
+      .first();
+  }
+
   getGroups(): Promise<Group[]> {
     return this.db.groups.toArray();
   }

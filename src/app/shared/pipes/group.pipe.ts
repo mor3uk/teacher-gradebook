@@ -17,6 +17,10 @@ export class GroupPipe implements PipeTransform {
       const group = await this.gs.getGroup(id);
       const name = group.name;
 
+      if (!isNaN(+name)) {
+        resolve('№' + name);
+      }
+
       if ((name + '').length > 14) {
         resolve((name + '').substr(0, 11) + '...');
       }
