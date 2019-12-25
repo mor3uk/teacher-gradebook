@@ -130,6 +130,7 @@ export class StudentFormComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(async group => {
       if (group) {
+        this.ss.setStudentsGroup(group);
         await this.gs.addGroup(group);
         this.groups = await this.gs.getGroups();
         const addedGroup = await this.gs.getGroupByName(group.name);
