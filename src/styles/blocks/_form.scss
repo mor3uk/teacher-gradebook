@@ -1,0 +1,107 @@
+.form {
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  &__helpers {
+    padding: 5px 0;
+    justify-content: center;
+    display: flex;
+    button {
+      padding: 10px 15px;
+    }
+  }
+  &_wide {
+    width: 600px;
+  }
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  &__input-container {
+    flex: 45%;
+    margin: 10px;
+    position: relative;
+    mat-datepicker-toggle, button[mat-icon-button] {
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      color: var(--colorDark);
+    }
+  }
+  &__input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px var(--colorHoverDark) solid;
+    color: var(--colorDark);
+  }
+  &__label {
+    font-size: 16px;
+    color: var(--colorDark);
+    margin: 5px 10px;
+    text-align: center;
+  }
+  &__btn {
+    margin: 5px 5px 0 10px;
+    font-size: 15px;
+    padding: 12px 15px;
+  }
+  &__controls {
+    text-align: center;
+  }
+  &__list {
+    color: var(--colorDark);
+    text-align: center;
+    margin-top: 10px;
+    button {
+      margin-top: 15px;
+    }
+  }
+  &__list-item {
+    margin-top: 7px;
+    button {
+      margin: 0;
+      &:hover {
+        color: var(--colorHoverDark);
+      }
+    }
+  }
+  &__no-items {
+    justify-content: center;
+    display: flex;
+    color: var(--colorDark);
+    align-items: center;
+    mat-icon {
+      margin: 0 6px 5px 0;
+    }
+  }
+  hr {
+    margin: 10px 15px;
+    border-bottom: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .form {
+    &_wide {
+      width: auto;
+    }
+  }
+}
+
+@media (max-width: 599px) {
+  .form {
+    &_wide {
+      .form__input-container {
+        flex: 100%;
+      }
+    }
+    &__no-items {
+      span {
+        font-size: 13px;
+      }
+    }
+  }
+}

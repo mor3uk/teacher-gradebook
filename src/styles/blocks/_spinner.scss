@@ -1,0 +1,10 @@
+.spinner {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  .mat-spinner {
+    circle {
+      stroke: var(--primaryColor);
+    }
+  }
+}

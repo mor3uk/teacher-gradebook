@@ -1,0 +1,35 @@
+.lesson-form {
+  &__kind {
+    display: flex;
+    justify-content: space-around;
+    margin: 12px 20px;
+  }
+  &__picked-group {
+    color: var(--colorDark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    button {
+      margin-left: 10px;
+      &:hover {
+        color: var(--colorHoverDark);
+      }
+    }
+  }
+  &__numbers {
+    justify-content: center;
+  }
+  &__number {
+    flex: 0 0 28%;
+  }
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  background: transparent;
+}

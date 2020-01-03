@@ -20,10 +20,10 @@ export class GroupFormComponent implements OnInit {
   students: Student[] = [];
   pickedStudents: Student[] = [];
   selectedStudent: Student = null;
-  editMode: boolean = false;
+  editMode = false;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private gs: GroupService,
     private ss: StudentService,
     private dialogRef: MatDialogRef<GroupFormComponent>,
@@ -80,10 +80,8 @@ export class GroupFormComponent implements OnInit {
     });
   }
 
-  onSelectStudent(e: Event) {
-    this.selectedStudent = this.students
-      .find(student => student.id === (<HTMLInputElement>e.target).value);
-    (<HTMLInputElement>e.target).value = '';
+  onSelectStudent(id: string) {
+    this.selectedStudent = this.students.find(student => student.id === id);
   }
 
   onPickStudent() {

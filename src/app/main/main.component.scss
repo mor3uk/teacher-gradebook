@@ -4,7 +4,11 @@ mat-sidenav-content {
   height: 100%;
 }
 
+mat-sidenav-content {
+  padding-top: 54px;
+}
+
 mat-sidenav {
   width: 250px;
-  background-color: #f0f3f8;
+  background-color: var(--bacgkroundLight);
 }

@@ -23,7 +23,7 @@
   &__item {
     background-color: transparent;
     &:hover {
-      background-color: #f0f3f8;
+      background-color: var(--bacgkroundLight);
     }
   }
   &__drop {

@@ -1,0 +1,25 @@
+.overlay {
+  &-narrow {
+    max-width: none !important;
+    width: 320px;
+    mat-dialog-container {
+      padding: 24px 12px;
+    }
+  }
+}
+
+@media (max-width: 860px) {
+  .overlay-wide {
+    width: 85%;
+    max-width: none !important;
+  }
+}
+
+@media (max-width: 599px) {
+  .overlay-wide {
+    width: 95%;
+  }
+  .title {
+    text-align: left;
+  }
+}

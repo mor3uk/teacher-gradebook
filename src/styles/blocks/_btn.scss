@@ -1,0 +1,22 @@
+.btn {
+  border: none;
+  color: #fff;
+  &_danger {
+    background-color: var(--dangerColor);
+    &:hover {
+      background-color: var(--dangerHoverColor);
+    }
+  }
+  &_primary {
+    background-color: var(--primaryColor);
+    &:hover {
+      background-color: var(--primaryHoverColor);
+    }
+  }
+  &_success {
+    background-color: var(--successColor);
+    &:hover {
+      background-color: var(--successHoverColor);
+    }
+  }
+}

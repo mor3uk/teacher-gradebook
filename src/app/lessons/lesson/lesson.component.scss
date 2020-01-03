@@ -11,16 +11,16 @@
   }
   &__start {
     margin-right: 12px;
-    color: #3b7eef;
+    color: var(--primaryHoverColor);
   }
   &__duration {
     margin-left: 12px;
-    color: #f7c95f;
+    color: var(--warningColor);
   }
   &__group,
   &__single {
     margin-top: 40px;
-    color: #3c4958;
+    color: var(--colorDark);
     font-size: 26px;
     display: flex;
     flex-direction: column;
@@ -35,20 +35,27 @@
     text-align: center;
   }
   &__student-number {
-    color: #3c4958;
+    color: var(--colorDark);
     margin-bottom: 10px;
     font-size: 18px;
   }
   &__list {
     display: flex;
     flex-wrap: wrap;
-    background-color: #f0f3f8;
+    border-top: 1px rgb(221, 220, 220) solid;
   }
   &__student {
-    color: #3c4958b4;
+    color: var(--colorDark);
     overflow: hidden;
     padding: 6px 0;
     width: calc(50% - 2px);
-    border: 1px rgb(221, 220, 220) solid;
+    border-top: 1px rgb(221, 220, 220) solid;
+    &:nth-child(2n - 1) {
+      border-right: 1px rgb(221, 220, 220) solid;
+    }
+    &:nth-child(1),
+    &:nth-child(2) {
+      border-top: none;
+    }
   }
 }

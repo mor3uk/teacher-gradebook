@@ -1,8 +1,8 @@
 export interface Lesson {
   id?: string;
-  studentsInfo?: { id: string, absent: boolean }[];
+  studentsInfo: { id: string, absent?: boolean }[];
   startTime: number;
-  duration: number;
+  durationMinutes: number;
   kind: 'common' | 'personal';
 }
 

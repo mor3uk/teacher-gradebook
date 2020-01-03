@@ -1,0 +1,111 @@
+<form (submit)="onSubmit($event)" [formGroup]="lessonForm" class="form lesson-form">
+  <div class="form__label">Информация о занятии</div>
+  <mat-radio-group
+    class="lesson-form__kind"
+    (change)="onChangeKind($event)"
+    color="primary"
+  >
+    <mat-radio-button
+      checked
+      value="common"
+    >Общее
+    </mat-radio-button>
+    <mat-radio-button
+      value="personal"
+    >Персональное
+    </mat-radio-button>
+  </mat-radio-group>
+  <div class="form__input-container">
+    <input
+      class="form__input"
+      [owlDateTime]="startTimePicker"
+      formControlName="startTime"
+      [min]="minTime"
+      placeholder="Дата и время начала занятия"
+    >
+    <owl-date-time [pickerMode]="'dialog'" #startTimePicker></owl-date-time>
+    <button type="button" mat-icon-button>
+      <mat-icon [owlDateTimeTrigger]="startTimePicker">home</mat-icon>
+    </button>
+  </div>
+
+  <div class="form__container lesson-form__numbers">
+    <div class="form__input-container lesson-form__number">
+      <input
+        type="number"
+        class="form__input"
+        placeholder="45"
+        formControlName="durationMinutes"
+      >
+      <div class="hint-message">
+        Длительность <br> в минутах
+      </div>
+    </div>
+
+    <div class="form__input-container lesson-form__number" *ngIf="lessonKind === 'personal'">
+      <input
+        type="number"
+        class="form__input"
+        placeholder="300"
+        formControlName="price"
+      >
+      <div class="hint-message">
+        Цена в рублях
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="lessonKind === 'common'">
+    <div class="form__label">
+      Группа учащихся
+    </div>
+
+    <div class="form__input-container">
+      <select (change)="onPickGroup($event)" class="form__input">
+        <option selected disabled value="">Выберите группу</option>
+        <option *ngFor="let group of groups" [value]="group.id">{{ group.name }}</option>
+      </select>
+    </div>
+
+    <div class="form__no-items" *ngIf="!lessonForm.controls.pickedGroup.value">
+      <mat-icon>warning</mat-icon>
+      <span>Группа не выбрана</span>
+    </div>
+
+    <div class="lesson-form__picked-group" *ngIf="lessonForm.controls.pickedGroup.value">
+      <div>
+        <div>{{ lessonForm.controls.pickedGroup.value.name }}</div>
+        <div>
+          {{ lessonForm.controls.pickedGroup.value.studentIdList.length }}
+          {{ 'учащи' | plural:lessonForm.controls.pickedGroup.value.studentIdList.length:['йся', 'хся', 'хся'] }}
+        </div>
+      </div>
+      <button (click)="onUnpickGroup()" type="button" mat-icon-button>
+          <mat-icon>remove_circle_outline</mat-icon>
+      </button>
+    </div>
+  </ng-container>
+
+  <app-student-picker
+    *ngIf="lessonKind === 'personal'"
+    [students]="students"
+    [pickedStudents]="lessonForm.controls.pickedStudents.value"
+    [selectedStudent]="selectedStudent"
+    [studentMode]="true"
+    (studentSelected)="onSelectStudent($event)"
+    (studentUnselected)="onUnselectStudent()"
+    (allPicked)="onPickAll()"
+    (studentPicked)="onPickStudent()"
+    (studentDeleted)="onDeleteStudent($event)"
+  ></app-student-picker>
+
+  <div class="form__controls">
+    <button class="btn btn_success form__btn">Добавить</button>
+    <button
+      (click)="onCancel()"
+      type="button"
+      class="btn btn_danger form__btn"
+    >Отменить</button>
+  </div>
+</form>
+

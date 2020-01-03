@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+
+import { AddLessonComponent } from './add-lesson/add-lesson.component';
 
 @Component({
   selector: 'app-lessons',
@@ -7,9 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LessonsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
+  }
+
+  onAddLesson() {
+    this.dialog.open(AddLessonComponent, { panelClass: 'overlay-narrow' })
+      .afterClosed()
+      .subscribe(lesson => {
+        console.log(lesson);
+      });
   }
 
 }

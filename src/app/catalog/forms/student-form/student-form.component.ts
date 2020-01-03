@@ -22,8 +22,8 @@ import { existsValidator, parentsValidator, groupExistsValidator } from './stude
 })
 export class StudentFormComponent implements OnInit {
   maxDate: Moment = moment().subtract(6, 'years').add(1, 'day');
-  submissionTriggered: boolean = false;
-  editMode: boolean = false;
+  submissionTriggered = false;
+  editMode = false;
 
   studentForm: FormGroup;
   student: Student;
@@ -33,7 +33,7 @@ export class StudentFormComponent implements OnInit {
   groups: Group[];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<StudentFormComponent>,
     private dialog: MatDialog,
     private ss: StudentService,

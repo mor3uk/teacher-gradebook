@@ -1,22 +1,23 @@
 .account {
   position: relative;
   &__image {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     cursor: pointer;
     img {
-      border: 2px #f0f3f8 solid;
+      border: 2px var(--bacgkroundLight) solid;
       width: 100%;
+      box-sizing: border-box;
       border-radius: 100%;
       &:hover {
-        border-color: #e7ebee;
+        border-color: var(--bacgkroundDark);
       }
     }
     &_active {
       img {
-        border-color: #95a9c7;
+        border-color: var(--colorHoverDark);
         &:hover {
-          border-color: #95a9c7;
+          border-color: var(--colorHoverDark);
         }
       }
     }
@@ -40,7 +41,7 @@
       display: block;
       content: "";
       border: 10px transparent solid;
-      border-bottom-color: #e7ebee;
+      border-bottom-color: var(--bacgkroundDark);
     }
     li:last-child {
       border-radius: 0 0 10px 10px;
@@ -51,9 +52,9 @@
     border-radius: 10px 10px 0 0;
     padding: 15px 25px 15px 15px;
     cursor: initial;
-    color: #a6a8a9;
+    color: var(--colorLight);
     border-bottom: 3px solid;
-    border-color: #95a9c7;
-    background-color: #e7ebee;
+    border-color: var(--colorHoverDark);
+    background-color: var(--bacgkroundDark);
   }
 }

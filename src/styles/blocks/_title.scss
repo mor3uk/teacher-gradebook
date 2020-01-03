@@ -1,0 +1,15 @@
+.title {
+  text-align: center;
+  color: var(--colorDark);
+  font-size: 25px;
+  padding: 0 25px;
+  margin: 0;
+  line-height: 60px;
+  height: 60px;
+}
+
+@media (max-width: 599px) {
+  .title {
+    text-align: left;
+  }
+}

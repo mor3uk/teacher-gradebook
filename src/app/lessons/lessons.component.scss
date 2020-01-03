@@ -1,7 +1,12 @@
+h2 {
+  text-align: center;
+}
+
 .lessons {
   &__list {
     display: flex;
     flex-wrap: wrap;
+    margin-bottom: 15px;
   }
   &__item {
     border: 1px rgb(221, 220, 220) solid;
@@ -20,15 +25,15 @@
       font-size: 40px;
       width: 40px;
       height: 40px;
-      color: #3c4958;
+      color: var(--colorDark);
     }
     &:hover {
-      background-color: #f0f3f8;
+      background-color: var(--bacgkroundLight);
     }
   }
 }
 
-@media (max-width: 951px) {
+@media (max-width: 960px) {
   .lessons__list {
     justify-content: center;
   }

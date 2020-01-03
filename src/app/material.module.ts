@@ -3,7 +3,6 @@ import {
   MatIconModule,
   MatButtonModule,
   MatSidenavModule,
-  MatToolbarModule,
   MatListModule,
   RippleGlobalOptions,
   MAT_RIPPLE_GLOBAL_OPTIONS,
@@ -11,20 +10,23 @@ import {
   MatDatepickerModule,
   MatInputModule,
   MatProgressSpinnerModule,
+  MatRadioModule,
 } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
+
 
 const materialModules = [
   MatIconModule,
   MatButtonModule,
   MatSidenavModule,
-  MatToolbarModule,
   MatListModule,
   MatDialogModule,
   MatDatepickerModule,
   MomentDateModule,
   MatInputModule,
   MatProgressSpinnerModule,
+  MatRadioModule,
+
 ];
 
 const globalRippleConfig: RippleGlobalOptions = {

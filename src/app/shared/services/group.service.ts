@@ -41,6 +41,13 @@ export class GroupService {
     return this.db.groups.toArray();
   }
 
+  async getGroupsWithStudents(): Promise<Group[]> {
+    const groups = await this.db.groups.toArray();
+    return groups.filter(group => {
+      return group.studentIdList && group.studentIdList.length;
+    });
+  }
+
   deleteGroup(id: string): Promise<any> {
     return this.db.groups.delete(id);
   }

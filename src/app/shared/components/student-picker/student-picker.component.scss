@@ -1,0 +1,18 @@
+.selected-student {
+  position: relative;
+  text-align: center;
+  color: #3c4958;
+  div {
+    margin: 7px 0;
+    &:last-child {
+      margin: 0;
+    }
+  }
+  button[mat-icon-button] {
+    height: auto;
+    line-height: initial;
+    &:hover {
+      color: #72849e;
+    }
+  }
+}

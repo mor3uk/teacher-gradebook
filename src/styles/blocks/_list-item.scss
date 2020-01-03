@@ -1,0 +1,22 @@
+.list-item {
+  position: relative;
+  color: var(--colorLight);
+  background-color: var(--bacgkroundLight);
+  &:hover {
+    background-color: var(--bacgkroundDark);
+    color: var(--colorHoverDark);
+  }
+  a {
+    padding: 15px 25px 15px 15px;
+    display: flex;
+    color: inherit;
+    align-items: center;
+    span {
+      margin: 3px 0 0 11px;
+    }
+  }
+  &_active {
+    background-color: var(--bacgkroundDark) !important;
+    color: var(--colorHoverDark);
+  }
+}

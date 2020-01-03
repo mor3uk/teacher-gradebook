@@ -86,4 +86,8 @@ export class StudentService {
     });
   }
 
+  getStudentsByGroupId(id: string): Promise<Group[]> {
+    return this.db.students.where('groupId').equals(id).toArray();
+  }
+
 }

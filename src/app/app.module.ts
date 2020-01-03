@@ -19,7 +19,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { AuthComponent } from './auth/auth.component';
 import { MainComponent } from './main/main.component';
 import { GroupsComponent } from './catalog/groups/groups.component';
-import { CommonLessonComponent } from './lessons/common-lesson/common-lesson.component';
+import { LessonComponent } from './lessons/lesson/lesson.component';
 import { StudentsComponent } from './catalog/students/students.component';
 import { TrancatePipe } from './shared/pipes/trancate.pipe';
 import { AgePipe } from './shared/pipes/age.pipe';
@@ -32,6 +32,21 @@ import { RelativeFormComponent } from './catalog/forms/relative-form/relative-fo
 import { PluralPipe } from './shared/pipes/plural.pipe';
 import { GroupFormComponent } from './catalog/forms/group-form/group-form.component';
 import { BitrhDatePipe } from './shared/pipes/birth-date.pipe';
+import { StudentPickerComponent } from './shared/components/student-picker/student-picker.component';
+import { AddLessonComponent } from './lessons/add-lesson/add-lesson.component';
+import {
+  OWL_DATE_TIME_LOCALE,
+  OWL_DATE_TIME_FORMATS,
+  OwlDateTimeIntl,
+  OwlDateTimeModule,
+} from 'ng-pick-datetime';
+
+import { OwlMomentDateTimeModule } from 'ng-pick-datetime/date-time/adapter/moment-adapter/moment-date-time.module';
+
+class DefaultIntl extends OwlDateTimeIntl {
+  cancelBtnLabel = 'Закрыть';
+  setBtnLabel = 'Установить';
+}
 
 @NgModule({
   declarations: [
@@ -45,7 +60,7 @@ import { BitrhDatePipe } from './shared/pipes/birth-date.pipe';
     AuthComponent,
     MainComponent,
     GroupsComponent,
-    CommonLessonComponent,
+    LessonComponent,
     StudentsComponent,
     ConfirmDialog,
     StudentFormComponent,
@@ -58,6 +73,8 @@ import { BitrhDatePipe } from './shared/pipes/birth-date.pipe';
     RelativeFormComponent,
     GroupFormComponent,
     BitrhDatePipe,
+    StudentPickerComponent,
+    AddLessonComponent,
   ],
   imports: [
     MaterialModule,
@@ -68,12 +85,15 @@ import { BitrhDatePipe } from './shared/pipes/birth-date.pipe';
     FormsModule,
     ReactiveFormsModule,
     NgxTrimDirectiveModule,
+    OwlDateTimeModule,
+    OwlMomentDateTimeModule,
   ],
   entryComponents: [
     ConfirmDialog,
     StudentFormComponent,
     RelativeFormComponent,
     GroupFormComponent,
+    AddLessonComponent,
   ],
   providers: [
     {
@@ -84,12 +104,29 @@ import { BitrhDatePipe } from './shared/pipes/birth-date.pipe';
         },
         display: {
           dateInput: 'LL',
+          monthYearLabel: 'LL',
         },
       },
     },
     {
       provide: MAT_DATE_LOCALE,
       useValue: 'ru',
+    },
+    {
+      provide: OWL_DATE_TIME_FORMATS,
+      useValue: {
+        parseInput: 'D MMMM в HH:mm',
+        fullPickerInput: 'D MMMM в HH:mm',
+        monthYearLabel: 'D MMMM в HH:mm',
+      },
+    },
+    {
+      provide: OWL_DATE_TIME_LOCALE,
+      useValue: 'ru',
+    },
+    {
+      provide: OwlDateTimeIntl,
+      useClass: DefaultIntl,
     },
   ],
   bootstrap: [AppComponent]

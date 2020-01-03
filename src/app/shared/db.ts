@@ -14,7 +14,7 @@ export class DB extends Dexie {
     this.version(1).stores({
       students: 'id,name,surname,fatherName,birthDate,groupId,[name+surname+fatherName+birthDate]',
       groups: 'id,name',
-      lessons: 'id,kind',
+      lessons: 'id,kind,startTime',
     });
   }
 }
