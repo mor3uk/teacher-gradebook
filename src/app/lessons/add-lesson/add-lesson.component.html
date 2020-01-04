@@ -89,14 +89,8 @@
   <app-student-picker
     *ngIf="lessonKind === 'personal'"
     [students]="students"
-    [pickedStudents]="lessonForm.controls.pickedStudents.value"
-    [selectedStudent]="selectedStudent"
     [studentMode]="true"
-    (studentSelected)="onSelectStudent($event)"
-    (studentUnselected)="onUnselectStudent()"
-    (allPicked)="onPickAll()"
-    (studentPicked)="onPickStudent()"
-    (studentDeleted)="onDeleteStudent($event)"
+    (pickedStudentsChanged)="onPickStudents($event)"
   ></app-student-picker>
 
   <div class="form__controls">

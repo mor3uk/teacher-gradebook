@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 import { Student } from '../../models/student.model';
+import { StudentService } from '../../services/student.service';
 
 @Component({
   selector: 'app-student-picker',
@@ -9,29 +10,25 @@ import { Student } from '../../models/student.model';
 })
 export class StudentPickerComponent implements OnInit {
   @Input() students: Student[];
-  @Input() pickedStudents: Student[];
   @Input() studentMode: boolean;
-  @Input() selectedStudent: Student;
+  @Input() pickedStudents: Student[] = [];
+  selectedStudent: Student;
 
-  @Output() studentSelected: EventEmitter<string> = new EventEmitter<string>();
-  @Output() studentUnselected: EventEmitter<void> = new EventEmitter<void>();
-  @Output() allPicked: EventEmitter<void> = new EventEmitter<void>();
-  @Output() newStudentToAdd: EventEmitter<void> = new EventEmitter<void>();
-  @Output() studentPicked: EventEmitter<void> = new EventEmitter<void>();
-  @Output() studentDeleted: EventEmitter<string> = new EventEmitter<string>();
+  @Output() newStudentToAdd = new EventEmitter<void>();
+  @Output() pickedStudentsChanged = new EventEmitter<Student[]>();
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   onSelectStudent(e: Event) {
-    this.studentSelected.emit((e.target as HTMLInputElement).value);
+    const id = (e.target as HTMLInputElement).value;
+    this.selectedStudent = this.students.find(student => student.id === id);
     (e.target as HTMLInputElement).value = '';
   }
 
   onPickAll() {
-    this.allPicked.emit();
+    this.pickedStudents = [...this.students, ...this.pickedStudents];
+    this.students = [];
+    this.pickedStudentsChanged.emit([...this.pickedStudents]);
   }
 
   onAddNewStudent() {
@@ -39,15 +36,30 @@ export class StudentPickerComponent implements OnInit {
   }
 
   onUnselectStudent() {
-    this.studentUnselected.emit();
+    this.selectedStudent = null;
   }
 
   onPickStudent() {
-    this.studentPicked.emit();
+    this.students = this.students.filter(student => {
+      if (student.id !== this.selectedStudent.id) {
+        return true;
+      }
+      this.pickedStudents.push(this.selectedStudent);
+      return false;
+    });
+    this.selectedStudent = null;
+    this.pickedStudentsChanged.emit([...this.pickedStudents]);
   }
 
   onDeleteStudent(id: string) {
-    this.studentDeleted.emit(id);
+    this.pickedStudents = this.pickedStudents.filter(student => {
+      if (student.id !== id) {
+        return true;
+      }
+      this.students.push(student);
+      return false;
+    });
+    this.pickedStudentsChanged.emit([...this.pickedStudents]);
   }
 
 }

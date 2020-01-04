@@ -23,8 +23,6 @@ export class AddLessonComponent implements OnInit {
   minTime: Moment = moment().add('1', 'hour');
 
   students: Student[] = [];
-  selectedStudent: Student;
-
 
   constructor(
     private dialogRef: MatDialogRef<AddLessonComponent>,
@@ -117,42 +115,10 @@ export class AddLessonComponent implements OnInit {
     }
   }
 
-  onDeleteStudent(id: string) {
-    const pickedStudents = this.lessonForm.controls.pickedStudents.value.filter(student => {
-      if (student.id !== id) {
-        return true;
-      }
-      this.students.push(student);
-      return false;
-    });
-
-    this.lessonForm.controls.pickedStudents.setValue(pickedStudents);
-  }
-
-  onSelectStudent(id: string) {
-    this.selectedStudent = this.students.find(student => student.id === id);
-  }
-
-  onPickStudent() {
-    this.students = this.students.filter(student => {
-      if (student.id !== this.selectedStudent.id) {
-        return true;
-      }
-      this.lessonForm.controls.pickedStudents.value.push(this.selectedStudent);
-      return false;
-    });
-    this.selectedStudent = null;
-  }
-
-  onPickAll() {
+  onPickStudents(students: Student[]) {
     this.lessonForm.controls.pickedStudents.setValue(
-      [...this.students, ...this.lessonForm.controls.pickedStudents.value]
+      students.map(student => ({ id: student.id }))
     );
-    this.students = [];
-  }
-
-  onUnselectStudent() {
-    this.selectedStudent = null;
   }
 
 }

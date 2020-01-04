@@ -3,24 +3,24 @@
     Информация о группе
   </div>
   <div class="form__input-container">
-    <input 
+    <input
       type="text"
-      placeholder="Название / № группы" 
+      placeholder="Название / № группы"
       class="form__input"
       formControlName="name"
       trim="blur"
     >
-    <span 
+    <span
       *ngIf="groupForm.controls.name.errors?.required && groupForm.controls.name.touched"
       class="error-message"
     >Укажите название / № группы
     </span>
-    <span 
+    <span
       *ngIf="groupForm.controls.name.errors?.maxlength"
       class="error-message"
     >{{ 'Максимум ' + groupForm.controls.name.errors.maxlength.requiredLength  + ' символов' }}
     </span>
-    <span 
+    <span
       *ngIf="groupForm.controls.name.errors?.groupNameTaken"
       class="error-message"
     >Название группы занято
@@ -30,14 +30,9 @@
   <app-student-picker
       [students]="students"
       [pickedStudents]="pickedStudents"
-      [selectedStudent]="selectedStudent"
       [studentMode]="data ? data.studentMode : false"
-      (studentSelected)="onSelectStudent($event)"
-      (studentUnselected)="onUnselectStudent()"
-      (allPicked)="onPickAll()"
       (newStudentToAdd)="onAddNewStudent()"
-      (studentPicked)="onPickStudent()"
-      (studentDeleted)="onDeleteStudent($event)"
+      (pickedStudentsChanged)="onPickStudents($event)"
   ></app-student-picker>
 
   <div class="form__controls">

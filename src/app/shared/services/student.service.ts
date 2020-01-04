@@ -8,7 +8,7 @@ import { Group } from '../models/group.model';
 import { DB } from '../db';
 
 @Injectable({
-  'providedIn': 'root'
+  providedIn: 'root'
 })
 export class StudentService {
   private db: DB;

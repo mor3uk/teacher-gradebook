@@ -18,5 +18,11 @@
   &_active {
     background-color: var(--bacgkroundDark) !important;
     color: var(--colorHoverDark);
+    &-dark {
+      background-color: rgba(0, 0, 0, 0.04);
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+    }
   }
 }

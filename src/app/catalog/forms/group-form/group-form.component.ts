@@ -16,10 +16,8 @@ import { groupNameTakedValidator } from './group-form.validator';
 })
 export class GroupFormComponent implements OnInit {
   groupForm: FormGroup;
-
   students: Student[] = [];
   pickedStudents: Student[] = [];
-  selectedStudent: Student = null;
   editMode = false;
 
   constructor(
@@ -70,42 +68,12 @@ export class GroupFormComponent implements OnInit {
     this.dialogRef.close(group);
   }
 
-  onDeleteStudent(id: string) {
-    this.pickedStudents = this.pickedStudents.filter(student => {
-      if (student.id !== id) {
-        return true;
-      }
-      this.students.push(student);
-      return false;
-    });
-  }
-
-  onSelectStudent(id: string) {
-    this.selectedStudent = this.students.find(student => student.id === id);
-  }
-
-  onPickStudent() {
-    this.students = this.students.filter(student => {
-      if (student.id !== this.selectedStudent.id) {
-        return true;
-      }
-      this.pickedStudents.push(this.selectedStudent);
-      return false;
-    });
-    this.selectedStudent = null;
-  }
-
-  onPickAll() {
-    this.pickedStudents = [...this.students, ...this.pickedStudents];
-    this.students = [];
+  onPickStudents(students: Student[]) {
+    this.pickedStudents = students;
   }
 
   onCancel() {
     this.dialogRef.close();
-  }
-
-  onUnselectStudent() {
-    this.selectedStudent = null;
   }
 
   onAddNewStudent() {

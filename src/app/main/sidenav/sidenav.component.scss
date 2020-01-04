@@ -1,0 +1,13 @@
+mat-nav-list {
+  padding: 0;
+  ul li a {
+    color: gray;
+  }
+}
+
+a {
+  background-color: inherit !important;
+  &:hover {
+    background-color: inherit !important;
+  }
+}
