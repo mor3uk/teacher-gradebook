@@ -14,7 +14,7 @@ import { GroupFormComponent } from '../forms/group-form/group-form.component';
   styleUrls: ['./groups.component.scss']
 })
 export class GroupsComponent implements OnInit {
-  pending: boolean = false;
+  pending = false;
   groups: Group[] = [];
 
   constructor(
@@ -24,17 +24,15 @@ export class GroupsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.pending = true;
-    this.groups = await this.gs.getGroups();
-    this.pending = false;
+    this.getGroupsWithPending();
   }
 
   onAddGroup() {
     this.openDialog('add').subscribe(async group => {
       if (group) {
-        this.ss.setStudentsGroup(group);
+        await this.ss.setStudentsGroup(group);
         await this.gs.addGroup(group);
-        this.groups = await this.gs.getGroups();
+        this.getGroupsWithPending();
       }
     });
   }
@@ -42,9 +40,9 @@ export class GroupsComponent implements OnInit {
   onEditGroup(group: Group) {
     this.openDialog('edit', group).subscribe(async group => {
       if (group) {
-        this.ss.setStudentsGroup(group);
+        await this.ss.setStudentsGroup(group);
         await this.gs.updateGroup(group);
-        this.groups = await this.gs.getGroups();
+        this.getGroupsWithPending();
       }
     });
   }
@@ -53,9 +51,9 @@ export class GroupsComponent implements OnInit {
     this.openDialog('delete').subscribe(async res => {
       if (res) {
         const group = await this.gs.getGroup(id);
-        this.ss.unsetStudentsGroup(group.studentIdList);
+        await this.ss.unsetStudentsGroup(group.studentIdList);
         await this.gs.deleteGroup(id);
-        this.groups = await this.gs.getGroups();
+        this.getGroupsWithPending();
       }
     });
   }
@@ -75,4 +73,9 @@ export class GroupsComponent implements OnInit {
     }
   }
 
+  async getGroupsWithPending() {
+    this.pending = true;
+    this.groups = await this.gs.getGroups();
+    this.pending = false;
+  }
 }

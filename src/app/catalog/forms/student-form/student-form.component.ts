@@ -13,7 +13,7 @@ import { Student } from '../../../shared/models/student.model';
 import { Relative, RelativeKind } from '../../../shared/models/relative.model';
 import { RelativeFormComponent } from '../relative-form/relative-form.component';
 import { GroupFormComponent } from '../group-form/group-form.component';
-import { existsValidator, parentsValidator, groupExistsValidator } from './student-form.validators';
+import { studentExists, parentRequired, groupExists } from './student-form.validators';
 
 @Component({
   selector: 'app-student-form',
@@ -24,6 +24,7 @@ export class StudentFormComponent implements OnInit {
   maxDate: Moment = moment().subtract(6, 'years').add(1, 'day');
   submissionTriggered = false;
   editMode = false;
+  pending = false;
 
   studentForm: FormGroup;
   student: Student;
@@ -41,12 +42,16 @@ export class StudentFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.pending = true;
     if (this.data && this.data.student) {
       this.editMode = true;
       this.relatives = this.data.student.relatives;
     }
 
-    this.gs.getGroups().then((groups) => (this.groups = groups));
+    this.gs.getGroups().then(groups => {
+      this.groups = groups;
+      this.pending = false;
+    });
 
     this.setLeftRelatives();
 
@@ -65,16 +70,16 @@ export class StudentFormComponent implements OnInit {
       ),
       groupId: new FormControl(
         this.editMode ? this.data.student.groupId : null,
-        [],
-        [groupExistsValidator.bind(this)],
+        [], [groupExists(this.gs)],
       ),
       birthDate: new FormControl(
         this.editMode ? moment(this.data.student.birthDate) : null,
         [Validators.required]
       ),
     }, {
-      validators: [parentsValidator.bind(this)],
-      asyncValidators: [existsValidator.bind(this)]
+      validators: [parentRequired.bind(this)],
+      asyncValidators: [studentExists(this.data && this.data.student, this.editMode, this.ss)],
+      updateOn: 'submit',
     });
   }
 
@@ -87,7 +92,7 @@ export class StudentFormComponent implements OnInit {
     this.submissionTriggered = true;
     this.studentForm.markAllAsTouched();
 
-    if (this.studentForm.valid) {
+    if (this.studentForm.valid && !this.pending) {
       this.student = {
         ...this.studentForm.value,
         birthDate: +this.studentForm.value.birthDate,
@@ -149,12 +154,12 @@ export class StudentFormComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe((relativeToUpdate) => {
+    dialogRef.afterClosed().subscribe(relativeToUpdate => {
       if (!relativeToUpdate) {
         return;
       }
 
-      this.relatives = this.relatives.map((relative) => {
+      this.relatives = this.relatives.map(relative => {
         return relativeToUpdate.id === relative.id
           ? relativeToUpdate
           : relative;

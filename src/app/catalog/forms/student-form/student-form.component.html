@@ -2,144 +2,150 @@
   <div class="form__label">
     Информация об ученике
   </div>
-  <button 
+  <button
     *ngIf="data ? !data.groupMode : true"
-    type="button" 
+    type="button"
     class="btn btn_success student-form__add-group"
     (click)="onCreateGroup()"
   >Создать группу</button>
-  <div class="form__container">
-    <div class="form__input-container">
-      <input 
-        class="form__input" 
-        type="text" 
-        placeholder="Фамилия"
-        formControlName="surname"
-        trim
-      >
-      <div
-        *ngIf="studentForm.controls.surname.errors?.required && studentForm.controls.surname.touched" 
-        class="error-message"
-      >Укажите фамилию</div>
-      <div
-        *ngIf="studentForm.controls.surname.errors?.maxlength" 
-        class="error-message"
-      >Максимум {{ studentForm.controls.surname.errors.maxlength.requiredLength }} символов</div>
-    </div>
-    <div class="form__input-container">
-      <input 
-        class="form__input" 
-        type="text" 
-        placeholder="Имя"
-        formControlName="name"
-        trim
-      >
-      <div
-        *ngIf="studentForm.controls.name.errors?.required && studentForm.controls.name.touched" 
-        class="error-message"
-      >Укажите имя</div>
-      <div
-        *ngIf="studentForm.controls.name.errors?.maxlength" 
-        class="error-message"
-      >Максимум {{ studentForm.controls.name.errors.maxlength.requiredLength }} символов</div>
-    </div>
-    <div class="form__input-container">
-      <input 
-        class="form__input" 
-        type="text" 
-        placeholder="Отчество (если есть)"
-        formControlName="fatherName"
-        trim
-      >
-      <div
-        *ngIf="studentForm.controls.fatherName.errors?.maxlength" 
-        class="error-message"
-      >Максимум {{ studentForm.controls.fatherName.errors.maxlength.requiredLength }} символов</div>
-    </div>
-    <div class="form__input-container">
-      <select 
-        formControlName="groupId" 
-        class="form__input" 
-        type="text" 
-      >
-        <option [value]="null" disabled [selected]="!editMode">Название / № группы</option>
-        <option [value]="null">Нет группы</option>
-        <option *ngFor="let group of groups" value="{{ group.id }}">{{ group.name }}</option>
-      </select>
-      <div
-        *ngIf="studentForm.controls.groupId.touched &&
-          studentForm.controls.groupId.errors?.groupDoesNotExist" 
-        class="error-message"
-      >Выберите группу из списка</div>
-    </div>
-    <div class="form__input-container">
-      <input 
-        matInput 
-        class="form__input" 
-        [matDatepicker]="studentPicker" 
-        placeholder="Дата рождения"
-        [max]="maxDate"
-        formControlName="birthDate"
-      >
-      <div
-        *ngIf="studentForm.controls.birthDate.errors?.required 
-          && studentForm.controls.birthDate.touched
-          && !studentForm.controls.birthDate.errors?.matDatepickerParse" 
-        class="error-message"
-      >Укажите дату рождения</div>
-      <div
-        *ngIf="studentForm.controls.birthDate.errors?.matDatepickerParse" 
-        class="error-message"
-      >Укажите корректную дату</div>
-      <div
-        *ngIf="studentForm.controls.birthDate.errors?.matDatepickerMax" 
-        class="error-message"
-      >Учащемуся должно быть не менее 6 лет</div>
-      <mat-datepicker-toggle matSuffix [for]="studentPicker"></mat-datepicker-toggle>
-      <mat-datepicker #studentPicker></mat-datepicker>
-    </div>
-  </div>
-  <div class="student-form__relatives">
-    <div *ngIf="relatives.length !== 0" class="form__label">
-      Родственники ученика
-    </div>
-    <div class="form__no-items" *ngIf="relatives.length === 0">
-      <mat-icon>warning</mat-icon> 
-      <span>Нет указанных родственников</span>
-    </div>
-    <div class="form__list">
-      <div *ngFor="let relative of relatives" class="form__list-item">
-        {{ relative.kind | titlecase }}:
-        {{ relative.surname | fullname:relative.name:relative.fatherName }}
-        <span>
-          <button (click)="onEditRelative(relative.id)" type="button" mat-icon-button>
-              <mat-icon>edit</mat-icon>
-          </button>
-          <button (click)="onDeleteRelative(relative.id)" type="button" mat-icon-button>
-            <mat-icon>remove_circle_outline</mat-icon>
-          </button>
-        </span>
+  <ng-container *ngIf="!pending">
+
+    <div class="form__container">
+      <div class="form__input-container">
+        <input
+          class="form__input"
+          type="text"
+          placeholder="Фамилия"
+          formControlName="surname"
+          trim
+        >
+        <div
+          *ngIf="studentForm.controls.surname.errors?.required && studentForm.controls.surname.touched"
+          class="error-message"
+        >Укажите фамилию</div>
+        <div
+          *ngIf="studentForm.controls.surname.errors?.maxlength"
+          class="error-message"
+        >Максимум {{ studentForm.controls.surname.errors.maxlength.requiredLength }} символов</div>
+      </div>
+      <div class="form__input-container">
+        <input
+          class="form__input"
+          type="text"
+          placeholder="Имя"
+          formControlName="name"
+          trim
+        >
+        <div
+          *ngIf="studentForm.controls.name.errors?.required && studentForm.controls.name.touched"
+          class="error-message"
+        >Укажите имя</div>
+        <div
+          *ngIf="studentForm.controls.name.errors?.maxlength"
+          class="error-message"
+        >Максимум {{ studentForm.controls.name.errors.maxlength.requiredLength }} символов</div>
+      </div>
+      <div class="form__input-container">
+        <input
+          class="form__input"
+          type="text"
+          placeholder="Отчество (если есть)"
+          formControlName="fatherName"
+          trim
+        >
+        <div
+          *ngIf="studentForm.controls.fatherName.errors?.maxlength"
+          class="error-message"
+        >Максимум {{ studentForm.controls.fatherName.errors.maxlength.requiredLength }} символов</div>
+      </div>
+      <div class="form__input-container">
+        <select
+          formControlName="groupId"
+          class="form__input"
+          type="text"
+        >
+          <option [value]="null" disabled [selected]="!editMode">Название / № группы</option>
+          <option [value]="null">Нет группы</option>
+          <option *ngFor="let group of groups" value="{{ group.id }}">{{ group.name }}</option>
+        </select>
+        <div
+          *ngIf="studentForm.controls.groupId.touched &&
+            studentForm.controls.groupId.errors?.groupDoesNotExist"
+          class="error-message"
+        >Выберите группу из списка</div>
+      </div>
+      <div class="form__input-container">
+        <input
+          matInput
+          class="form__input"
+          [matDatepicker]="studentPicker"
+          placeholder="Дата рождения"
+          [max]="maxDate"
+          formControlName="birthDate"
+        >
+        <div
+          *ngIf="studentForm.controls.birthDate.errors?.required
+            && studentForm.controls.birthDate.touched
+            && !studentForm.controls.birthDate.errors?.matDatepickerParse"
+          class="error-message"
+        >Укажите дату рождения</div>
+        <div
+          *ngIf="studentForm.controls.birthDate.errors?.matDatepickerParse"
+          class="error-message"
+        >Укажите корректную дату</div>
+        <div
+          *ngIf="studentForm.controls.birthDate.errors?.matDatepickerMax"
+          class="error-message"
+        >Учащемуся должно быть не менее 6 лет</div>
+        <mat-datepicker-toggle matSuffix [for]="studentPicker"></mat-datepicker-toggle>
+        <mat-datepicker #studentPicker></mat-datepicker>
       </div>
     </div>
-    <div *ngIf="studentForm.errors?.parentRequired && submissionTriggered" class="error-message">
-      Укажите хотя бы 1 родителя
+    <div class="student-form__relatives">
+      <div *ngIf="relatives.length !== 0" class="form__label">
+        Родственники ученика
+      </div>
+      <div class="form__no-items" *ngIf="relatives.length === 0">
+        <mat-icon>warning</mat-icon>
+        <span>Нет указанных родственников</span>
+      </div>
+      <div class="form__list">
+        <div *ngFor="let relative of relatives" class="form__list-item">
+          {{ relative.kind | titlecase }}:
+          {{ relative.surname | fullname:relative.name:relative.fatherName }}
+          <span>
+            <button (click)="onEditRelative(relative.id)" type="button" mat-icon-button>
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button (click)="onDeleteRelative(relative.id)" type="button" mat-icon-button>
+              <mat-icon>remove_circle_outline</mat-icon>
+            </button>
+          </span>
+        </div>
+      </div>
+      <div *ngIf="studentForm.errors?.parentRequired && submissionTriggered" class="error-message">
+        Укажите хотя бы 1 родителя
+      </div>
+      <div *ngIf="studentForm.errors?.studentExists" class="error-message">
+        Данный студент уже в базе
+      </div>
+      <button
+        *ngIf="leftRelatives.length !== 0"
+        type="button"
+        class="btn btn_primary form__btn"
+        (click)="onAddRelative()"
+      >Добавить родственника</button>
     </div>
-    <div *ngIf="studentForm.errors?.studentExists" class="error-message">
-      Данный студент уже в базе
-    </div>
-    <button 
-      *ngIf="leftRelatives.length !== 0"
-      type="button" 
-      class="btn btn_primary form__btn"
-      (click)="onAddRelative()"
-    >Добавить родственника</button>
+  </ng-container>
+  <div *ngIf="pending" class="spinner">
+    <mat-spinner diameter="45"></mat-spinner>
   </div>
   <div class="form__controls">
     <button *ngIf="!editMode" class="btn btn_success form__btn">Добавить</button>
     <button *ngIf="editMode" class="btn btn_primary form__btn">Сохранить</button>
-    <button 
-      (click)="onCancel()" 
-      type="button" 
+    <button
+      (click)="onCancel()"
+      type="button"
       class="btn btn_danger form__btn"
     >Отменить</button>
   </div>

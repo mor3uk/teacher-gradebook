@@ -25,7 +25,7 @@ export class GroupPipe implements PipeTransform {
         resolve((name + '').substr(0, 11) + '...');
       }
 
-      resolve((<string>name).substr(0, 12));
+      resolve((name as string).substr(0, 12));
     });
 
   }

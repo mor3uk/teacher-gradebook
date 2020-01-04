@@ -15,7 +15,7 @@ import { GroupService } from '../../shared/services/group.service';
 })
 export class StudentsComponent implements OnInit {
   students: Student[] = [];
-  pending: boolean = false;
+  pending = false;
 
   constructor(
     private ss: StudentService,
@@ -24,26 +24,24 @@ export class StudentsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.pending = true;
-    this.students = await this.ss.getStudents();
-    this.pending = false;
+    this.getStudentsWithPending();
   }
 
   onAddStudent() {
     this.openDialog('add').subscribe(async (student) => {
       if (student) {
-        await this.ss.addStudent(<Student>student);
-        this.students = await this.ss.getStudents();
+        await this.ss.addStudent(student as Student);
+        this.getStudentsWithPending();
       }
     });
   }
 
   async onEditStudent(id: string) {
     const student = await this.ss.getStudent(id);
-    this.openDialog('edit', student).subscribe(async (student) => {
+    this.openDialog('edit', student).subscribe(async student => {
       if (student) {
         await this.ss.updateStudent(student);
-        this.students = await this.ss.getStudents();
+        this.getStudentsWithPending();
       }
     });
   }
@@ -52,7 +50,7 @@ export class StudentsComponent implements OnInit {
     this.openDialog('delete').subscribe(async (res) => {
       if (res) {
         await this.ss.deleteStudent(id);
-        this.students = await this.ss.getStudents();
+        this.getStudentsWithPending();
       }
     });
   }
@@ -71,6 +69,12 @@ export class StudentsComponent implements OnInit {
         })
           .afterClosed();
     }
+  }
+
+  async getStudentsWithPending() {
+    this.pending = true;
+    this.students = await this.ss.getStudents();
+    this.pending = false;
   }
 
 }

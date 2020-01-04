@@ -1,17 +1,21 @@
 import { FormControl, ValidationErrors } from '@angular/forms';
 
-export function groupNameTakedValidator({ value }: FormControl): Promise<ValidationErrors> {
-  return new Promise(async resolve => {
-    const existingGroup = await this.gs.getGroupByName(value);
+import { GroupService } from '../../../shared/services/group.service';
 
-    if (this.editMode && this.data.group.name === value) {
-      resolve(null);
-    }
+export const groupNameTaken = (gs: GroupService, editMode: boolean, name: string) => {
+  return ({ value }: FormControl): Promise<ValidationErrors> => {
+    return new Promise(async resolve => {
+      const existingGroup = await gs.getGroupByName(value);
 
-    if (!existingGroup) {
-      resolve(null);
-    }
+      if (editMode && name === value) {
+        resolve(null);
+      }
 
-    resolve({ groupNameTaken: true });
-  });
-}
+      if (!existingGroup) {
+        resolve(null);
+      }
+
+      resolve({ groupNameTaken: true });
+    });
+  };
+};

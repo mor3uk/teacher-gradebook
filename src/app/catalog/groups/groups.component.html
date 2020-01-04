@@ -9,7 +9,7 @@
         <th colspan="2" fxHide.lt-sm>Править / удалить</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="!pending">
       <ng-container *ngFor="let group of groups">
         <tr>
           <td>{{ group.name }}</td>

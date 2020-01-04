@@ -7,7 +7,7 @@ import { StudentService } from '../../../shared/services/student.service';
 import { Group } from '../../../shared/models/group.model';
 import { StudentFormComponent } from '../student-form/student-form.component';
 import { GroupService } from '../../../shared/services/group.service';
-import { groupNameTakedValidator } from './group-form.validator';
+import { groupNameTaken } from './group-form.validator';
 
 @Component({
   selector: 'app-group-form',
@@ -15,6 +15,7 @@ import { groupNameTakedValidator } from './group-form.validator';
   styleUrls: ['./group-form.component.scss']
 })
 export class GroupFormComponent implements OnInit {
+  pending = false;
   groupForm: FormGroup;
   students: Student[] = [];
   pickedStudents: Student[] = [];
@@ -29,29 +30,30 @@ export class GroupFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.pending = true;
     if (this.data && this.data.group) {
       this.editMode = true;
-      this.ss.getStudents().then(students => {
-        this.pickedStudents = students.filter(student => student.groupId === this.data.group.id);
-      });
+      this.ss.getStudentsByGroupId(this.data.group.id)
+        .then(students => (this.pickedStudents = students));
     }
 
     this.ss.getStudents().then(students => {
       this.students = students.filter(student => !student.groupId);
+      this.pending = false;
     });
 
     this.groupForm = new FormGroup({
       name: new FormControl(
         this.editMode ? this.data.group.name : null,
         [Validators.required, Validators.maxLength(30)],
-        [groupNameTakedValidator.bind(this)],
-      )
+        [groupNameTaken(this.gs, this.editMode, this.data && this.data.group.name)],
+      ),
     });
   }
 
   onSubmit() {
     this.groupForm.markAllAsTouched();
-    if (this.groupForm.invalid) {
+    if (this.groupForm.invalid && !this.pending) {
       return;
     }
 

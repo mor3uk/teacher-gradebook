@@ -28,12 +28,17 @@
   </div>
 
   <app-student-picker
-      [students]="students"
-      [pickedStudents]="pickedStudents"
-      [studentMode]="data ? data.studentMode : false"
-      (newStudentToAdd)="onAddNewStudent()"
-      (pickedStudentsChanged)="onPickStudents($event)"
+    *ngIf="!pending"
+    [students]="students"
+    [pickedStudents]="pickedStudents"
+    [studentMode]="data ? data.studentMode : false"
+    (newStudentToAdd)="onAddNewStudent()"
+    (pickedStudentsChanged)="onPickStudents($event)"
   ></app-student-picker>
+
+  <div *ngIf="pending" class="spinner">
+    <mat-spinner diameter="45"></mat-spinner>
+  </div>
 
   <div class="form__controls">
     <button *ngIf="!editMode" class="btn btn_success form__btn">Добавить</button>

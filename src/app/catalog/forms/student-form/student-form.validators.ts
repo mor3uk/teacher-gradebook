@@ -1,8 +1,10 @@
-import { ValidationErrors, FormGroup, FormControl } from '@angular/forms';
+import { ValidationErrors, AbstractControl } from '@angular/forms';
 
 import { RelativeKind } from '../../../shared/models/relative.model';
+import { GroupService } from '../../../shared/services/group.service';
+import { StudentService } from '../../../shared/services/student.service';
 
-export function parentsValidator(): ValidationErrors {
+export function parentRequired(): ValidationErrors {
   const parentsMatch = this.relatives.find((relative) => {
     return relative.kind === RelativeKind.MOTHER
       || relative.kind === RelativeKind.FATHER;
@@ -11,43 +13,47 @@ export function parentsValidator(): ValidationErrors {
   return parentsMatch ? null : { parentRequired: true };
 }
 
-export function existsValidator({ value }: FormGroup): Promise<ValidationErrors> {
-  return new Promise(async resolve => {
-    const editStudentMatch = this.editMode
-      && this.data.student.name === value.name
-      && this.data.student.surname === value.surname
-      && this.data.student.fatherName === value.fatherName
-      && this.data.student.birthDate === +value.birthDate;
+export const studentExists = (student: any, editMode: boolean, ss: StudentService) => {
+  return ({ value }: AbstractControl): Promise<ValidationErrors> => {
+    return new Promise(async resolve => {
+      const editStudentMatch = editMode
+        && student.name === value.name
+        && student.surname === value.surname
+        && student.fatherName === value.fatherName
+        && student.birthDate === +value.birthDate;
 
-    if (editStudentMatch) {
+      if (editStudentMatch) {
+        resolve(null);
+      }
+
+      const existingStudent = await ss.findExistingStudent({
+        ...value,
+        birthDate: +value.birthDate,
+        fatherName: value.fatherName || '',
+      });
+
+      if (existingStudent) {
+        resolve({ studentExists: true });
+      }
+
       resolve(null);
-    }
-
-    const student = await this.ss.findExistingStudent({
-      ...value,
-      birthDate: +value.birthDate,
-      fatherName: value.fatherName || '',
     });
+  };
+};
 
-    if (student) {
-      resolve({ studentExists: true });
-    }
+export const groupExists = (gs: GroupService) => {
+  return ({ value }: AbstractControl): Promise<ValidationErrors> => {
+    return new Promise(async resolve => {
+      if (!value || value === 'null') {
+        return resolve(null);
+      }
+      const group = await gs.getGroup(value);
 
-    resolve(null);
-  });
-}
+      if (group) {
+        resolve(null);
+      }
 
-export function groupExistsValidator({ value }: FormControl): Promise<ValidationErrors> {
-  return new Promise(async resolve => {
-    if (!value || value === 'null') {
-      return resolve(null);
-    }
-    const group = await this.gs.getGroup(value);
-
-    if (group) {
-      resolve(null);
-    }
-
-    resolve({ groupDoesNotExist: true });
-  });
-}
+      resolve({ groupDoesNotExist: true });
+    });
+  };
+};
