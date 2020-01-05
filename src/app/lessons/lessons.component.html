@@ -1,9 +1,19 @@
 <h2 class="title">Расписание</h2>
 <section class="section lessons">
-  <div class="lessons__list">
-    <app-lesson class="lessons__item"></app-lesson>
-    <app-lesson class="lessons__item"></app-lesson>
+  <div class="lessons__list" *ngIf="lessons.length !== 0">
+    <app-lesson
+      class="lessons__item"
+      *ngFor="let lesson of lessons"
+      [lesson]="lesson"
+    ></app-lesson>
+
     <div (click)="onAddLesson()" class="lessons__item">
+      <mat-icon>add_circle_outline</mat-icon>
+    </div>
+  </div>
+  <div class="no-lessons" *ngIf="lessons.length === 0">
+    <div (click)="onAddLesson()" class="lessons__item">
+      <span>Занятий нет</span>
       <mat-icon>add_circle_outline</mat-icon>
     </div>
   </div>

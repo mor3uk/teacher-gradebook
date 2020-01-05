@@ -2,31 +2,26 @@ import { NgModule } from '@angular/core';
 import {
   MatIconModule,
   MatButtonModule,
-  MatSidenavModule,
-  MatListModule,
   RippleGlobalOptions,
   MAT_RIPPLE_GLOBAL_OPTIONS,
-  MatDialogModule,
   MatDatepickerModule,
-  MatInputModule,
   MatProgressSpinnerModule,
   MatRadioModule,
+  MatDialogModule,
 } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 const materialModules = [
   MatIconModule,
   MatButtonModule,
-  MatSidenavModule,
-  MatListModule,
-  MatDialogModule,
   MatDatepickerModule,
   MomentDateModule,
-  MatInputModule,
   MatProgressSpinnerModule,
   MatRadioModule,
-
+  MatDialogModule,
+  BrowserAnimationsModule,
 ];
 
 const globalRippleConfig: RippleGlobalOptions = {

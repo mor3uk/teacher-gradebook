@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 import { Group } from '../../shared/models/group.model';
 import { GroupService } from '../../shared/services/group.service';
 import { StudentService } from '../../shared/services/student.service';
-import { ConfirmDialog } from '../../shared/modals/confirm.component';
-import { GroupFormComponent } from '../forms/group-form/group-form.component';
+import { ConfirmDialog } from '../../shared/components/confirm/confirm.component';
+import { GroupFormComponent } from './group-form/group-form.component';
 
 @Component({
   selector: 'app-groups',

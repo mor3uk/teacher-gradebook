@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Student } from '../../../shared/models/student.model';
 import { StudentService } from '../../../shared/services/student.service';
 import { Group } from '../../../shared/models/group.model';
-import { StudentFormComponent } from '../student-form/student-form.component';
+import { StudentFormComponent } from '../../students/student-form/student-form.component';
 import { GroupService } from '../../../shared/services/group.service';
 import { groupNameTaken } from './group-form.validator';
 
@@ -46,7 +46,7 @@ export class GroupFormComponent implements OnInit {
       name: new FormControl(
         this.editMode ? this.data.group.name : null,
         [Validators.required, Validators.maxLength(30)],
-        [groupNameTaken(this.gs, this.editMode, this.data && this.data.group.name)],
+        [groupNameTaken(this.gs, this.editMode, this.editMode && this.data.group.name)],
       ),
     });
   }

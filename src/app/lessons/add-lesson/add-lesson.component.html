@@ -29,7 +29,19 @@
     </button>
   </div>
 
-  <div class="form__container lesson-form__numbers">
+  <div *ngIf="lessonKind === 'common'" class="form__input-container">
+    <input
+      type="number"
+      class="form__input"
+      placeholder="45"
+      formControlName="durationMinutes"
+    >
+    <div class="hint-message">
+      Длительность в минутах
+    </div>
+  </div>
+
+  <div *ngIf="lessonKind === 'personal'" class="form__container lesson-form__numbers">
     <div class="form__input-container lesson-form__number">
       <input
         type="number"
@@ -42,7 +54,7 @@
       </div>
     </div>
 
-    <div class="form__input-container lesson-form__number" *ngIf="lessonKind === 'personal'">
+    <div class="form__input-container lesson-form__number">
       <input
         type="number"
         class="form__input"

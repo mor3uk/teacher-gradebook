@@ -1,26 +1,40 @@
 <div class="lesson">
   <div class="lesson__head">
-    <div class="lesson__start">12:00</div>
-    <div class="lesson__duration">45 минут</div>
-  </div>
-  <div class="lesson__group">
-    <mat-icon>group</mat-icon>
-    <span>Группа №45</span>
-  </div>
-  <!-- <div class="lesson__single">
-    <mat-icon>person</mat-icon>
-    <span>Шурыгин Д.О.</span>
-  </div> -->
-  <!-- <div class="lesson__personal">
-    <div class="lesson__student-number">5 ученика</div>
-    <div class="lesson__list">
-      <div class="lesson__student">Шурыгин Д.О.</div>
-      <div class="lesson__student">Шурыгин Д.О.</div>
-      <div class="lesson__student">Шурыгин Д.О.</div>
-      <div class="lesson__student">Шурыгин Д.О.</div>
-      <div class="lesson__student">Шурыгин Д.О.</div>
-      <div class="lesson__student"></div>
+    <div class="lesson__start">{{ lesson.startTime | time }}</div>
+    <div class="lesson__duration">
+      {{ lesson.durationMinutes }}
+      {{ 'минут' | plural:lesson.durationMinutes:['а', 'а', ''] }}
     </div>
-  </div> -->
-  
+  </div>
+  <div *ngIf="lesson.kind === 'common'" class="lesson__group">
+    <mat-icon>group</mat-icon>
+    <span>{{ groupId | group | async }}</span>
+  </div>
+
+  <div
+    *ngIf="lesson.kind === 'personal' && lesson.studentsInfo.length === 1"
+    class="lesson__single">
+    <mat-icon>person</mat-icon>
+    <span>
+      {{ students.length === 0 ? 'Загрузка...' : students[0].surname
+        | fullname:students[0].name:students[0].fatherName }}
+    </span>
+  </div>
+
+  <div
+    *ngIf="lesson.kind === 'personal' && lesson.studentsInfo.length > 1"
+    class="lesson__personal">
+    <div class="lesson__student-number">
+      {{ lesson.studentsInfo.length }}
+      {{ 'учащи' | plural:lesson.studentsInfo.length:['йся', 'хся', 'хся'] }}
+    </div>
+    <div class="lesson__list">
+      <div
+        *ngFor="let j of [1, 2, 3, 4, 5, 6]; let i = index;"
+        class="lesson__student"
+        >{{ students[i] ? (students[i].surname | fullname:students[i].name:students[i].fatherName) : '-' }}
+      </div>
+    </div>
+  </div>
+
 </div>

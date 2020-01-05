@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 import { AddLessonComponent } from './add-lesson/add-lesson.component';
+import { LessonService } from '../shared/services/lesson.service';
+import { Lesson } from '../shared/models/lesson.model';
 
 @Component({
   selector: 'app-lessons',
@@ -9,17 +11,26 @@ import { AddLessonComponent } from './add-lesson/add-lesson.component';
   styleUrls: ['./lessons.component.scss']
 })
 export class LessonsComponent implements OnInit {
+  lessons: Lesson[] = [];
 
-  constructor(private dialog: MatDialog) { }
+  constructor(
+    private dialog: MatDialog,
+    private ls: LessonService,
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.lessons = await this.ls.getTodayLessons();
   }
 
   onAddLesson() {
     this.dialog.open(AddLessonComponent, { panelClass: 'overlay-narrow' })
       .afterClosed()
-      .subscribe(lesson => {
-        console.log(lesson);
+      .subscribe(async lesson => {
+        if (lesson) {
+          console.log(lesson);
+          await this.ls.addLesson(lesson);
+          this.lessons = await this.ls.getTodayLessons();
+        }
       });
   }
 

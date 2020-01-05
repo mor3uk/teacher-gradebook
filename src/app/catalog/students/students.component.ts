@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 
 import { Student } from '../../shared/models/student.model';
 import { StudentService } from '../../shared/services/student.service';
-import { ConfirmDialog } from '../../shared/modals/confirm.component';
-import { StudentFormComponent } from '../forms/student-form/student-form.component';
+import { ConfirmDialog } from '../../shared/components/confirm/confirm.component';
+import { StudentFormComponent } from './student-form/student-form.component';
 import { GroupService } from '../../shared/services/group.service';
 
 @Component({

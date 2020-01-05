@@ -5,7 +5,7 @@ import { DB } from '../db';
 import { Lesson } from '../models/lesson.model';
 
 @Injectable({
-  'providedIn': 'root'
+  providedIn: 'root'
 })
 export class LessonService {
   private db: DB;
@@ -24,6 +24,10 @@ export class LessonService {
   }
 
   getLessons(): Promise<Lesson[]> {
+    return this.db.lessons.toArray();
+  }
+
+  getTodayLessons(): Promise<Lesson[]> {
     return this.db.lessons.toArray();
   }
 

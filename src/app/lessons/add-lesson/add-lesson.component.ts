@@ -55,7 +55,6 @@ export class AddLessonComponent implements OnInit {
 
   onSubmit(e: Event) {
     e.preventDefault();
-    console.log(this.lessonForm);
     if (this.lessonForm.invalid) {
       this.lessonForm.markAllAsTouched();
       return;
@@ -70,7 +69,7 @@ export class AddLessonComponent implements OnInit {
       lesson = this.createPersonalLesson();
     }
 
-    console.log(lesson);
+    this.dialogRef.close({ ...lesson });
   }
 
   createPersonalLesson(): PersonalLesson {

@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { PersonalLesson, CommonLesson } from '../../shared/models/lesson.model';
+import { StudentService } from '../../shared/services/student.service';
+import { Student } from '../../shared/models/student.model';
 
 @Component({
   selector: 'app-lesson',
@@ -6,10 +10,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lesson.component.scss']
 })
 export class LessonComponent implements OnInit {
+  @Input() lesson: CommonLesson | PersonalLesson;
+  students: Student[] = [];
+  groupId: string;
 
-  constructor() { }
+  constructor(private ss: StudentService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    if (this.lesson.kind === 'common') {
+      this.groupId = (this.lesson as CommonLesson).groupId;
+    }
+    if (this.lesson.kind === 'personal') {
+      this.students = await this.ss.getStudents();
+    }
+  }
+
+  getStudentName(id: string) {
   }
 
 }

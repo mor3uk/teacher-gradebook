@@ -12,7 +12,7 @@ import { Group } from '../../../shared/models/group.model';
 import { Student } from '../../../shared/models/student.model';
 import { Relative, RelativeKind } from '../../../shared/models/relative.model';
 import { RelativeFormComponent } from '../relative-form/relative-form.component';
-import { GroupFormComponent } from '../group-form/group-form.component';
+import { GroupFormComponent } from '../../groups/group-form/group-form.component';
 import { studentExists, parentRequired, groupExists } from './student-form.validators';
 
 @Component({
