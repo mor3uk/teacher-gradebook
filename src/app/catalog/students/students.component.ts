@@ -23,8 +23,12 @@ export class StudentsComponent implements OnInit {
     private dialog: MatDialog,
   ) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.getStudentsWithPending();
+    this.ss.studentsChanged.subscribe(students => {
+      this.students = students;
+      this.pending = false;
+    });
   }
 
   onAddStudent() {
@@ -71,10 +75,9 @@ export class StudentsComponent implements OnInit {
     }
   }
 
-  async getStudentsWithPending() {
+  getStudentsWithPending() {
     this.pending = true;
-    this.students = await this.ss.getStudents();
-    this.pending = false;
+    this.ss.getStudents();
   }
 
 }

@@ -36,6 +36,9 @@ export class AddLessonComponent implements OnInit {
       durationMinutes: new FormControl(null, [Validators.required]),
       pickedGroup: new FormControl(null),
     });
+    this.ss.studentsChanged.subscribe(students => {
+      this.students = students;
+    });
     this.groups = await this.gs.getGroupsWithStudents();
   }
 
@@ -102,7 +105,7 @@ export class AddLessonComponent implements OnInit {
     this.lessonKind = (e.value as 'common' | 'personal');
 
     if (this.lessonKind === 'personal') {
-      this.ss.getStudents().then(students => (this.students = students));
+      this.ss.getStudents();
       this.lessonForm.removeControl('pickedGroup');
       this.lessonForm.addControl('pickedStudents', new FormControl([]));
       this.lessonForm.addControl('price', new FormControl(null, [Validators.required]));
@@ -114,9 +117,9 @@ export class AddLessonComponent implements OnInit {
     }
   }
 
-  onPickStudents(students: Student[]) {
+  onPickStudents(studentsData: any) {
     this.lessonForm.controls.pickedStudents.setValue(
-      students.map(student => ({ id: student.id }))
+      studentsData.pickedStudents.map(student => ({ id: student.id }))
     );
   }
 

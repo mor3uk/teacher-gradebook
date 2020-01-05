@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 import * as uuid from 'uuid';
 
@@ -12,6 +12,8 @@ import { DB } from '../db';
 })
 export class StudentService {
   private db: DB;
+  private students: Student[] = [];
+  studentsChanged = new EventEmitter<Student[]>();
 
   constructor(private gs: GroupService) {
     this.db = new DB();
@@ -47,8 +49,11 @@ export class StudentService {
     return this.db.students.get(id);
   }
 
-  getStudents(): Promise<Student[]> {
-    return this.db.students.toArray();
+  getStudents() {
+    this.db.students.toArray().then(students => {
+      this.students = students;
+      this.studentsChanged.emit([...this.students]);
+    });
   }
 
   async deleteStudent(id: string): Promise<any> {

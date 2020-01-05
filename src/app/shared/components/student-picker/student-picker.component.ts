@@ -15,7 +15,10 @@ export class StudentPickerComponent implements OnInit {
   selectedStudent: Student;
 
   @Output() newStudentToAdd = new EventEmitter<void>();
-  @Output() pickedStudentsChanged = new EventEmitter<Student[]>();
+  @Output() pickedStudentsChanged = new EventEmitter<{
+    pickedStudents: Student[],
+    students: Student[],
+  }>();
 
   ngOnInit() { }
 
@@ -28,7 +31,10 @@ export class StudentPickerComponent implements OnInit {
   onPickAll() {
     this.pickedStudents = [...this.students, ...this.pickedStudents];
     this.students = [];
-    this.pickedStudentsChanged.emit([...this.pickedStudents]);
+    this.pickedStudentsChanged.emit({
+      pickedStudents: [...this.pickedStudents],
+      students: [...this.students],
+    });
   }
 
   onAddNewStudent() {
@@ -48,7 +54,10 @@ export class StudentPickerComponent implements OnInit {
       return false;
     });
     this.selectedStudent = null;
-    this.pickedStudentsChanged.emit([...this.pickedStudents]);
+    this.pickedStudentsChanged.emit({
+      pickedStudents: [...this.pickedStudents],
+      students: [...this.students],
+    });
   }
 
   onDeleteStudent(id: string) {
@@ -59,7 +68,10 @@ export class StudentPickerComponent implements OnInit {
       this.students.push(student);
       return false;
     });
-    this.pickedStudentsChanged.emit([...this.pickedStudents]);
+    this.pickedStudentsChanged.emit({
+      pickedStudents: [...this.pickedStudents],
+      students: [...this.students],
+    });
   }
 
 }

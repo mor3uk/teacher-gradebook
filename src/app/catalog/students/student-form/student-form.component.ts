@@ -79,7 +79,7 @@ export class StudentFormComponent implements OnInit {
     }, {
       validators: [parentRequired.bind(this)],
       asyncValidators: [studentExists(this.data && this.data.student, this.editMode, this.ss)],
-      updateOn: 'submit',
+      updateOn: 'change',
     });
   }
 

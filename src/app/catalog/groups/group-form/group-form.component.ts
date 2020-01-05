@@ -37,7 +37,8 @@ export class GroupFormComponent implements OnInit {
         .then(students => (this.pickedStudents = students));
     }
 
-    this.ss.getStudents().then(students => {
+    this.ss.getStudents();
+    this.ss.studentsChanged.subscribe(students => {
       this.students = students.filter(student => !student.groupId);
       this.pending = false;
     });
@@ -70,8 +71,9 @@ export class GroupFormComponent implements OnInit {
     this.dialogRef.close(group);
   }
 
-  onPickStudents(students: Student[]) {
-    this.pickedStudents = students;
+  onPickStudents(studentsData: any) {
+    this.pickedStudents = studentsData.pickedStudents;
+    this.students = studentsData.students;
   }
 
   onCancel() {

@@ -16,12 +16,15 @@ export class LessonComponent implements OnInit {
 
   constructor(private ss: StudentService) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     if (this.lesson.kind === 'common') {
       this.groupId = (this.lesson as CommonLesson).groupId;
     }
     if (this.lesson.kind === 'personal') {
-      this.students = await this.ss.getStudents();
+      this.ss.getStudents();
+      this.ss.studentsChanged.subscribe(students => {
+        this.students = students;
+      });
     }
   }
 
