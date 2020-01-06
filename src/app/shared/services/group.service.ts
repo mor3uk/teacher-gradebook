@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 import uuid from 'uuid';
 
@@ -10,9 +10,12 @@ import { Group } from '../models/group.model';
 })
 export class GroupService {
   private db: DB;
+  private groups: Group[] = [];
+  groupsChanged = new EventEmitter<Group[]>();
 
   constructor() {
     this.db = new DB();
+    this.getGroups();
   }
 
   addGroup(group: Group): Promise<any> {
@@ -26,26 +29,25 @@ export class GroupService {
     return this.db.groups.put(group);
   }
 
-  getGroup(id: string): Promise<Group> {
-    return this.db.groups.get(id);
+  getGroup(id: string): Group {
+    return this.groups.find(group => group.id === id);
   }
 
-  getGroupByName(name: string): Promise<Group> {
-    return this.db.groups
-      .where('name')
-      .equals(name)
-      .first();
+  getGroupByName(name: string): Group {
+    return this.groups.find(group => group.name === name);
   }
 
-  getGroups(): Promise<Group[]> {
-    return this.db.groups.toArray();
-  }
-
-  async getGroupsWithStudents(): Promise<Group[]> {
-    const groups = await this.db.groups.toArray();
-    return groups.filter(group => {
-      return group.studentIdList && group.studentIdList.length;
+  getGroups(): Promise<void> {
+    return this.db.groups.toArray().then(groups => {
+      this.groups = groups;
+      this.groupsChanged.next([...this.groups]);
     });
+  }
+
+  getGroupsWithStudents(): Group[] {
+    return this.groups.filter(
+      group => group.studentIdList && group.studentIdList.length !== 0
+    );
   }
 
   deleteGroup(id: string): Promise<any> {

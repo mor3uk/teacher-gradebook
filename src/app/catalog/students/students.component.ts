@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { Student } from '../../shared/models/student.model';
 import { StudentService } from '../../shared/services/student.service';
@@ -13,9 +13,10 @@ import { GroupService } from '../../shared/services/group.service';
   styleUrls: ['students.component.scss'],
   templateUrl: 'students.component.html',
 })
-export class StudentsComponent implements OnInit {
+export class StudentsComponent implements OnInit, OnDestroy {
   students: Student[] = [];
   pending = false;
+  studentsSub: Subscription;
 
   constructor(
     private ss: StudentService,
@@ -25,10 +26,11 @@ export class StudentsComponent implements OnInit {
 
   ngOnInit() {
     this.getStudentsWithPending();
-    this.ss.studentsChanged.subscribe(students => {
-      this.students = students;
-      this.pending = false;
-    });
+    this.studentsSub = this.ss.studentsChanged
+      .subscribe(students => {
+        this.students = students;
+        this.pending = false;
+      });
   }
 
   onAddStudent() {
@@ -41,7 +43,7 @@ export class StudentsComponent implements OnInit {
   }
 
   async onEditStudent(id: string) {
-    const student = await this.ss.getStudent(id);
+    const student = this.students.find(student => student.id === id);
     this.openDialog('edit', student).subscribe(async student => {
       if (student) {
         await this.ss.updateStudent(student);
@@ -78,6 +80,10 @@ export class StudentsComponent implements OnInit {
   getStudentsWithPending() {
     this.pending = true;
     this.ss.getStudents();
+  }
+
+  ngOnDestroy() {
+    this.studentsSub.unsubscribe();
   }
 
 }

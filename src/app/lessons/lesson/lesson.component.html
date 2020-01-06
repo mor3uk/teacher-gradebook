@@ -8,7 +8,7 @@
   </div>
   <div *ngIf="lesson.kind === 'common'" class="lesson__group">
     <mat-icon>group</mat-icon>
-    <span>{{ groupId | group | async }}</span>
+    <span>{{ groupId ? (groupId | group) : 'Загрузка...' }}</span>
   </div>
 
   <div

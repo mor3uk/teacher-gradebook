@@ -1,6 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 import * as moment from 'moment';
 import uuid from 'uuid';
@@ -20,11 +21,12 @@ import { studentExists, parentRequired, groupExists } from './student-form.valid
   templateUrl: './student-form.component.html',
   styleUrls: ['./student-form.component.scss']
 })
-export class StudentFormComponent implements OnInit {
+export class StudentFormComponent implements OnInit, OnDestroy {
   maxDate: Moment = moment().subtract(6, 'years').add(1, 'day');
   submissionTriggered = false;
   editMode = false;
   pending = false;
+  groupsSub: Subscription;
 
   studentForm: FormGroup;
   student: Student;
@@ -48,10 +50,12 @@ export class StudentFormComponent implements OnInit {
       this.relatives = this.data.student.relatives;
     }
 
-    this.gs.getGroups().then(groups => {
-      this.groups = groups;
-      this.pending = false;
-    });
+    this.gs.getGroups();
+    this.groupsSub = this.gs.groupsChanged
+      .subscribe(groups => {
+        this.groups = groups;
+        this.pending = false;
+      });
 
     this.setLeftRelatives();
 
@@ -135,10 +139,10 @@ export class StudentFormComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(async group => {
       if (group) {
-        this.ss.setStudentsGroup(group);
         await this.gs.addGroup(group);
-        this.groups = await this.gs.getGroups();
-        const addedGroup = await this.gs.getGroupByName(group.name);
+        await this.gs.getGroups();
+        const addedGroup = this.gs.getGroupByName(group.name);
+        await this.ss.setStudentsGroup(addedGroup);
         this.studentForm.controls.groupId.setValue(addedGroup.id);
       }
     });
@@ -174,6 +178,10 @@ export class StudentFormComponent implements OnInit {
       const existingRelative = this.relatives.find(relative => relative.kind === kind);
       return !existingRelative;
     });
+  }
+
+  ngOnDestroy() {
+    this.groupsSub.unsubscribe();
   }
 
 }

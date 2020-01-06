@@ -1,6 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 import { Student } from '../../../shared/models/student.model';
 import { StudentService } from '../../../shared/services/student.service';
@@ -15,11 +16,11 @@ import { groupNameTaken } from './group-form.validator';
   styleUrls: ['./group-form.component.scss']
 })
 export class GroupFormComponent implements OnInit {
-  pending = false;
   groupForm: FormGroup;
   students: Student[] = [];
   pickedStudents: Student[] = [];
   editMode = false;
+  studentsSub: Subscription;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -30,18 +31,12 @@ export class GroupFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.pending = true;
     if (this.data && this.data.group) {
       this.editMode = true;
-      this.ss.getStudentsByGroupId(this.data.group.id)
-        .then(students => (this.pickedStudents = students));
+      this.pickedStudents = this.ss.getStudentsByGroupId(this.data.group.id);
     }
 
-    this.ss.getStudents();
-    this.ss.studentsChanged.subscribe(students => {
-      this.students = students.filter(student => !student.groupId);
-      this.pending = false;
-    });
+    this.students = this.ss.getFreeStudents();
 
     this.groupForm = new FormGroup({
       name: new FormControl(
@@ -54,7 +49,7 @@ export class GroupFormComponent implements OnInit {
 
   onSubmit() {
     this.groupForm.markAllAsTouched();
-    if (this.groupForm.invalid && !this.pending) {
+    if (this.groupForm.invalid) {
       return;
     }
 

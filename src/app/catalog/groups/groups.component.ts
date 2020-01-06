@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { Group } from '../../shared/models/group.model';
 import { GroupService } from '../../shared/services/group.service';
@@ -13,9 +13,10 @@ import { GroupFormComponent } from './group-form/group-form.component';
   templateUrl: './groups.component.html',
   styleUrls: ['./groups.component.scss']
 })
-export class GroupsComponent implements OnInit {
+export class GroupsComponent implements OnInit, OnDestroy {
   pending = false;
   groups: Group[] = [];
+  groupsSub: Subscription;
 
   constructor(
     private gs: GroupService,
@@ -25,14 +26,22 @@ export class GroupsComponent implements OnInit {
 
   async ngOnInit() {
     this.getGroupsWithPending();
+    this.groupsSub = this.gs.groupsChanged
+      .subscribe(groups => {
+        this.groups = groups;
+        this.pending = false;
+      });
   }
 
   onAddGroup() {
     this.openDialog('add').subscribe(async group => {
       if (group) {
-        await this.ss.setStudentsGroup(group);
+        this.pending = true;
         await this.gs.addGroup(group);
-        this.getGroupsWithPending();
+        await this.gs.getGroups();
+        const addedGroup = this.gs.getGroupByName(group.name);
+        await this.ss.setStudentsGroup(addedGroup);
+        this.pending = false;
       }
     });
   }
@@ -73,9 +82,12 @@ export class GroupsComponent implements OnInit {
     }
   }
 
-  async getGroupsWithPending() {
+  getGroupsWithPending() {
     this.pending = true;
-    this.groups = await this.gs.getGroups();
-    this.pending = false;
+    this.gs.getGroups();
+  }
+
+  ngOnDestroy() {
+    this.groupsSub.unsubscribe();
   }
 }

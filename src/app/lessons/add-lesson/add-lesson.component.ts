@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogRef, MatRadioChange } from '@angular/material';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 import { Moment } from 'moment';
 import * as moment from 'moment';
@@ -16,11 +17,12 @@ import { Student } from '../../shared/models/student.model';
   templateUrl: './add-lesson.component.html',
   styleUrls: ['./add-lesson.component.scss']
 })
-export class AddLessonComponent implements OnInit {
+export class AddLessonComponent implements OnInit, OnDestroy {
   lessonKind: 'common' | 'personal' = 'common';
   groups: Group[] = [];
   lessonForm: FormGroup;
   minTime: Moment = moment().add('1', 'hour');
+  studentsSub: Subscription;
 
   students: Student[] = [];
 
@@ -36,10 +38,11 @@ export class AddLessonComponent implements OnInit {
       durationMinutes: new FormControl(null, [Validators.required]),
       pickedGroup: new FormControl(null),
     });
-    this.ss.studentsChanged.subscribe(students => {
-      this.students = students;
-    });
-    this.groups = await this.gs.getGroupsWithStudents();
+    this.studentsSub = this.ss.studentsChanged
+      .subscribe(students => {
+        this.students = students;
+      });
+    this.groups = this.gs.getGroupsWithStudents();
   }
 
   onPickGroup(e: Event) {
@@ -121,6 +124,12 @@ export class AddLessonComponent implements OnInit {
     this.lessonForm.controls.pickedStudents.setValue(
       studentsData.pickedStudents.map(student => ({ id: student.id }))
     );
+  }
+
+  ngOnDestroy() {
+    if (this.studentsSub) {
+      this.studentsSub.unsubscribe();
+    }
   }
 
 }

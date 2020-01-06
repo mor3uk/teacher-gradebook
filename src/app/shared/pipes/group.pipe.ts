@@ -8,25 +8,23 @@ import { GroupService } from '../services/group.service';
 export class GroupPipe implements PipeTransform {
   constructor(private gs: GroupService) { }
 
-  transform(id: string): Promise<string> {
+  transform(id: string): string {
     if (id === null) {
-      return Promise.resolve('-');
+      return '-';
     }
 
-    return new Promise(async resolve => {
-      const group = await this.gs.getGroup(id);
-      const name = group.name;
+    const group = this.gs.getGroup(id);
+    const name = group.name;
 
-      if (!isNaN(+name)) {
-        resolve('№' + name);
-      }
+    if (!isNaN(+name)) {
+      return '№' + name;
+    }
 
-      if ((name + '').length > 14) {
-        resolve((name + '').substr(0, 11) + '...');
-      }
+    if ((name + '').length > 14) {
+      return (name + '').substr(0, 11) + '...';
+    }
 
-      resolve((name as string).substr(0, 12));
-    });
+    return (name as string).substr(0, 12);
 
   }
 }

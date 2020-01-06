@@ -17,6 +17,7 @@ export class StudentService {
 
   constructor(private gs: GroupService) {
     this.db = new DB();
+    this.getStudents();
   }
 
   addStudent(student: Student): Promise<any> {
@@ -45,19 +46,23 @@ export class StudentService {
     return this.db.students.put(student);
   }
 
-  getStudent(id: string): Promise<Student> {
-    return this.db.students.get(id);
+  getStudent(id: string): Student {
+    return this.students.find(student => student.id === id);
   }
 
-  getStudents() {
-    this.db.students.toArray().then(students => {
+  getStudents(): Promise<void> {
+    return this.db.students.toArray().then(students => {
       this.students = students;
-      this.studentsChanged.emit([...this.students]);
+      this.studentsChanged.next([...this.students]);
     });
   }
 
+  getFreeStudents(): Student[] {
+    return this.students.filter(student => !student.groupId);
+  }
+
   async deleteStudent(id: string): Promise<any> {
-    const student = await this.getStudent(id);
+    const student = this.getStudent(id);
     this.gs.replaceStudent(student.groupId, null, id);
     return this.db.students.delete(id);
   }
@@ -75,24 +80,22 @@ export class StudentService {
 
   setStudentsGroup(group: Group) {
     group.studentIdList.forEach(id => {
-      this.getStudent(id).then(student => {
-        student.groupId = group.id;
-        this.updateStudent(student, false);
-      });
+      const student = this.getStudent(id);
+      student.groupId = group.id;
+      this.updateStudent(student, false);
     });
   }
 
   unsetStudentsGroup(idList: string[]) {
     idList.forEach(id => {
-      this.getStudent(id).then(student => {
-        student.groupId = null;
-        this.updateStudent(student, false);
-      });
+      const student = this.getStudent(id);
+      student.groupId = null;
+      this.updateStudent(student, false);
     });
   }
 
-  getStudentsByGroupId(id: string): Promise<Student[]> {
-    return this.db.students.where('groupId').equals(id).toArray();
+  getStudentsByGroupId(id: string): Student[] {
+    return this.students.filter(student => student.groupId === id);
   }
 
 }

@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material';
 import { AddLessonComponent } from './add-lesson/add-lesson.component';
 import { LessonService } from '../shared/services/lesson.service';
 import { Lesson } from '../shared/models/lesson.model';
+import { GroupService } from '../shared/services/group.service';
 
 @Component({
   selector: 'app-lessons',
@@ -16,6 +17,7 @@ export class LessonsComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private ls: LessonService,
+    // private gs: GroupService,
   ) { }
 
   async ngOnInit() {
