@@ -1,3 +1,5 @@
+@import '../../../styles/settings/variables';
+
 .lesson {
   box-sizing: border-box;
   width: 100%;
@@ -11,16 +13,16 @@
   }
   &__start {
     margin-right: 12px;
-    color: var(--primaryHoverColor);
+    color: $primaryHoverColor;
   }
   &__duration {
     margin-left: 12px;
-    color: var(--warningColor);
+    color: $warningColor;
   }
   &__group,
   &__single {
     margin-top: 40px;
-    color: var(--colorDark);
+    color: $colorDark;
     font-size: 26px;
     display: flex;
     flex-direction: column;
@@ -35,7 +37,7 @@
     text-align: center;
   }
   &__student-number {
-    color: var(--colorDark);
+    color: $colorDark;
     margin-bottom: 10px;
     font-size: 18px;
   }
@@ -45,7 +47,7 @@
     border-top: 1px rgb(221, 220, 220) solid;
   }
   &__student {
-    color: var(--colorDark);
+    color: $colorDark;
     overflow: hidden;
     padding: 6px 0;
     width: calc(50% - 2px);

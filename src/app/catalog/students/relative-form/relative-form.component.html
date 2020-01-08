@@ -4,101 +4,76 @@
   </div>
   <div class="form__container">
     <div class="form__input-container">
-      <select 
-        formControlName="kind" 
-        class="form__input" 
-        type="text" 
+      <select
+        formControlName="kind"
+        class="form__input"
+        type="text"
       >
       <option value="" disabled [selected]="!editMode">Кем приходится</option>
       <option *ngFor="let kind of kindList;" [value]="kind">{{ kind }}</option>
       </select>
       <div
-        *ngIf="relativeForm.controls.kind.errors?.required && relativeForm.controls.kind.touched" 
+        *ngIf="relativeForm.controls.kind.errors?.required && relativeForm.controls.kind.touched"
         class="error-message"
       >Укажите кем приходится</div>
       <div
-        *ngIf="relativeForm.controls.kind.errors?.unknownRelative && !relativeForm.controls.kind.errors?.required" 
+        *ngIf="relativeForm.controls.kind.errors?.unknownRelative && !relativeForm.controls.kind.errors?.required"
         class="error-message"
       >Выберите родственника из списка</div>
     </div>
     <div class="form__input-container">
-      <input 
-        formControlName="surname" 
-        class="form__input" 
-        type="text" 
+      <input
+        formControlName="surname"
+        class="form__input"
+        type="text"
         placeholder="Фамилия"
         trim
       >
       <div
-        *ngIf="relativeForm.controls.surname.errors?.required && relativeForm.controls.surname.touched" 
+        *ngIf="relativeForm.controls.surname.errors?.required && relativeForm.controls.surname.touched"
         class="error-message"
       >Укажите фамилию</div>
       <div
-        *ngIf="relativeForm.controls.surname.errors?.maxlength" 
+        *ngIf="relativeForm.controls.surname.errors?.maxlength"
         class="error-message"
       >Максимум {{ relativeForm.controls.surname.errors.maxlength.requiredLength }} символов</div>
     </div>
     <div class="form__input-container">
-      <input 
-        formControlName="name" 
-        class="form__input" 
-        type="text" 
+      <input
+        formControlName="name"
+        class="form__input"
+        type="text"
         placeholder="Имя"
         trim
       >
       <div
-        *ngIf="relativeForm.controls.name.errors?.required && relativeForm.controls.name.touched" 
+        *ngIf="relativeForm.controls.name.errors?.required && relativeForm.controls.name.touched"
         class="error-message"
       >Укажите имя</div>
       <div
-        *ngIf="relativeForm.controls.name.errors?.maxlength" 
+        *ngIf="relativeForm.controls.name.errors?.maxlength"
         class="error-message"
       >Максимум {{ relativeForm.controls.name.errors.maxlength.requiredLength }} символов</div>
     </div>
     <div class="form__input-container">
-      <input 
-        formControlName="fatherName" 
-        class="form__input" 
-        type="text" 
+      <input
+        formControlName="fatherName"
+        class="form__input"
+        type="text"
         placeholder="Отчество (если есть)"
         trim
       >
       <div
-        *ngIf="relativeForm.controls.fatherName.errors?.maxlength" 
+        *ngIf="relativeForm.controls.fatherName.errors?.maxlength"
         class="error-message"
       >Максимум {{ relativeForm.controls.fatherName.errors.maxlength.requiredLength }} символов</div>
     </div>
+
     <div class="form__input-container">
-      <input 
-        matInput 
-        class="form__input" 
-        [matDatepicker]="relativePicker" 
-        placeholder="Дата рождения"
-        formControlName="birthDate"
-        [max]="maxDate"
-      >
-      <div
-        *ngIf="relativeForm.controls.birthDate.errors?.required 
-          && relativeForm.controls.birthDate.touched
-          && !relativeForm.controls.birthDate.errors?.matDatepickerParse" 
-        class="error-message"
-      >Укажите дату рождения</div>
-      <div
-        *ngIf="relativeForm.controls.birthDate.errors?.matDatepickerParse" 
-        class="error-message"
-      >Укажите корректную дату</div>
-      <div
-        *ngIf="relativeForm.controls.birthDate.errors?.matDatepickerMax" 
-        class="error-message"
-      >Родственнику должно быть не менее 16 лет</div>
-      <mat-datepicker-toggle matSuffix [for]="relativePicker"></mat-datepicker-toggle>
-      <mat-datepicker #relativePicker></mat-datepicker>
-    </div>
-    <div class="form__input-container">
-      <input 
-        formControlName="number" 
-        class="form__input" 
-        type="tel" 
+      <input
+        formControlName="number"
+        class="form__input"
+        type="tel"
         placeholder="Номер телефона"
         trim
       >
@@ -110,9 +85,9 @@
   <div class="form__controls">
     <button *ngIf="!editMode" class="btn btn_success form__btn">Добавить</button>
     <button *ngIf="editMode" class="btn btn_primary form__btn">Сохранить</button>
-    <button 
-      (click)="onCancel()" 
-      type="button" 
+    <button
+      (click)="onCancel()"
+      type="button"
       class="btn btn_danger form__btn"
     >Отменить</button>
   </div>

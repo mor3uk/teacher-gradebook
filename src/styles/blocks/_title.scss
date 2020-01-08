@@ -1,6 +1,8 @@
+@import "../settings/variables";
+
 .title {
   text-align: center;
-  color: var(--colorDark);
+  color: $colorDark;
   font-size: 25px;
   padding: 0 25px;
   margin: 0;

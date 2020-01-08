@@ -1,20 +1,21 @@
 <form (submit)="onSubmit($event)" [formGroup]="lessonForm" class="form lesson-form">
   <div class="form__label">Информация о занятии</div>
-  <mat-radio-group
-    class="lesson-form__kind"
-    (change)="onChangeKind($event)"
-    color="primary"
-  >
-    <mat-radio-button
-      checked
-      value="common"
-    >Общее
-    </mat-radio-button>
-    <mat-radio-button
-      value="personal"
-    >Персональное
-    </mat-radio-button>
-  </mat-radio-group>
+  <div class="form__helpers">
+    <button
+      class="form__btn btn btn_primary"
+      type="button"
+      (click)="onChangeKind('common')"
+      [ngClass]="{'btn_success': lessonKind === 'common'}"
+    >
+    Общее</button>
+    <button
+      class="form__btn btn btn_primary"
+      type="button"
+      (click)="onChangeKind('personal')"
+      [ngClass]="{'btn_success': lessonKind === 'personal'}"
+    >
+    Персональное</button>
+  </div>
   <div class="form__input-container">
     <input
       class="form__input"
@@ -29,7 +30,7 @@
     </button>
   </div>
 
-  <div *ngIf="lessonKind === 'common'" class="form__input-container">
+  <div *ngIf="lessonKind === 'common'" class="form__input-container mt-15">
     <input
       type="number"
       class="form__input"
@@ -86,11 +87,9 @@
 
     <div class="lesson-form__picked-group" *ngIf="lessonForm.controls.pickedGroup.value">
       <div>
-        <div>{{ lessonForm.controls.pickedGroup.value.name }}</div>
-        <div>
-          {{ lessonForm.controls.pickedGroup.value.studentIdList.length }}
-          {{ 'учащи' | plural:lessonForm.controls.pickedGroup.value.studentIdList.length:['йся', 'хся', 'хся'] }}
-        </div>
+        {{ lessonForm.controls.pickedGroup.value.name }} -
+        {{ lessonForm.controls.pickedGroup.value.studentIdList.length }}
+        {{ 'учащи' | plural:lessonForm.controls.pickedGroup.value.studentIdList.length:['йся', 'хся', 'хся'] }}
       </div>
       <button (click)="onUnpickGroup()" type="button" mat-icon-button>
           <mat-icon>remove_circle_outline</mat-icon>

@@ -8,9 +8,8 @@ import * as moment from 'moment';
 export class AgePipe implements PipeTransform {
   transform(ts: number): string {
     moment.locale('ru');
-    const diffString = moment(ts).fromNow();
-    const ageArray = diffString.split(' ');
+    const ageString = moment(ts).fromNow(true);
 
-    return ageArray[0] + ' ' + ageArray[1];
+    return ageString;
   }
 }

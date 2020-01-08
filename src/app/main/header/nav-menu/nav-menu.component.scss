@@ -1,3 +1,5 @@
+@import "../../../../styles/settings/variables";
+
 .menu {
   display: flex;
   &__list {
@@ -23,7 +25,7 @@
   &__item {
     background-color: transparent;
     &:hover {
-      background-color: var(--bacgkroundLight);
+      background-color: $bacgkroundLight;
     }
   }
   &__drop {

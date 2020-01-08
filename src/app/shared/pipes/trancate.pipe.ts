@@ -6,10 +6,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TrancatePipe implements PipeTransform {
   transform(value: string, length: number, width: number): string {
-    if (value.length < +length) {
+    if (value.length < length) {
       return value;
     }
-    if (+width > window.innerWidth) {
+    if (width > window.innerWidth) {
       return value.substr(0, length) + '.';
     }
 

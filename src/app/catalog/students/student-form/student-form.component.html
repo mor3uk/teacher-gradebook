@@ -96,23 +96,39 @@
         <div
           *ngIf="studentForm.controls.birthDate.errors?.matDatepickerMax"
           class="error-message"
-        >Учащемуся должно быть не менее 6 лет</div>
+        >Учащемуся должно быть не менее 3-х лет</div>
         <mat-datepicker-toggle matSuffix [for]="studentPicker"></mat-datepicker-toggle>
         <mat-datepicker #studentPicker></mat-datepicker>
       </div>
     </div>
     <div class="student-form__relatives">
-      <div *ngIf="relatives.length !== 0" class="form__label">
-        Родственники ученика
+      <div class="form__label">
+        <span>
+          Родственники ученика
+        </span>
+        <button
+          *ngIf="leftRelatives.length !== 0"
+          mat-icon-button
+          type="button"
+          (click)="onAddRelative()"
+          matTooltip="Добавить родственника"
+          matTooltipPosition="above"
+        >
+          <mat-icon
+          >add_circle</mat-icon>
+        </button>
       </div>
       <div class="form__no-items" *ngIf="relatives.length === 0">
         <mat-icon>warning</mat-icon>
         <span>Нет указанных родственников</span>
       </div>
       <div class="form__list">
-        <div *ngFor="let relative of relatives" class="form__list-item">
-          {{ relative.kind | titlecase }}:
-          {{ relative.surname | fullname:relative.name:relative.fatherName }}
+        <div *ngFor="let relative of relatives" class="form__list-item student-form__relative">
+          <span>
+            {{ relative.kind | titlecase }}:
+            {{ relative | fullname:4 }}
+          </span>
+          <hr>
           <span>
             <button (click)="onEditRelative(relative.id)" type="button" mat-icon-button>
                 <mat-icon>edit</mat-icon>
@@ -129,12 +145,6 @@
       <div *ngIf="studentForm.errors?.studentExists" class="error-message">
         Данный студент уже в базе
       </div>
-      <button
-        *ngIf="leftRelatives.length !== 0"
-        type="button"
-        class="btn btn_primary form__btn"
-        (click)="onAddRelative()"
-      >Добавить родственника</button>
     </div>
   </ng-container>
   <div *ngIf="pending" class="spinner">

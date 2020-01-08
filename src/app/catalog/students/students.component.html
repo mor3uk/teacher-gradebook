@@ -8,27 +8,52 @@
         <th>{{ 'Группа' | trancate:4:960 }}</th>
         <th>{{ 'Возраст' | trancate:4:960 }}</th>
         <th>{{ 'Посещаемость' | trancate:5:960 }}</th>
-        <th colspan="2" fxHide.lt-sm>Править / удалить</th>
       </tr>
     </thead>
     <tbody *ngIf="!pending">
       <ng-container *ngFor="let student of students">
         <tr>
-          <td>{{ student.surname | fullname:student.name:student.fatherName }}</td>
+          <td>{{ student | fullname:0 }}</td>
           <td>{{ student.groupId | group }}</td>
           <td>{{ student.birthDate | age }}</td>
           <td>{{ student.passedLessons | attendance:student.visitedLessons }}</td>
-          <td fxHide.lt-sm class="table__btn">
-            <button (click)="onEditStudent(student.id)" class="btn btn_primary">Править</button>
-          </td>
-          <td fxHide.lt-sm class="table__btn">
-            <button (click)="onDeleteStudent(student.id)" class="btn btn_danger">Удалить</button>
-          </td>
+          <div fxHide.lt-sm class="table__btn-group">
+            <button
+              (click)="onEditStudent(student.id)"
+              mat-icon-button
+              matTooltip="Править студента"
+              matTooltipPosition="above"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              (click)="onDeleteStudent(student.id)"
+              mat-icon-button
+              matTooltip="Удалить студента"
+              matTooltipPosition="above"
+            >
+              <mat-icon>remove_circle_outline</mat-icon>
+            </button>
+          </div>
         </tr>
         <tr fxHide.gt-xs>
-          <td colspan="4" class="table__btn table__btn_little">
-            <button (click)="onEditStudent(student.id)" class="btn btn_primary">Править</button>
-            <button (click)="onDeleteStudent(student.id)" class="btn btn_danger">Удалить</button>
+          <td class="table__btn-group_little" colspan="4">
+            <button
+              (click)="onEditStudent(student.id)"
+              mat-icon-button
+              matTooltip="Править студента"
+              matTooltipPosition="above"
+            >Править
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              (click)="onDeleteStudent(student.id)"
+              mat-icon-button
+              matTooltip="Удалить студента"
+              matTooltipPosition="above"
+            >Удалить
+              <mat-icon>remove_circle_outline</mat-icon>
+            </button>
           </td>
         </tr>
       </ng-container>

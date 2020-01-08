@@ -7,6 +7,7 @@ import { StudentService } from '../../shared/services/student.service';
 import { ConfirmDialog } from '../../shared/components/confirm/confirm.component';
 import { StudentFormComponent } from './student-form/student-form.component';
 import { GroupService } from '../../shared/services/group.service';
+import { GroupFormComponent } from '../groups/group-form/group-form.component';
 
 @Component({
   selector: 'app-students',
@@ -17,6 +18,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
   students: Student[] = [];
   pending = false;
   studentsSub: Subscription;
+  newGroupSub: Subscription;
 
   constructor(
     private ss: StudentService,
@@ -30,6 +32,19 @@ export class StudentsComponent implements OnInit, OnDestroy {
       .subscribe(students => {
         this.students = students;
         this.pending = false;
+      });
+
+    this.newGroupSub = this.gs.newGroupToAdd
+      .subscribe(() => {
+        const dialogRef = this.dialog.open(GroupFormComponent, {
+          panelClass: 'overlay-narrow',
+          data: { studentMode: true },
+        });
+        dialogRef.afterClosed().subscribe(async group => {
+          if (group) {
+            this.gs.newGroupCreated.next(group);
+          }
+        });
       });
   }
 
@@ -84,6 +99,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.studentsSub.unsubscribe();
+    this.newGroupSub.unsubscribe();
   }
 
 }

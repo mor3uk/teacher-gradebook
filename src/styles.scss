@@ -1,3 +1,4 @@
+@import "./styles/reset";
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 
 @import "./styles/settings/variables";
@@ -52,4 +53,8 @@ textarea {
   background-color: #fff;
   min-height: calc(100% - 175px);
   padding-bottom: 15px;
+}
+
+.mat-tooltip {
+  font-size: 12px;
 }

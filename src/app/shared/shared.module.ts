@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatTooltipModule } from '@angular/material';
 
 import { NgxTrimDirectiveModule } from 'ngx-trim-directive';
 import {
@@ -36,6 +36,7 @@ const sharedModules = [
   OwlMomentDateTimeModule,
   MaterialModule,
   NgxTrimDirectiveModule,
+  MatTooltipModule,
 ];
 
 class DefaultIntl extends OwlDateTimeIntl {

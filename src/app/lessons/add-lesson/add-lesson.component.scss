@@ -1,3 +1,5 @@
+@import "../../../styles/settings/variables";
+
 .lesson-form {
   &__kind {
     display: flex;
@@ -5,15 +7,16 @@
     margin: 12px 20px;
   }
   &__picked-group {
-    color: var(--colorDark);
+    color: $colorDark;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    padding: 0 12px;
     align-items: center;
     margin-bottom: 5px;
     button {
       margin-left: 10px;
       &:hover {
-        color: var(--colorHoverDark);
+        color: $colorGrey;
       }
     }
   }
@@ -23,6 +26,10 @@
   &__number {
     flex: 0 0 43%;
   }
+}
+
+.mt-15 {
+  margin-top: 15px;
 }
 
 ::-webkit-scrollbar-thumb {

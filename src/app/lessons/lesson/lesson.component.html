@@ -16,8 +16,7 @@
     class="lesson__single">
     <mat-icon>person</mat-icon>
     <span>
-      {{ students.length === 0 ? 'Загрузка...' : students[0].surname
-        | fullname:students[0].name:students[0].fatherName }}
+      {{ students.length === 0 ? 'Загрузка...' : students[0] | fullname:0 }}
     </span>
   </div>
 
@@ -32,7 +31,7 @@
       <div
         *ngFor="let j of [1, 2, 3, 4, 5, 6]; let i = index;"
         class="lesson__student"
-        >{{ students[i] ? (students[i].surname | fullname:students[i].name:students[i].fatherName) : '-' }}
+        >{{ students[i] ? (students[i] | fullname:0) : '-' }}
       </div>
     </div>
   </div>

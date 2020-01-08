@@ -8,6 +8,6 @@ import * as moment from 'moment';
 export class BitrhDatePipe implements PipeTransform {
   transform(ms: number): string {
     moment.locale('ru');
-    return moment(+ms).format('ll');
+    return moment(ms).format('DD.MM.YYYY');
   }
 }

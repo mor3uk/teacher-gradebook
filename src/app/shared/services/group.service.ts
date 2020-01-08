@@ -1,4 +1,5 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import uuid from 'uuid';
 
@@ -11,7 +12,10 @@ import { Group } from '../models/group.model';
 export class GroupService {
   private db: DB;
   private groups: Group[] = [];
-  groupsChanged = new EventEmitter<Group[]>();
+
+  groupsChanged = new Subject<Group[]>();
+  newGroupToAdd = new Subject();
+  newGroupCreated = new Subject<Group>();
 
   constructor() {
     this.db = new DB();

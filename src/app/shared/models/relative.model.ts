@@ -12,7 +12,6 @@ export interface Relative {
   name: string;
   surname: string;
   fatherName?: string;
-  birthDate: number;
   number: number;
   kind: RelativeKind;
-};
+}

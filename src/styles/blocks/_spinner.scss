@@ -1,10 +1,12 @@
+@import "../settings/variables";
+
 .spinner {
   margin: 20px 0;
   display: flex;
   justify-content: center;
   .mat-spinner {
     circle {
-      stroke: var(--primaryColor);
+      stroke: $primaryColor;
     }
   }
 }

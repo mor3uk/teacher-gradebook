@@ -1,22 +1,24 @@
+@import "../settings/variables";
+
 .btn {
   border: none;
   color: #fff;
   &_danger {
-    background-color: var(--dangerColor);
+    background-color: $dangerColor;
     &:hover {
-      background-color: var(--dangerHoverColor);
+      background-color: $dangerHoverColor;
     }
   }
   &_primary {
-    background-color: var(--primaryColor);
+    background-color: $primaryColor;
     &:hover {
-      background-color: var(--primaryHoverColor);
+      background-color: $primaryHoverColor;
     }
   }
   &_success {
-    background-color: var(--successColor);
+    background-color: $successColor;
     &:hover {
-      background-color: var(--successHoverColor);
+      background-color: $successHoverColor;
     }
   }
 }

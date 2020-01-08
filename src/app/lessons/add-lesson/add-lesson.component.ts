@@ -20,6 +20,7 @@ import { Student } from '../../shared/models/student.model';
 export class AddLessonComponent implements OnInit, OnDestroy {
   lessonKind: 'common' | 'personal' = 'common';
   groups: Group[] = [];
+  group: Group;
   lessonForm: FormGroup;
   minTime: Moment = moment().add('1', 'hour');
   studentsSub: Subscription;
@@ -104,8 +105,8 @@ export class AddLessonComponent implements OnInit, OnDestroy {
     return commonLesson;
   }
 
-  onChangeKind(e: MatRadioChange) {
-    this.lessonKind = (e.value as 'common' | 'personal');
+  onChangeKind(kind: string) {
+    this.lessonKind = (kind as 'common' | 'personal');
 
     if (this.lessonKind === 'personal') {
       this.ss.getStudents();

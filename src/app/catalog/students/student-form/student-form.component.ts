@@ -13,7 +13,6 @@ import { Group } from '../../../shared/models/group.model';
 import { Student } from '../../../shared/models/student.model';
 import { Relative, RelativeKind } from '../../../shared/models/relative.model';
 import { RelativeFormComponent } from '../relative-form/relative-form.component';
-import { GroupFormComponent } from '../../groups/group-form/group-form.component';
 import { studentExists, parentRequired, groupExists } from './student-form.validators';
 
 @Component({
@@ -22,11 +21,12 @@ import { studentExists, parentRequired, groupExists } from './student-form.valid
   styleUrls: ['./student-form.component.scss']
 })
 export class StudentFormComponent implements OnInit, OnDestroy {
-  maxDate: Moment = moment().subtract(6, 'years').add(1, 'day');
+  maxDate: Moment = moment().subtract(3, 'years').add(1, 'day');
   submissionTriggered = false;
   editMode = false;
   pending = false;
   groupsSub: Subscription;
+  groupCreatedSub: Subscription;
 
   studentForm: FormGroup;
   student: Student;
@@ -85,6 +85,15 @@ export class StudentFormComponent implements OnInit, OnDestroy {
       asyncValidators: [studentExists(this.data && this.data.student, this.editMode, this.ss)],
       updateOn: 'change',
     });
+
+    this.groupCreatedSub = this.gs.newGroupCreated
+      .subscribe(async group => {
+        await this.gs.addGroup(group);
+        await this.gs.getGroups();
+        const addedGroup = this.gs.getGroupByName(group.name);
+        await this.ss.setStudentsGroup(addedGroup);
+        this.studentForm.controls.groupId.setValue(addedGroup.id);
+      });
   }
 
   onCancel() {
@@ -132,20 +141,7 @@ export class StudentFormComponent implements OnInit, OnDestroy {
   }
 
   onCreateGroup() {
-    const dialogRef = this.dialog.open(GroupFormComponent, {
-      panelClass: 'overlay-narrow',
-      data: { studentMode: true },
-    });
-
-    dialogRef.afterClosed().subscribe(async group => {
-      if (group) {
-        await this.gs.addGroup(group);
-        await this.gs.getGroups();
-        const addedGroup = this.gs.getGroupByName(group.name);
-        await this.ss.setStudentsGroup(addedGroup);
-        this.studentForm.controls.groupId.setValue(addedGroup.id);
-      }
-    });
+    this.gs.newGroupToAdd.next();
   }
 
   onEditRelative(id: string) {
@@ -182,6 +178,9 @@ export class StudentFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.groupsSub.unsubscribe();
+    if (this.groupCreatedSub) {
+      this.groupCreatedSub.unsubscribe();
+    }
   }
 
 }

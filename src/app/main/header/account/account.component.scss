@@ -1,3 +1,5 @@
+@import "../../../../styles/settings/variables";
+
 .account {
   position: relative;
   &__image {
@@ -5,19 +7,19 @@
     height: 44px;
     cursor: pointer;
     img {
-      border: 2px var(--bacgkroundLight) solid;
+      border: 2px $bacgkroundLight solid;
       width: 100%;
       box-sizing: border-box;
       border-radius: 100%;
       &:hover {
-        border-color: var(--bacgkroundDark);
+        border-color: $bacgkroundDark;
       }
     }
     &_active {
       img {
-        border-color: var(--colorHoverDark);
+        border-color: $colorHoverDark;
         &:hover {
-          border-color: var(--colorHoverDark);
+          border-color: $colorHoverDark;
         }
       }
     }
@@ -41,7 +43,7 @@
       display: block;
       content: "";
       border: 10px transparent solid;
-      border-bottom-color: var(--bacgkroundDark);
+      border-bottom-color: $bacgkroundDark;
     }
     li:last-child {
       border-radius: 0 0 10px 10px;
@@ -52,9 +54,9 @@
     border-radius: 10px 10px 0 0;
     padding: 15px 25px 15px 15px;
     cursor: initial;
-    color: var(--colorLight);
+    color: $colorLight;
     border-bottom: 3px solid;
-    border-color: var(--colorHoverDark);
-    background-color: var(--bacgkroundDark);
+    border-color: $colorHoverDark;
+    background-color: $bacgkroundDark;
   }
 }

@@ -6,7 +6,6 @@
       <tr>
         <th>№ / Название</th>
         <th>Размер группы</th>
-        <th colspan="2" fxHide.lt-sm>Править / удалить</th>
       </tr>
     </thead>
     <tbody *ngIf="!pending">
@@ -22,17 +21,43 @@
               {{ 'учащи' | plural:group.studentIdList.length:['йся', 'хся', 'хся'] }}
             </ng-container>
           </td>
-          <td fxHide.lt-sm class="table__btn">
-            <button (click)="onEditGroup(group)" class="btn btn_primary">Править</button>
-          </td>
-          <td fxHide.lt-sm class="table__btn">
-            <button (click)="onDeleteGroup(group.id)" class="btn btn_danger">Удалить</button>
-          </td>
+          <div fxHide.lt-sm class="table__btn-group">
+            <button
+              (click)="onEditGroup(group)"
+              mat-icon-button
+              matTooltip="Править группу"
+              matTooltipPosition="above"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              (click)="onDeleteGroup(group.id)"
+              mat-icon-button
+              matTooltip="Удалить группу"
+              matTooltipPosition="above"
+            >
+              <mat-icon>remove_circle_outline</mat-icon>
+            </button>
+          </div>
         </tr>
         <tr fxHide.gt-xs>
-          <td colspan="4" class="table__btn table__btn_little">
-            <button (click)="onEditGroup(group)" class="btn btn_primary">Править</button>
-            <button (click)="onDeleteGroup(group.id)" class="btn btn_danger">Удалить</button>
+          <td class="table__btn-group_little" colspan="2">
+            <button
+              (click)="onEditGroup(group)"
+              mat-icon-button
+              matTooltip="Править группу"
+              matTooltipPosition="above"
+            >Править
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              (click)="onDeleteGroup(group.id)"
+              mat-icon-button
+              matTooltip="Удалить группу"
+              matTooltipPosition="above"
+            >Удалить
+              <mat-icon>remove_circle_outline</mat-icon>
+            </button>
           </td>
         </tr>
       </ng-container>

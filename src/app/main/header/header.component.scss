@@ -1,3 +1,5 @@
+@import '../../../styles/settings/variables';
+
 .header {
   padding: 0 20px;
   justify-content: space-between;
@@ -10,7 +12,7 @@
   width: 100%;
   background-color: #fff;
   z-index: 15;
-  border-bottom: 1px var(--bacgkroundDark) solid;
+  border-bottom: 1px $bacgkroundDark solid;
   align-items: center;
   &__left {
     display: flex;

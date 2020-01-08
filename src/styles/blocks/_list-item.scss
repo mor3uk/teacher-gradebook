@@ -1,10 +1,12 @@
+@import "../settings/variables";
+
 .list-item {
   position: relative;
-  color: var(--colorLight);
-  background-color: var(--bacgkroundLight);
+  color: $colorLight;
+  background-color: $bacgkroundLight;
   &:hover {
-    background-color: var(--bacgkroundDark);
-    color: var(--colorHoverDark);
+    background-color: $bacgkroundDark;
+    color: $colorHoverDark;
   }
   a {
     padding: 15px 25px 15px 15px;
@@ -16,8 +18,8 @@
     }
   }
   &_active {
-    background-color: var(--bacgkroundDark) !important;
-    color: var(--colorHoverDark);
+    background-color: $bacgkroundDark !important;
+    color: $colorHoverDark;
     &-dark {
       background-color: rgba(0, 0, 0, 0.04);
       &:hover {

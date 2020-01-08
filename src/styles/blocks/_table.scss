@@ -1,4 +1,7 @@
+@import "../settings/variables";
+
 .table {
+  padding-right: 90px;
   box-shadow: none;
   text-align: center;
   border-radius: 3px;
@@ -7,33 +10,46 @@
   td,
   th {
     padding: 10px 0;
-    border: 2px var(--bacgkroundDark) solid;
+    border: 2px $bacgkroundDark solid;
   }
   thead {
-    background-color: var(--bacgkroundDark);
+    background-color: $bacgkroundDark;
   }
   tbody {
-    background-color: var(--bacgkroundLight);
+    background-color: $bacgkroundLight;
   }
-  &__btn {
-    padding: 0 !important;
+  &__btn-group {
+    border: 2px $bacgkroundDark solid;
+    box-sizing: border-box;
+    height: 40px;
+    background-color: $bacgkroundLight;
+    width: 88px;
+    right: 2px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
     button {
-      height: 41px;
-      width: 100%;
-      font-size: 16px;
+      &:hover {
+        color: $colorGrey;
+      }
     }
     &_little {
+      padding: 0 !important;
       button {
-        height: 31px;
-        width: 50%;
-        font-size: 13px;
+        width: 120px;
+        &:hover {
+          color: $colorGrey;
+        }
       }
     }
   }
   &__add {
+    height: 40px;
+    width: 88px;
     position: absolute;
-    right: 19px;
-    top: -47px;
+    right: 2px;
+    top: 2px;
     padding: 9px 12px;
     font-size: 14px;
   }
@@ -42,11 +58,24 @@
 @media (max-width: 959px) {
   .table {
     font-size: 14px;
+    &__add {
+      height: 39px;
+    }
+    &__btn-group {
+      height: 38px;
+    }
   }
 }
 
 @media (max-width: 599px) {
   .table {
     font-size: 13px;
+    padding-right: 0;
+    &__add {
+      width: auto;
+      height: auto;
+      right: 19px;
+      top: -47px;
+    }
   }
 }

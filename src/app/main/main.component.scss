@@ -1,3 +1,5 @@
+@import "../../styles/settings/variables";
+
 mat-sidenav-container,
 mat-sidenav,
 mat-sidenav-content {
@@ -10,5 +12,5 @@ mat-sidenav-content {
 
 mat-sidenav {
   width: 250px;
-  background-color: var(--bacgkroundLight);
+  background-color: $bacgkroundLight;
 }

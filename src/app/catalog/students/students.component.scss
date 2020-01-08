@@ -1,6 +1,8 @@
+@import '../../../styles/settings/variables';
+
 .students {
   padding-bottom: 0;
-  color: var(--colorDark);
+  color: $colorDark;
   button {
     border: none;
   }

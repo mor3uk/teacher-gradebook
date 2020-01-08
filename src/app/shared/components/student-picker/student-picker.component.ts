@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 import { Student } from '../../models/student.model';
-import { StudentService } from '../../services/student.service';
 
 @Component({
   selector: 'app-student-picker',
@@ -26,15 +25,6 @@ export class StudentPickerComponent implements OnInit {
     const id = (e.target as HTMLInputElement).value;
     this.selectedStudent = this.students.find(student => student.id === id);
     (e.target as HTMLInputElement).value = '';
-  }
-
-  onPickAll() {
-    this.pickedStudents = [...this.students, ...this.pickedStudents];
-    this.students = [];
-    this.pickedStudentsChanged.emit({
-      pickedStudents: [...this.pickedStudents],
-      students: [...this.students],
-    });
   }
 
   onAddNewStudent() {

@@ -15,9 +15,9 @@ import { Relative, RelativeKind } from '../../../shared/models/relative.model';
 export class RelativeFormComponent implements OnInit {
   maxDate: Moment = moment().subtract(16, 'years').add(1, 'day');
   kindList: RelativeKind[];
-  editMode: boolean = false;
+  editMode = false;
 
-  relative: Relative
+  relative: Relative;
   relativeForm: FormGroup;
 
   constructor(
@@ -45,10 +45,6 @@ export class RelativeFormComponent implements OnInit {
         this.editMode ? this.data.relative.fatherName : null,
         [Validators.maxLength(30)]
       ),
-      birthDate: new FormControl(
-        this.editMode ? moment(this.data.relative.birthDate) : null,
-        [Validators.required]
-      ),
       number: new FormControl(
         this.editMode ? this.data.relative.number : null,
         [Validators.pattern(/^((\+7|7|8)+([0-9]){10})$/)]
@@ -74,8 +70,7 @@ export class RelativeFormComponent implements OnInit {
     if (this.relativeForm.valid) {
       this.relative = {
         ...this.relativeForm.value,
-        birthDate: +this.relativeForm.value.birthDate,
-      }
+      };
 
       if (this.editMode) {
         this.relative.id = this.data.relative.id;
