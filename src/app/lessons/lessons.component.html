@@ -1,6 +1,6 @@
 <h2 class="title">Расписание</h2>
 <section class="section lessons">
-  <div class="lessons__list" *ngIf="lessons.length !== 0">
+  <div class="lessons__list" *ngIf="lessons.length !== 0 && !pending">
     <app-lesson
       class="lessons__item"
       *ngFor="let lesson of lessons"
@@ -11,10 +11,15 @@
       <mat-icon>add_circle_outline</mat-icon>
     </div>
   </div>
-  <div class="no-lessons" *ngIf="lessons.length === 0">
+
+  <div class="no-lessons" *ngIf="lessons.length === 0 && !pending">
     <div (click)="onAddLesson()" class="lessons__item">
       <span>Занятий нет</span>
       <mat-icon>add_circle_outline</mat-icon>
     </div>
+  </div>
+
+  <div *ngIf="pending" class="spinner">
+    <mat-spinner diameter="60"></mat-spinner>
   </div>
 </section>

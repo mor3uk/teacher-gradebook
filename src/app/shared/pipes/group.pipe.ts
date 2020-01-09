@@ -14,17 +14,17 @@ export class GroupPipe implements PipeTransform {
     }
 
     const group = this.gs.getGroup(id);
-    const name = group.name;
+    const name: string = group.name;
 
     if (!isNaN(+name)) {
       return '№' + name;
     }
 
-    if ((name + '').length > 14) {
-      return (name + '').substr(0, 11) + '...';
+    if (name.length > 14) {
+      return name.substr(0, 11) + '...';
     }
 
-    return (name as string).substr(0, 12);
+    return name;
 
   }
 }

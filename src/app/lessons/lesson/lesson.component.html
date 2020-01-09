@@ -6,34 +6,41 @@
       {{ 'минут' | plural:lesson.durationMinutes:['а', 'а', ''] }}
     </div>
   </div>
-  <div *ngIf="lesson.kind === 'common'" class="lesson__group">
-    <mat-icon>group</mat-icon>
-    <span>{{ groupId ? (groupId | group) : 'Загрузка...' }}</span>
-  </div>
 
-  <div
-    *ngIf="lesson.kind === 'personal' && lesson.studentsInfo.length === 1"
-    class="lesson__single">
-    <mat-icon>person</mat-icon>
-    <span>
-      {{ students.length === 0 ? 'Загрузка...' : students[0] | fullname:0 }}
-    </span>
-  </div>
-
-  <div
-    *ngIf="lesson.kind === 'personal' && lesson.studentsInfo.length > 1"
-    class="lesson__personal">
-    <div class="lesson__student-number">
-      {{ lesson.studentsInfo.length }}
-      {{ 'учащи' | plural:lesson.studentsInfo.length:['йся', 'хся', 'хся'] }}
+  <ng-container *ngIf="!pending">
+    <div *ngIf="lesson.kind === 'common'" class="lesson__group">
+      <mat-icon>group</mat-icon>
+      <span>{{ groupId | group }}</span>
     </div>
-    <div class="lesson__list">
-      <div
-        *ngFor="let j of [1, 2, 3, 4, 5, 6]; let i = index;"
-        class="lesson__student"
-        >{{ students[i] ? (students[i] | fullname:0) : '-' }}
+
+    <div
+      *ngIf="lesson.kind === 'personal' && lesson.studentsInfo.length === 1"
+      class="lesson__single">
+      <mat-icon>person</mat-icon>
+      <span>
+        {{ students[0] | fullname:0 }}
+      </span>
+    </div>
+
+    <div
+      *ngIf="lesson.kind === 'personal' && lesson.studentsInfo.length > 1"
+      class="lesson__personal">
+      <div class="lesson__student-number">
+        {{ lesson.studentsInfo.length }}
+        {{ 'учащи' | plural:lesson.studentsInfo.length:['йся', 'хся', 'хся'] }}
+      </div>
+      <div class="lesson__list">
+        <div
+          *ngFor="let i of [0, 1, 2, 3, 4, 5]"
+          class="lesson__student"
+          >{{ students[i] ? (students[i] | fullname:0) : '-' }}
+        </div>
       </div>
     </div>
+  </ng-container>
+
+  <div *ngIf="pending" class="spinner">
+    <mat-spinner diameter="45"></mat-spinner>
   </div>
 
 </div>

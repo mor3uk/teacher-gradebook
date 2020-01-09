@@ -1,11 +1,12 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 import * as uuid from 'uuid';
 
 import { GroupService } from './group.service';
 import { Student } from '../models/student.model';
-import { Group } from '../models/group.model';
 import { DB } from '../db';
+import { Group } from '../models/group.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,15 @@ import { DB } from '../db';
 export class StudentService {
   private db: DB;
   private students: Student[] = [];
-  studentsChanged = new EventEmitter<Student[]>();
+
+  studentsChanged = new Subject<Student[]>();
+  studentsLoaded = new BehaviorSubject<boolean>(false);
 
   constructor(private gs: GroupService) {
     this.db = new DB();
-    this.getStudents();
+    this.getStudents().then(() => {
+      this.studentsLoaded.next(true);
+    });
   }
 
   addStudent(student: Student): Promise<any> {
@@ -59,6 +64,10 @@ export class StudentService {
 
   getFreeStudents(): Student[] {
     return this.students.filter(student => !student.groupId);
+  }
+
+  getStudentsByIdList(idList: string[]): Student[] {
+    return this.students.filter(student => idList.includes(student.id));
   }
 
   async deleteStudent(id: string): Promise<any> {

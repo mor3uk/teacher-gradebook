@@ -34,16 +34,25 @@ export class AddLessonComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit() {
+    this.ss.getStudents();
+
     this.lessonForm = new FormGroup({
       startTime: new FormControl(null, [Validators.required]),
       durationMinutes: new FormControl(null, [Validators.required]),
       pickedGroup: new FormControl(null),
     });
+
     this.studentsSub = this.ss.studentsChanged
       .subscribe(students => {
         this.students = students;
       });
-    this.groups = this.gs.getGroupsWithStudents();
+
+    this.gs.groupsLoaded.subscribe(loaded => {
+      if (!loaded) {
+        return;
+      }
+      this.groups = this.gs.getGroupsWithStudents();
+    });
   }
 
   onPickGroup(e: Event) {
@@ -109,7 +118,6 @@ export class AddLessonComponent implements OnInit, OnDestroy {
     this.lessonKind = (kind as 'common' | 'personal');
 
     if (this.lessonKind === 'personal') {
-      this.ss.getStudents();
       this.lessonForm.removeControl('pickedGroup');
       this.lessonForm.addControl('pickedStudents', new FormControl([]));
       this.lessonForm.addControl('price', new FormControl(null, [Validators.required]));

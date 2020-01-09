@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 import uuid from 'uuid';
 
@@ -14,12 +14,15 @@ export class GroupService {
   private groups: Group[] = [];
 
   groupsChanged = new Subject<Group[]>();
+  groupsLoaded = new BehaviorSubject<boolean>(false);
   newGroupToAdd = new Subject();
   newGroupCreated = new Subject<Group>();
 
   constructor() {
     this.db = new DB();
-    this.getGroups();
+    this.getGroups().then(() => {
+      this.groupsLoaded.next(true);
+    });
   }
 
   addGroup(group: Group): Promise<any> {
