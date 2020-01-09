@@ -4,6 +4,11 @@
   color: #dc3545;
   font-size: 12px;
   margin: 5px 0 0 5px;
+  &_centered {
+    display: block;
+    text-align: center;
+    margin: 10px auto;
+  }
 }
 
 .hint-message {

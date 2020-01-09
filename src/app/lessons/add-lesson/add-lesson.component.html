@@ -24,6 +24,21 @@
       [min]="minTime"
       placeholder="Дата и время начала занятия"
     >
+    <span
+      *ngIf="lessonForm.controls.startTime.touched && lessonForm.controls.startTime.errors?.required"
+      class="error-message">
+      Укажите время и дату занятия
+    </span>
+    <span
+      *ngIf="lessonForm.controls.startTime.errors?.owlDateTimeMin"
+      class="error-message">
+      Занятие назначается минимум за час
+    </span>
+    <span
+      *ngIf="lessonForm.errors?.timeTaken"
+      class="error-message">
+      Время занято другим занятием
+    </span>
     <owl-date-time [pickerMode]="'dialog'" #startTimePicker></owl-date-time>
     <button type="button" mat-icon-button>
       <mat-icon [owlDateTimeTrigger]="startTimePicker">home</mat-icon>
@@ -36,10 +51,25 @@
       class="form__input"
       placeholder="45"
       formControlName="durationMinutes"
+      min="30"
+      max="180"
     >
-    <div class="hint-message">
+    <div *ngIf="!lessonForm.controls.durationMinutes.errors" class="hint-message">
       Длительность в минутах
     </div>
+    <span
+      *ngIf="lessonForm.controls.durationMinutes.touched
+        && lessonForm.controls.durationMinutes.errors?.required"
+      class="error-message">
+      Укажите длительность занятия
+    </span>
+    <span
+      *ngIf="!lessonForm.controls.durationMinutes.errors?.required
+        && (lessonForm.controls.durationMinutes.errors?.min
+        || lessonForm.controls.durationMinutes.errors?.max )"
+      class="error-message">
+      От 30 до 180 минут
+    </span>
   </div>
 
   <div *ngIf="lessonKind === 'personal'" class="form__container lesson-form__numbers">
@@ -49,10 +79,25 @@
         class="form__input"
         placeholder="45"
         formControlName="durationMinutes"
+        min="30"
+        max="180"
       >
-      <div class="hint-message">
+      <div *ngIf="!lessonForm.controls.durationMinutes.errors" class="hint-message">
         Длительность <br> в минутах
       </div>
+      <span
+        *ngIf="lessonForm.controls.durationMinutes.touched
+          && lessonForm.controls.durationMinutes.errors?.required"
+        class="error-message">
+        Укажите длительность занятия
+      </span>
+      <span
+        *ngIf="!lessonForm.controls.durationMinutes.errors?.required
+          && (lessonForm.controls.durationMinutes.errors?.min
+          || lessonForm.controls.durationMinutes.errors?.max )"
+        class="error-message">
+        От 30 до 180 минут
+      </span>
     </div>
 
     <div class="form__input-container lesson-form__number">
@@ -61,8 +106,20 @@
         class="form__input"
         placeholder="300"
         formControlName="price"
+        min="0"
       >
-      <div class="hint-message">
+      <span
+        *ngIf="lessonForm.controls.price.touched && lessonForm.controls.price.errors?.required"
+        class="error-message">
+        Укажите цену за занятие
+      </span>
+      <span
+        *ngIf="!lessonForm.controls.price.errors?.required
+          && lessonForm.controls.price.errors?.min"
+        class="error-message">
+        Минимальная стоимость 0 рублей
+      </span>
+      <div *ngIf="!lessonForm.controls.price.errors" class="hint-message">
         Цена в рублях
       </div>
     </div>
@@ -103,6 +160,18 @@
     [studentMode]="true"
     (pickedStudentsChanged)="onPickStudents($event)"
   ></app-student-picker>
+
+  <span
+    *ngIf="lessonKind === 'common' && submitTry === true && lessonForm.controls.pickedGroup.errors"
+    class="error-message error-message_centered">
+    Необходимо указать группу
+  </span>
+
+  <span
+    *ngIf="lessonKind === 'personal' && submitTry === true && lessonForm.controls.pickedStudents.errors"
+    class="error-message error-message_centered">
+    Необходимо указать учащихся
+  </span>
 
   <div class="form__controls">
     <button class="btn btn_success form__btn">Добавить</button>

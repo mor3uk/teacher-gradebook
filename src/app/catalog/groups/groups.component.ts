@@ -49,8 +49,8 @@ export class GroupsComponent implements OnInit, OnDestroy {
   onEditGroup(group: Group) {
     this.openDialog('edit', group).subscribe(async group => {
       if (group) {
-        await this.ss.setStudentsGroup(group);
         await this.gs.updateGroup(group);
+        await this.ss.setStudentsGroup(group);
         this.getGroupsWithPending();
       }
     });

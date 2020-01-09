@@ -88,10 +88,12 @@ export class StudentService {
   }
 
   setStudentsGroup(group: Group) {
-    group.studentIdList.forEach(id => {
-      const student = this.getStudent(id);
-      student.groupId = group.id;
-      this.updateStudent(student, false);
+    this.getStudents().then(() => {
+      group.studentIdList.forEach(id => {
+        const student = this.getStudent(id);
+        student.groupId = group.id;
+        this.updateStudent(student, false);
+      });
     });
   }
 

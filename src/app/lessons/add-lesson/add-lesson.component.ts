@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialogRef, MatRadioChange } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -11,6 +11,8 @@ import { StudentService } from '../../shared/services/student.service';
 import { Group } from '../../shared/models/group.model';
 import { CommonLesson, Lesson, PersonalLesson } from '../../shared/models/lesson.model';
 import { Student } from '../../shared/models/student.model';
+import { studentsRequired, timeTaken } from './add-lesson.validator';
+import { LessonService } from '../../shared/services/lesson.service';
 
 @Component({
   selector: 'app-add-lesson',
@@ -24,13 +26,14 @@ export class AddLessonComponent implements OnInit, OnDestroy {
   lessonForm: FormGroup;
   minTime: Moment = moment().add('1', 'hour');
   studentsSub: Subscription;
-
+  submitTry = false;
   students: Student[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<AddLessonComponent>,
     private gs: GroupService,
     private ss: StudentService,
+    private ls: LessonService,
   ) { }
 
   async ngOnInit() {
@@ -38,9 +41,11 @@ export class AddLessonComponent implements OnInit, OnDestroy {
 
     this.lessonForm = new FormGroup({
       startTime: new FormControl(null, [Validators.required]),
-      durationMinutes: new FormControl(null, [Validators.required]),
-      pickedGroup: new FormControl(null),
-    });
+      durationMinutes: new FormControl(
+        null, [Validators.required, Validators.min(30), Validators.max(180), Validators.pattern(/^[0-9]*$/)]
+      ),
+      pickedGroup: new FormControl(null, [Validators.required]),
+    }, [], [timeTaken(this.ls)]);
 
     this.studentsSub = this.ss.studentsChanged
       .subscribe(students => {
@@ -70,6 +75,8 @@ export class AddLessonComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(e: Event) {
+    console.log(this.lessonForm);
+    this.submitTry = true;
     e.preventDefault();
     if (this.lessonForm.invalid) {
       this.lessonForm.markAllAsTouched();
@@ -119,11 +126,13 @@ export class AddLessonComponent implements OnInit, OnDestroy {
 
     if (this.lessonKind === 'personal') {
       this.lessonForm.removeControl('pickedGroup');
-      this.lessonForm.addControl('pickedStudents', new FormControl([]));
-      this.lessonForm.addControl('price', new FormControl(null, [Validators.required]));
+      this.lessonForm.addControl('pickedStudents', new FormControl([], [studentsRequired]));
+      this.lessonForm.addControl(
+        'price', new FormControl(null, [Validators.required, Validators.min(0), Validators.pattern(/^[0-9]*$/)])
+      );
     }
     if (this.lessonKind === 'common') {
-      this.lessonForm.addControl('pickedGroup', new FormControl(null));
+      this.lessonForm.addControl('pickedGroup', new FormControl(null, [Validators.required]));
       this.lessonForm.removeControl('price');
       this.lessonForm.removeControl('pickedStudents');
     }

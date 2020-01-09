@@ -13,7 +13,8 @@ import { Lesson } from '../shared/models/lesson.model';
 })
 export class LessonsComponent implements OnInit, OnDestroy {
   lessons: Lesson[] = [];
-  lessonsSub: Subscription;
+  lessonsLoadedSub: Subscription;
+  lessonsChangedSub: Subscription;
   pending = false;
 
   constructor(
@@ -21,14 +22,19 @@ export class LessonsComponent implements OnInit, OnDestroy {
     private ls: LessonService,
   ) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.pending = true;
-    this.ls.getTodayLessons();
-    this.lessonsSub = this.ls.todayLessonsChanged
-      .subscribe(lessons => {
-        this.lessons = lessons;
-        this.pending = false;
-      });
+    this.lessonsLoadedSub = this.ls.lessonsLoaded.subscribe(loaded => {
+      if (!loaded) {
+        return;
+      }
+      this.lessons = this.ls.getTodayLessons();
+      this.pending = false;
+    });
+    this.lessonsChangedSub = this.ls.lessonsChanged.subscribe(() => {
+      this.lessons = this.ls.getTodayLessons();
+      this.pending = false;
+    });
   }
 
   onAddLesson() {
@@ -39,13 +45,14 @@ export class LessonsComponent implements OnInit, OnDestroy {
           console.log(lesson);
           this.pending = true;
           await this.ls.addLesson(lesson);
-          this.ls.getTodayLessons();
+          this.ls.getLessons();
         }
       });
   }
 
   ngOnDestroy() {
-    this.lessonsSub.unsubscribe();
+    this.lessonsLoadedSub.unsubscribe();
+    this.lessonsChangedSub.unsubscribe();
   }
 
 }
