@@ -7,12 +7,18 @@ import { ReportsComponent } from './reports/reports.component';
 import { LessonsComponent } from './lessons/lessons.component';
 import { GroupsComponent } from './catalog/groups/groups.component';
 import { StudentsComponent } from './catalog/students/students.component';
+import { LessonPageComponent } from './lessons/lesson-page/lesson-page.component';
 
 const routes: Routes = [
   {
     path: '', component: MainComponent, children: [
       { path: '', redirectTo: 'lessons', pathMatch: 'full' },
-      { path: 'lessons', component: LessonsComponent },
+      {
+        path: 'lessons', children: [
+          { path: '', pathMatch: 'full', component: LessonsComponent },
+          { path: ':id', component: LessonPageComponent },
+        ]
+      },
       { path: 'reports', component: ReportsComponent },
       {
         path: 'catalog', children: [

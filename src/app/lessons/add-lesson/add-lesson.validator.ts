@@ -16,12 +16,10 @@ export const timeTaken = (ls: LessonService) => {
     const endMs = startMs + form.controls.durationMinutes.value * 60 * 1000;
     const lessonsAtDay = await ls.getDayLessonsByTimestamp(startMs);
 
-    const timeBoundList = lessonsAtDay.map(lesson => {
-      return {
-        startMs: lesson.startTime,
-        endMs: lesson.startTime + lesson.durationMinutes * 60 * 1000,
-      };
-    });
+    const timeBoundList = lessonsAtDay.map(lesson => ({
+      startMs: lesson.startTime,
+      endMs: lesson.startTime + lesson.durationMinutes * 60 * 1000,
+    }));
 
     const timeBound = timeBoundList.find(bound => {
       if (startMs >= bound.startMs && startMs <= bound.endMs) {

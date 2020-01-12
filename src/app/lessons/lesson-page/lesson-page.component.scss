@@ -1,0 +1,82 @@
+@import "../../../styles/settings/variables";
+
+.lesson-students {
+  color: $colorDark;
+  &__table {
+    padding-right: 0;
+  }
+  .th-signers {
+    display: flex;
+    margin: 10px 0 -8px 0;
+    justify-content: space-around;
+  }
+  .th-title {
+    margin-top: -4px;
+  }
+  .th-radio {
+    width: 200px;
+  }
+  .payment {
+    width: 140px;
+  }
+  .inputs {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    &__input {
+      text-align: center;
+      font-size: 19px;
+      color: $colorDark;
+      width: 40%;
+      height: 30px;
+      span {
+        margin-top: 5px;
+        display: block;
+      }
+    }
+  }
+  mat-radio-group {
+    display: flex;
+    justify-content: space-around;
+  }
+  mat-radio-button {
+    width: 20px;
+  }
+  .small {
+    font-weight: 700;
+    mat-radio-group {
+      margin-top: 15px;
+    }
+    td > div {
+      display: flex;
+      & > div {
+        width: 50%;
+        &:nth-child(1) {
+          border-right: 0.5px solid $colorLight;
+        }
+        &:nth-child(2) {
+          border-left: 0.5px solid $colorLight;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 450px) {
+  .lesson-students {
+    .small {
+      td > div {
+        display: block;
+        & > div {
+          width: 100%;
+          border: none !important;
+          margin-bottom: 18px;
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}

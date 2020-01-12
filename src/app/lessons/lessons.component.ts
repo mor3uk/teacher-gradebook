@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { AddLessonComponent } from './add-lesson/add-lesson.component';
@@ -20,6 +21,8 @@ export class LessonsComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private ls: LessonService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -42,12 +45,15 @@ export class LessonsComponent implements OnInit, OnDestroy {
       .afterClosed()
       .subscribe(async lesson => {
         if (lesson) {
-          console.log(lesson);
           this.pending = true;
           await this.ls.addLesson(lesson);
           this.ls.getLessons();
         }
       });
+  }
+
+  onOpenLesson(id: string) {
+    this.router.navigate([id], { relativeTo: this.route });
   }
 
   ngOnDestroy() {

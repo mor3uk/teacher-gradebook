@@ -30,8 +30,8 @@ export class LessonService {
     return this.db.lessons.add(lesson);
   }
 
-  getLesson(id: string): Promise<Lesson> {
-    return this.db.lessons.get(id);
+  getLesson(id: string): Lesson {
+    return this.lessons.find(lesson => lesson.id === id);
   }
 
   getLessons(): Promise<void> {

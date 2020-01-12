@@ -1,0 +1,109 @@
+<h2 class="title">
+  {{ pending ? 'Загрузка...' : getLessonTime() }}
+</h2>
+<section class="section lesson-students">
+  <table class="table lesson-students__table">
+    <thead>
+      <tr>
+        <th>ФИО</th>
+        <th>Б/Н</th>
+        <th *ngIf="lesson?.kind === 'personal'" class="payment">
+          <div class="th-title">Оплата</div>
+          <div class="th-signers">
+            <span>Надо</span>
+            <span>Внёс</span>
+          </div>
+        </th>
+        <th fxHide.lt-md class="th-radio">
+          <div class="th-title">Поведение</div>
+          <div class="th-signers">
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+          </div>
+        </th>
+        <th fxHide.lt-md class="th-radio">
+          <div class="th-title">Оценка</div>
+          <div class="th-signers">
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody *ngIf="!pending">
+      <ng-container *ngFor="let student of students">
+        <tr>
+          <td>{{ student | fullname:0 }}</td>
+          <td>
+            <ui-switch size="small"></ui-switch>
+          </td>
+          <td *ngIf="lesson?.kind === 'personal'">
+            <div class="inputs">
+              <div class="inputs__input">
+                <span>100</span>
+              </div>
+              <input type="number" class="inputs__input">
+            </div>
+          </td>
+          <td fxHide.lt-md>
+            <mat-radio-group color="primary">
+              <mat-radio-button *ngFor="let i of [1, 2, 3, 4];" [value]="i"></mat-radio-button>
+              <mat-radio-button [checked]="true" [value]="5"></mat-radio-button>
+            </mat-radio-group>
+          </td>
+          <td fxHide.lt-md>
+            <mat-radio-group color="primary">
+              <mat-radio-button *ngFor="let i of [1, 2, 3, 4];" [value]="i"></mat-radio-button>
+              <mat-radio-button [checked]="true" [value]="5"></mat-radio-button>
+            </mat-radio-group>
+          </td>
+        </tr>
+        <tr class="small" fxHide.gt-sm>
+          <td colspan="3">
+            <div>
+              <div>
+                <div class="th-title">Поведение</div>
+                <div class="th-signers">
+                  <span>1</span>
+                  <span>2</span>
+                  <span>3</span>
+                  <span>4</span>
+                  <span>5</span>
+                </div>
+                <mat-radio-group color="primary">
+                  <mat-radio-button *ngFor="let i of [1, 2, 3, 4];" [value]="i"></mat-radio-button>
+                  <mat-radio-button [checked]="true" [value]="5"></mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div>
+                <div class="th-title">Оценка</div>
+                <div class="th-signers">
+                  <span>1</span>
+                  <span>2</span>
+                  <span>3</span>
+                  <span>4</span>
+                  <span>5</span>
+                </div>
+                <mat-radio-group color="primary">
+                  <mat-radio-button *ngFor="let i of [1, 2, 3, 4];" [value]="i"></mat-radio-button>
+                  <mat-radio-button [checked]="true" [value]="5"></mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <div *ngIf="pending" class="spinner">
+    <mat-spinner diameter="60"></mat-spinner>
+  </div>
+</section>

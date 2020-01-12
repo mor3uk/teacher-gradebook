@@ -75,7 +75,6 @@ export class AddLessonComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(e: Event) {
-    console.log(this.lessonForm);
     this.submitTry = true;
     e.preventDefault();
     if (this.lessonForm.invalid) {
