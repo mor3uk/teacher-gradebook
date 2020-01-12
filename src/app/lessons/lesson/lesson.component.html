@@ -1,4 +1,14 @@
-<div class="lesson">
+<button
+  (click)="onDeleteLesson()"
+  class="lesson__delete"
+  type="button"
+  mat-icon-button
+  matTooltip="Удалить занятие"
+  matTooltipPosition="above"
+>
+  <mat-icon>remove_circle_outline</mat-icon>
+</button>
+<div class="lesson" (click)="onOpenLesson()">
   <div class="lesson__head">
     <div class="lesson__start">{{ lesson.startTime | time }}</div>
     <div class="lesson__duration">

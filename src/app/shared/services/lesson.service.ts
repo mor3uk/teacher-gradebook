@@ -41,6 +41,10 @@ export class LessonService {
     });
   }
 
+  deleteLesson(id: string): Promise<void> {
+    return this.db.lessons.delete(id);
+  }
+
   getTodayLessons(): Lesson[] {
     const now = moment();
     const startOfDay = +now.startOf('day');

@@ -5,7 +5,7 @@
       class="lessons__item"
       *ngFor="let lesson of lessons"
       [lesson]="lesson"
-      (click)="onOpenLesson(lesson.id)"
+      (lessonToDelete)="onDeleteLesson($event)"
     ></app-lesson>
 
     <div (click)="onAddLesson()" class="lessons__item">

@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-
-import { PersonalLesson, CommonLesson } from '../../shared/models/lesson.model';
-import { StudentService } from '../../shared/services/student.service';
-import { Student } from '../../shared/models/student.model';
-import { GroupService } from 'src/app/shared/services/group.service';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+
+import { StudentService } from '../../shared/services/student.service';
+import { GroupService } from '../../shared/services/group.service';
+import { PersonalLesson, CommonLesson } from '../../shared/models/lesson.model';
+import { Student } from '../../shared/models/student.model';
 
 @Component({
   selector: 'app-lesson',
@@ -13,6 +14,8 @@ import { Subscription } from 'rxjs';
 })
 export class LessonComponent implements OnInit, OnDestroy {
   @Input() lesson: CommonLesson | PersonalLesson;
+  @Output() lessonToDelete = new EventEmitter<string>();
+
   students: Student[] = [];
   groupId: string = null;
   pending = false;
@@ -23,6 +26,8 @@ export class LessonComponent implements OnInit, OnDestroy {
   constructor(
     private ss: StudentService,
     private gs: GroupService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -56,6 +61,14 @@ export class LessonComponent implements OnInit, OnDestroy {
     if (this.groupsLoadedSub) {
       this.groupsLoadedSub.unsubscribe();
     }
+  }
+
+  onOpenLesson() {
+    this.router.navigate([this.lesson.id], { relativeTo: this.route });
+  }
+
+  onDeleteLesson() {
+    this.lessonToDelete.emit(this.lesson.id);
   }
 
 

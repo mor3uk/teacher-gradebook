@@ -8,6 +8,7 @@ import { LessonsComponent } from './lessons/lessons.component';
 import { GroupsComponent } from './catalog/groups/groups.component';
 import { StudentsComponent } from './catalog/students/students.component';
 import { LessonPageComponent } from './lessons/lesson-page/lesson-page.component';
+import { LessonsGuard } from './lessons/lessons-guard.service';
 
 const routes: Routes = [
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
       {
         path: 'lessons', children: [
           { path: '', pathMatch: 'full', component: LessonsComponent },
-          { path: ':id', component: LessonPageComponent },
+          { path: ':id', component: LessonPageComponent, canActivate: [LessonsGuard] },
         ]
       },
       { path: 'reports', component: ReportsComponent },

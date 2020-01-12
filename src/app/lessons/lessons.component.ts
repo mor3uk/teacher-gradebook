@@ -3,9 +3,10 @@ import { MatDialog } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { AddLessonComponent } from './add-lesson/add-lesson.component';
 import { LessonService } from '../shared/services/lesson.service';
 import { Lesson } from '../shared/models/lesson.model';
+import { AddLessonComponent } from './add-lesson/add-lesson.component';
+import { ConfirmDialog } from '../shared/components/confirm/confirm.component';
 
 @Component({
   selector: 'app-lessons',
@@ -21,8 +22,6 @@ export class LessonsComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private ls: LessonService,
-    private route: ActivatedRoute,
-    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -52,8 +51,14 @@ export class LessonsComponent implements OnInit, OnDestroy {
       });
   }
 
-  onOpenLesson(id: string) {
-    this.router.navigate([id], { relativeTo: this.route });
+  async onDeleteLesson(id: string) {
+    this.dialog.open(ConfirmDialog).afterClosed().subscribe(async res => {
+      if (res) {
+        this.pending = true;
+        await this.ls.deleteLesson(id);
+        this.ls.getLessons();
+      }
+    });
   }
 
   ngOnDestroy() {
