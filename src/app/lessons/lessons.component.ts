@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { LessonService } from '../shared/services/lesson.service';
+import { StudentService } from '../shared/services/student.service';
 import { Lesson } from '../shared/models/lesson.model';
 import { AddLessonComponent } from './add-lesson/add-lesson.component';
 import { ConfirmDialog } from '../shared/components/confirm/confirm.component';
@@ -22,6 +22,7 @@ export class LessonsComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private ls: LessonService,
+    private ss: StudentService
   ) { }
 
   ngOnInit() {
@@ -45,7 +46,9 @@ export class LessonsComponent implements OnInit, OnDestroy {
       .subscribe(async lesson => {
         if (lesson) {
           this.pending = true;
-          await this.ls.addLesson(lesson);
+          const newLesson = await this.ls.addLesson(lesson);
+          const idList = newLesson.studentsInfo.map(info => info.id);
+          await this.ss.addLessonToStudents(idList, newLesson.id);
           this.ls.getLessons();
         }
       });
@@ -55,7 +58,9 @@ export class LessonsComponent implements OnInit, OnDestroy {
     this.dialog.open(ConfirmDialog).afterClosed().subscribe(async res => {
       if (res) {
         this.pending = true;
-        await this.ls.deleteLesson(id);
+        const lesson = await this.ls.deleteLesson(id);
+        const studentsIdList = lesson.studentsInfo.map(info => info.id);
+        this.ss.removeLessonFromStudents(studentsIdList, lesson.id);
         this.ls.getLessons();
       }
     });

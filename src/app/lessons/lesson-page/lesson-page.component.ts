@@ -4,10 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 
-import { Lesson } from '../../shared/models/lesson.model';
 import { LessonService } from '../../shared/services/lesson.service';
-import { Student } from '../../shared/models/student.model';
 import { StudentService } from '../../shared/services/student.service';
+import { Student } from '../../shared/models/student.model';
+import { Lesson, CommonLesson } from '../../shared/models/lesson.model';
 
 @Component({
   selector: 'app-lesson-page',
@@ -46,7 +46,12 @@ export class LessonPageComponent implements OnInit, OnDestroy {
       if (!loaded) {
         return;
       }
-      this.students = this.ss.getStudentsByIdList(studentsIdList);
+      if (this.lesson.kind === 'personal') {
+        this.students = this.ss.getStudentsByIdList(studentsIdList);
+      } else {
+        this.students = this.ss.getStudentsByGroupId((this.lesson as CommonLesson).groupId);
+        this.ls.checkStudentsCompatibility(this.lesson, this.students);
+      }
     });
     this.pending = false;
   }

@@ -3,10 +3,11 @@ import { Subject, BehaviorSubject } from 'rxjs';
 
 import * as uuid from 'uuid';
 
+import { LessonService } from './lesson.service';
 import { GroupService } from './group.service';
 import { Student } from '../models/student.model';
-import { DB } from '../db';
 import { Group } from '../models/group.model';
+import { DB } from '../db';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,10 @@ export class StudentService {
   studentsChanged = new Subject<Student[]>();
   studentsLoaded = new BehaviorSubject<boolean>(false);
 
-  constructor(private gs: GroupService) {
+  constructor(
+    private gs: GroupService,
+    private ls: LessonService,
+  ) {
     this.db = new DB();
     this.getStudents().then(() => {
       this.studentsLoaded.next(true);
@@ -73,6 +77,7 @@ export class StudentService {
   async deleteStudent(id: string): Promise<any> {
     const student = this.getStudent(id);
     this.gs.replaceStudent(student.groupId, null, id);
+    this.ls.removeStudentFromLessons(student.lessonsIdList, id);
     return this.db.students.delete(id);
   }
 
@@ -107,6 +112,32 @@ export class StudentService {
 
   getStudentsByGroupId(id: string): Student[] {
     return this.students.filter(student => student.groupId === id);
+  }
+
+  addLessonToStudents(studentsIdList: string[], lessonId): Promise<any> {
+    const studentsUpdated: Promise<any>[] = [];
+    this.students.forEach(student => {
+      if (!studentsIdList.includes(student.id)) {
+        return;
+      }
+      if (!student.lessonsIdList) {
+        student.lessonsIdList = [];
+      }
+      student.lessonsIdList.push(lessonId);
+      studentsUpdated.push(this.updateStudent(student, false));
+    });
+
+    return Promise.all(studentsUpdated);
+  }
+
+  removeLessonFromStudents(studentsIdList, lessonId) {
+    this.students.forEach(student => {
+      if (!studentsIdList.includes(student.id)) {
+        return;
+      }
+      student.lessonsIdList = student.lessonsIdList.filter(id => id !== lessonId);
+      this.updateStudent(student, false);
+    });
   }
 
 }

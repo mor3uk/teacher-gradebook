@@ -10,4 +10,5 @@ export interface Student {
   passedLessons?: number;
   visitedLessons?: number;
   relatives: Relative[];
+  lessonsIdList?: string[];
 }
