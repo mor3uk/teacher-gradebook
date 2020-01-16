@@ -39,7 +39,12 @@
     <tbody *ngIf="!pending">
       <ng-container *ngFor="let student of students">
         <tr>
-          <td>{{ student | fullname:0 }}</td>
+          <td
+            (click)="onShowStudentInfo(student)"
+            class="lesson-students__student-name"
+            matTooltip="Подробная информация"
+            matTooltipPosition="above"
+          >{{ student | fullname:0 }}</td>
           <td>
             <ui-switch size="small"></ui-switch>
           </td>
@@ -53,14 +58,12 @@
           </td>
           <td fxHide.lt-md>
             <mat-radio-group color="primary">
-              <mat-radio-button *ngFor="let i of [1, 2, 3, 4];" [value]="i"></mat-radio-button>
-              <mat-radio-button [checked]="true" [value]="5"></mat-radio-button>
+              <mat-radio-button *ngFor="let i of [1, 2, 3, 4, 5];" [value]="i"></mat-radio-button>
             </mat-radio-group>
           </td>
           <td fxHide.lt-md>
             <mat-radio-group color="primary">
-              <mat-radio-button *ngFor="let i of [1, 2, 3, 4];" [value]="i"></mat-radio-button>
-              <mat-radio-button [checked]="true" [value]="5"></mat-radio-button>
+              <mat-radio-button *ngFor="let i of [1, 2, 3, 4, 5];" [value]="i"></mat-radio-button>
             </mat-radio-group>
           </td>
         </tr>
@@ -77,8 +80,7 @@
                   <span>5</span>
                 </div>
                 <mat-radio-group color="primary">
-                  <mat-radio-button *ngFor="let i of [1, 2, 3, 4];" [value]="i"></mat-radio-button>
-                  <mat-radio-button [checked]="true" [value]="5"></mat-radio-button>
+                  <mat-radio-button *ngFor="let i of [1, 2, 3, 4, 5];" [value]="i"></mat-radio-button>
                 </mat-radio-group>
               </div>
               <div>
@@ -91,8 +93,7 @@
                   <span>5</span>
                 </div>
                 <mat-radio-group color="primary">
-                  <mat-radio-button *ngFor="let i of [1, 2, 3, 4];" [value]="i"></mat-radio-button>
-                  <mat-radio-button [checked]="true" [value]="5"></mat-radio-button>
+                  <mat-radio-button *ngFor="let i of [1, 2, 3, 4, 5];" [value]="i"></mat-radio-button>
                 </mat-radio-group>
               </div>
 
@@ -102,6 +103,13 @@
       </ng-container>
     </tbody>
   </table>
+
+  <div class="not-found" *ngIf="students.length === 0 && !pending">
+    <mat-icon>warning</mat-icon>
+    <div>
+      Учащиеся отсутствуют
+    </div>
+  </div>
 
   <div *ngIf="pending" class="spinner">
     <mat-spinner diameter="60"></mat-spinner>

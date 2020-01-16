@@ -21,7 +21,7 @@
             <button
               (click)="onEditStudent(student.id)"
               mat-icon-button
-              matTooltip="Править студента"
+              matTooltip="Править учащегося"
               matTooltipPosition="above"
             >
               <mat-icon>edit</mat-icon>
@@ -29,7 +29,7 @@
             <button
               (click)="onDeleteStudent(student.id)"
               mat-icon-button
-              matTooltip="Удалить студента"
+              matTooltip="Удалить учащегося"
               matTooltipPosition="above"
             >
               <mat-icon>remove_circle_outline</mat-icon>
@@ -41,7 +41,7 @@
             <button
               (click)="onEditStudent(student.id)"
               mat-icon-button
-              matTooltip="Править студента"
+              matTooltip="Править учащегося"
               matTooltipPosition="above"
             >Править
               <mat-icon>edit</mat-icon>
@@ -49,7 +49,7 @@
             <button
               (click)="onDeleteStudent(student.id)"
               mat-icon-button
-              matTooltip="Удалить студента"
+              matTooltip="Удалить учащегося"
               matTooltipPosition="above"
             >Удалить
               <mat-icon>remove_circle_outline</mat-icon>
@@ -62,7 +62,7 @@
   <div class="not-found" *ngIf="students.length === 0 && !pending">
     <mat-icon>warning</mat-icon>
     <div>
-      Список учеников пуст
+      Список учащихся пуст
     </div>
   </div>
   <div *ngIf="pending" class="spinner">

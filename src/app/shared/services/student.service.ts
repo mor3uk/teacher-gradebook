@@ -42,7 +42,7 @@ export class StudentService {
     return this.db.students.add(student);
   }
 
-  async updateStudent(student: Student, studentMode: boolean = true): Promise<any> {
+  async updateStudent(student: Student, studentMode: boolean = true): Promise<Student> {
     if (studentMode) {
       const studentToUpdate = await this.getStudent(student.id);
       this.gs.replaceStudent(studentToUpdate.groupId, student.groupId, student.id);
@@ -52,7 +52,7 @@ export class StudentService {
       student.fatherName = '';
     }
 
-    return this.db.students.put(student);
+    return this.db.students.put(student).then(() => student);
   }
 
   getStudent(id: string): Student {
@@ -74,11 +74,11 @@ export class StudentService {
     return this.students.filter(student => idList.includes(student.id));
   }
 
-  async deleteStudent(id: string): Promise<any> {
+  async deleteStudent(id: string): Promise<Student> {
     const student = this.getStudent(id);
     this.gs.replaceStudent(student.groupId, null, id);
     this.ls.removeStudentFromLessons(student.lessonsIdList, id);
-    return this.db.students.delete(id);
+    return this.db.students.delete(id).then(() => student);
   }
 
   findExistingStudent(student: Student): Promise<Student> {
@@ -102,12 +102,15 @@ export class StudentService {
     });
   }
 
-  unsetStudentsGroup(idList: string[]) {
+  unsetStudentsGroup(idList: string[]): Promise<any> {
+    const studentsUpdated: Promise<any>[] = [];
     idList.forEach(id => {
       const student = this.getStudent(id);
       student.groupId = null;
-      this.updateStudent(student, false);
+      studentsUpdated.push(this.updateStudent(student, false));
     });
+
+    return Promise.all(studentsUpdated);
   }
 
   getStudentsByGroupId(id: string): Student[] {
@@ -130,14 +133,19 @@ export class StudentService {
     return Promise.all(studentsUpdated);
   }
 
-  removeLessonFromStudents(studentsIdList, lessonId) {
+  removeLessonFromStudents(studentsIdList, lessonId): Promise<any> {
+    const studentsUpdated: Promise<any>[] = [];
     this.students.forEach(student => {
       if (!studentsIdList.includes(student.id)) {
         return;
       }
-      student.lessonsIdList = student.lessonsIdList.filter(id => id !== lessonId);
-      this.updateStudent(student, false);
+      if (student.lessonsIdList) {
+        student.lessonsIdList = student.lessonsIdList.filter(id => id !== lessonId);
+        studentsUpdated.push(this.updateStudent(student, false));
+      }
     });
+
+    return Promise.all(studentsUpdated);
   }
 
 }

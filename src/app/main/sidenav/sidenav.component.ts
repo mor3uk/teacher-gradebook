@@ -13,7 +13,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
   lessonsLoadedSub: Subscription;
   lessonsChangedSub: Subscription;
-  lessonsCount: number;
+  lessonsCount: number = null;
 
   constructor(private ls: LessonService) { }
 

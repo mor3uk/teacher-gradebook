@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
+
 import { Subscription } from 'rxjs';
 
 import { LessonService } from '../shared/services/lesson.service';
@@ -22,7 +23,8 @@ export class LessonsComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private ls: LessonService,
-    private ss: StudentService
+    private ss: StudentService,
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit() {
@@ -55,15 +57,19 @@ export class LessonsComponent implements OnInit, OnDestroy {
   }
 
   async onDeleteLesson(id: string) {
-    this.dialog.open(ConfirmDialog).afterClosed().subscribe(async res => {
-      if (res) {
-        this.pending = true;
-        const lesson = await this.ls.deleteLesson(id);
-        const studentsIdList = lesson.studentsInfo.map(info => info.id);
-        this.ss.removeLessonFromStudents(studentsIdList, lesson.id);
-        this.ls.getLessons();
-      }
-    });
+    this.dialog.open(ConfirmDialog, { data: { message: 'Удалить занятие?' } })
+      .afterClosed().subscribe(async res => {
+        if (res) {
+          this.pending = true;
+          const lesson = await this.ls.deleteLesson(id);
+          const studentsIdList = lesson.studentsInfo.map(info => info.id);
+          this.ss.removeLessonFromStudents(studentsIdList, lesson.id);
+          this.ls.getLessons();
+          this.snackBar.open(`Занятие удалено`, 'Ок', {
+            duration: 2000,
+          });
+        }
+      });
   }
 
   ngOnDestroy() {

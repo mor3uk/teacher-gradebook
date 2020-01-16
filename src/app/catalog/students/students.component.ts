@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 
-import { Student } from '../../shared/models/student.model';
+import { FullnamePipe } from '../../shared/pipes/fullname.pipe';
 import { StudentService } from '../../shared/services/student.service';
+import { GroupService } from '../../shared/services/group.service';
+import { Student } from '../../shared/models/student.model';
 import { ConfirmDialog } from '../../shared/components/confirm/confirm.component';
 import { StudentFormComponent } from './student-form/student-form.component';
-import { GroupService } from '../../shared/services/group.service';
 import { GroupFormComponent } from '../groups/group-form/group-form.component';
 
 @Component({
@@ -24,6 +25,8 @@ export class StudentsComponent implements OnInit, OnDestroy {
     private ss: StudentService,
     private gs: GroupService,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private fullnamePipe: FullnamePipe
   ) { }
 
   ngOnInit() {
@@ -63,15 +66,22 @@ export class StudentsComponent implements OnInit, OnDestroy {
       if (student) {
         await this.ss.updateStudent(student);
         this.getStudentsWithPending();
+        this.snackBar.open('Учащийся изменён', 'Ок', {
+          duration: 2000,
+        });
       }
     });
   }
 
   onDeleteStudent(id: string) {
-    this.openDialog('delete').subscribe(async (res) => {
+    this.openDialog('delete').subscribe(async res => {
       if (res) {
-        await this.ss.deleteStudent(id);
+        const deletedStudent = await this.ss.deleteStudent(id);
+        const fullname = this.fullnamePipe.transform(deletedStudent, 1);
         this.getStudentsWithPending();
+        this.snackBar.open(`Учащийся ${fullname} удалён`, 'Ок', {
+          duration: 2000,
+        });
       }
     });
   }

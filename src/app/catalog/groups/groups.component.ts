@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 
-import { Group } from '../../shared/models/group.model';
 import { GroupService } from '../../shared/services/group.service';
 import { StudentService } from '../../shared/services/student.service';
+import { Group } from '../../shared/models/group.model';
 import { ConfirmDialog } from '../../shared/components/confirm/confirm.component';
 import { GroupFormComponent } from './group-form/group-form.component';
 
@@ -22,6 +22,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
     private gs: GroupService,
     private ss: StudentService,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
   ) { }
 
   async ngOnInit() {
@@ -52,6 +53,9 @@ export class GroupsComponent implements OnInit, OnDestroy {
         await this.gs.updateGroup(group);
         await this.ss.setStudentsGroup(group);
         this.getGroupsWithPending();
+        this.snackBar.open('Группа изменена', 'Ок', {
+          duration: 2000,
+        });
       }
     });
   }
@@ -61,8 +65,11 @@ export class GroupsComponent implements OnInit, OnDestroy {
       if (res) {
         const group = await this.gs.getGroup(id);
         await this.ss.unsetStudentsGroup(group.studentIdList);
-        await this.gs.deleteGroup(id);
+        const deletedGroup = await this.gs.deleteGroup(id);
         this.getGroupsWithPending();
+        this.snackBar.open(`Группа ${deletedGroup.name} удалена`, 'Ок', {
+          duration: 2000,
+        });
       }
     });
   }

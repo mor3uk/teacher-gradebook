@@ -1,0 +1,45 @@
+<div class="student-info">
+  <div class="student-info__title">
+    Информация об учащемся
+  </div>
+  <div class="student-info__piece">
+    Имя: {{ student | fullname:4 }}
+  </div>
+  <div class="student-info__piece">
+    Дата рождения: {{ student.birthDate | birthdate }}
+  </div>
+  <div class="student-info__piece">
+    Посещаемость: {{ student.passedLessons | attendance:student.visitedLessons }}
+  </div>
+  <hr>
+  <div class="student-info__title">
+    Родственники учащегося
+  </div>
+  <div class="student-info__piece">
+    <div *ngFor="let relative of student.relatives" class="student-info__relative">
+      <div class="student-info__piece">
+        {{ relative.kind }}:
+        {{ relative | fullname:4 }}
+      </div>
+      <div *ngIf="relative.number" class="student-info__piece">
+        Номер: {{ relative.number }}
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  <div class="student-info__title">Оплата</div>
+  <div class="student-info__piece">
+    Оплатил: 900р, Должен: 1200р
+  </div>
+
+  <div class="student-info__controls">
+    <button (click)="onRemoveStudent()" class="btn btn_primary">
+      Убрать из {{ lessonKind === 'personal' ? 'занятия' : 'группы' }}
+    </button>
+    <button (click)="onClose()" class="btn btn_danger">
+      Закрыть
+    </button>
+  </div>
+
+</div>

@@ -10,6 +10,7 @@ import { LessonComponent } from './lesson/lesson.component';
 import { AddLessonComponent } from './add-lesson/add-lesson.component';
 import { TimePipe } from '../shared/pipes/time.pipe';
 import { LessonPageComponent } from './lesson-page/lesson-page.component';
+import { StudentInfoComponent } from './lesson-page/student-info/student-info.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { LessonPageComponent } from './lesson-page/lesson-page.component';
     AddLessonComponent,
     TimePipe,
     LessonPageComponent,
+    StudentInfoComponent,
   ],
   imports: [
     CommonModule,
@@ -25,6 +27,9 @@ import { LessonPageComponent } from './lesson-page/lesson-page.component';
     ReactiveFormsModule,
     UiSwitchModule,
     FlexLayoutModule,
+  ],
+  entryComponents: [
+    StudentInfoComponent,
   ],
   exports: [],
   providers: [],

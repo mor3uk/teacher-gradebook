@@ -31,9 +31,9 @@ export class GroupService {
     return this.db.groups.add(group);
   }
 
-  updateGroup(group: Group): Promise<any> {
+  updateGroup(group: Group): Promise<Group> {
     group.name = group.name.trim();
-    return this.db.groups.put(group);
+    return this.db.groups.put(group).then(() => group);
   }
 
   getGroup(id: string): Group {
@@ -57,20 +57,21 @@ export class GroupService {
     );
   }
 
-  deleteGroup(id: string): Promise<any> {
-    return this.db.groups.delete(id);
+  deleteGroup(id: string): Promise<Group> {
+    const group = this.getGroup(id);
+    return this.db.groups.delete(id).then(() => group);
   }
 
-  async replaceStudent(prevGroupId: string, newGroupId: string, studentId: string) {
+  replaceStudent(prevGroupId: string, newGroupId: string, studentId: string): Promise<any> {
     const promiseArray = [];
     if (prevGroupId !== null) {
-      const prevGroup = await this.getGroup(prevGroupId);
+      const prevGroup = this.getGroup(prevGroupId);
       prevGroup.studentIdList = prevGroup.studentIdList.filter((id => id !== studentId));
       promiseArray.push(this.db.groups.put(prevGroup));
     }
 
     if (newGroupId !== null) {
-      const newGroup = await this.getGroup(newGroupId);
+      const newGroup = this.getGroup(newGroupId);
       newGroup.studentIdList.push(studentId);
       promiseArray.push(this.db.groups.put(newGroup));
 

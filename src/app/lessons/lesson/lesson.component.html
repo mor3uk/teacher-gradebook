@@ -24,11 +24,14 @@
     </div>
 
     <div
-      *ngIf="lesson.kind === 'personal' && lesson.studentsInfo.length === 1"
+      *ngIf="lesson.kind === 'personal' && lesson.studentsInfo.length <= 1"
       class="lesson__single">
       <mat-icon>person</mat-icon>
-      <span>
+      <span *ngIf="students[0]">
         {{ students[0] | fullname:0 }}
+      </span>
+      <span *ngIf="!students[0]">
+        Нет учащихся
       </span>
     </div>
 

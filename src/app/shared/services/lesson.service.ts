@@ -82,17 +82,19 @@ export class LessonService {
     return this.db.lessons.where('kind').equals('personal').toArray();
   }
 
-  removeStudentFromLessons(lessonIdList: string[], studentId: string) {
+  removeStudentFromLessons(lessonIdList: string[], studentId: string): Promise<any> {
+    const lessonsUpdated: Promise<any>[] = [];
     if (!lessonIdList || lessonIdList.length === 0) {
-      return;
+      return Promise.resolve();
     }
     this.lessons.forEach(lesson => {
       if (!lessonIdList.includes(lesson.id)) {
         return;
       }
       lesson.studentsInfo = lesson.studentsInfo.filter(info => info.id !== studentId);
-      this.updateLesson(lesson.id);
+      lessonsUpdated.push(this.updateLesson(lesson.id));
     });
+    return Promise.all(lessonsUpdated);
   }
 
   checkStudentsCompatibility(lesson: Lesson, students: Student[]) {

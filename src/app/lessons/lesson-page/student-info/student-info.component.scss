@@ -1,0 +1,17 @@
+.student-info {
+  padding: 0 10px;
+  &__title {
+    text-align: center;
+  }
+  &__piece {
+    margin: 12px 0;
+  }
+  &__controls {
+    text-align: right;
+    margin-top: 20px;
+    button {
+      margin-left: 10px;
+      padding: 10px;
+    }
+  }
+}

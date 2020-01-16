@@ -1,9 +1,11 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+
 import { Subscription } from 'rxjs';
 
 import { StudentService } from '../../shared/services/student.service';
 import { GroupService } from '../../shared/services/group.service';
+import { LessonService } from '../../shared/services/lesson.service';
 import { PersonalLesson, CommonLesson } from '../../shared/models/lesson.model';
 import { Student } from '../../shared/models/student.model';
 
@@ -19,6 +21,7 @@ export class LessonComponent implements OnInit, OnDestroy {
   students: Student[] = [];
   groupId: string = null;
   pending = false;
+  groupDeleted: boolean = null;
 
   studentsLoadedSub: Subscription;
   groupsLoadedSub: Subscription;
@@ -26,6 +29,7 @@ export class LessonComponent implements OnInit, OnDestroy {
   constructor(
     private ss: StudentService,
     private gs: GroupService,
+    private ls: LessonService,
     private router: Router,
     private route: ActivatedRoute,
   ) { }
@@ -38,6 +42,12 @@ export class LessonComponent implements OnInit, OnDestroy {
           return;
         }
         this.groupId = (this.lesson as CommonLesson).groupId;
+        const group = this.gs.getGroup(this.groupId);
+        if (group) {
+          this.groupDeleted = false;
+        } else {
+          this.groupDeleted = true;
+        }
         this.pending = false;
       });
     }
@@ -64,7 +74,11 @@ export class LessonComponent implements OnInit, OnDestroy {
   }
 
   onOpenLesson() {
-    this.router.navigate([this.lesson.id], { relativeTo: this.route });
+    if (this.groupDeleted === true) {
+      this.onDeleteLesson();
+    } else {
+      this.router.navigate([this.lesson.id], { relativeTo: this.route });
+    }
   }
 
   onDeleteLesson() {

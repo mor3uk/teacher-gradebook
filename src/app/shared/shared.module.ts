@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatTooltipModule } from '@angular/material';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatTooltipModule, MatSnackBarModule } from '@angular/material';
 
 import { NgxTrimDirectiveModule } from 'ngx-trim-directive';
 import {
@@ -18,7 +18,7 @@ import { TrancatePipe } from './pipes/trancate.pipe';
 import { ConfirmDialog } from './components/confirm/confirm.component';
 import { MaterialModule } from '../material.module';
 import { StudentPickerComponent } from './components/student-picker/student-picker.component';
-
+import { AttendancePipe } from './pipes/attendance.pipe';
 
 const sharedComponentsAndPipes = [
   AgePipe,
@@ -29,6 +29,7 @@ const sharedComponentsAndPipes = [
   TrancatePipe,
   ConfirmDialog,
   StudentPickerComponent,
+  AttendancePipe
 ];
 
 const sharedModules = [
@@ -37,6 +38,7 @@ const sharedModules = [
   MaterialModule,
   NgxTrimDirectiveModule,
   MatTooltipModule,
+  MatSnackBarModule,
 ];
 
 class DefaultIntl extends OwlDateTimeIntl {
@@ -52,6 +54,7 @@ class DefaultIntl extends OwlDateTimeIntl {
   ],
   exports: [...sharedComponentsAndPipes, ...sharedModules],
   providers: [
+    FullnamePipe,
     {
       provide: MAT_DATE_FORMATS,
       useValue: {

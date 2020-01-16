@@ -14,6 +14,11 @@ export class GroupPipe implements PipeTransform {
     }
 
     const group = this.gs.getGroup(id);
+
+    if (!group) {
+      return 'Группа удалена';
+    }
+
     const name: string = group.name;
 
     if (!isNaN(+name)) {

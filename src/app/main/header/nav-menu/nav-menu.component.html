@@ -4,7 +4,7 @@
       <a [routerLink]="['/lessons']">
         <mat-icon>schedule</mat-icon>
         <span>Занятия</span>
-        <span class="badge">{{ lessonsCount || '?' }}</span>
+        <span class="badge">{{ lessonsCount === null ? '?' : lessonsCount }}</span>
       </a>
     </li>
     <li routerLinkActive="list-item_active" class="list-item menu__item">

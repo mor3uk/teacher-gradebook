@@ -1,5 +1,5 @@
 <div class="confirm">
-  <div class="confirm__title">Вы уверены?</div>
+  <div class="confirm__title">{{ message || 'Вы уверены?' }}</div>
   <div class="confirm__controls">
     <button class="btn btn_primary" (click)="onClose()">No</button>
     <button class="btn btn_danger" [mat-dialog-close]="true" cdkFocusInitial>Yes</button>

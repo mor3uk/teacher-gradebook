@@ -1,13 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material';
 
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 
 import { LessonService } from '../../shared/services/lesson.service';
 import { StudentService } from '../../shared/services/student.service';
+import { GroupService } from '../../shared/services/group.service';
 import { Student } from '../../shared/models/student.model';
 import { Lesson, CommonLesson } from '../../shared/models/lesson.model';
+import { StudentInfoComponent } from './student-info/student-info.component';
 
 @Component({
   selector: 'app-lesson-page',
@@ -25,6 +28,8 @@ export class LessonPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private ls: LessonService,
     private ss: StudentService,
+    private gs: GroupService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -67,4 +72,27 @@ export class LessonPageComponent implements OnInit, OnDestroy {
       .format('DD MMM HH:mm');
   }
 
+  onShowStudentInfo(student: Student) {
+    this.dialog.open(StudentInfoComponent,
+      { data: { student, lessonKind: this.lesson.kind }, panelClass: 'overlay-narrow' })
+      .afterClosed()
+      .subscribe(async res => {
+        if (!res) {
+          return;
+        }
+        this.pending = true;
+        this.ls.removeStudentFromLessons([this.lesson.id], student.id);
+        this.ss.removeLessonFromStudents([student.id], this.lesson.id);
+
+        if (this.lesson.kind === 'common') {
+          await this.gs.replaceStudent((this.lesson as CommonLesson).groupId, null, student.id);
+          await this.ss.unsetStudentsGroup([student.id]);
+        }
+
+        this.lesson = this.ls.getLesson(this.lesson.id);
+        const studentsIdList = this.lesson.studentsInfo.map(info => info.id);
+        this.students = this.ss.getStudentsByIdList(studentsIdList);
+        this.pending = false;
+      });
+  }
 }

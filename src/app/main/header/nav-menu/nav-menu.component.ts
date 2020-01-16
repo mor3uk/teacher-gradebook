@@ -11,7 +11,7 @@ import { LessonService } from '../../../shared/services/lesson.service';
 export class NavMenuComponent implements OnInit, OnDestroy {
   lessonsLoadedSub: Subscription;
   lessonsChangedSub: Subscription;
-  lessonsCount: number;
+  lessonsCount: number = null;
 
   constructor(private ls: LessonService) { }
 
