@@ -24,7 +24,7 @@ export class AddLessonComponent implements OnInit, OnDestroy {
   groups: Group[] = [];
   group: Group;
   lessonForm: FormGroup;
-  minTime: Moment = moment().add('1', 'hour');
+  minTime: Moment = moment().subtract('1', 'hour');
   studentsSub: Subscription;
   submitTry = false;
   students: Student[] = [];

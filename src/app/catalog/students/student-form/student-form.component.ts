@@ -115,6 +115,8 @@ export class StudentFormComponent implements OnInit, OnDestroy {
         lessonsIdList: this.editMode && this.data.student.lessonsIdList,
         passedLessons: this.editMode && this.data.student.passedLessons,
         visitedLessons: this.editMode && this.data.student.visitedLessons,
+        owed: this.editMode && this.data.student.owed,
+        paid: this.editMode && this.data.student.paid,
       };
 
       this.dialogRef.close(this.student);

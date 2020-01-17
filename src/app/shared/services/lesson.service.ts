@@ -132,4 +132,10 @@ export class LessonService {
     this.updateLesson(lesson);
   }
 
+  isLessonEnded(lesson: Lesson): boolean {
+    const durationMs = lesson.durationMinutes * 60 * 1000;
+    const diff = +moment() - (lesson.startTime + durationMs);
+    return diff > 0;
+  }
+
 }

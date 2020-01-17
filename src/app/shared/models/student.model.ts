@@ -11,4 +11,6 @@ export interface Student {
   visitedLessons?: number;
   relatives: Relative[];
   lessonsIdList?: string[];
+  paid?: number;
+  owed?: number;
 }

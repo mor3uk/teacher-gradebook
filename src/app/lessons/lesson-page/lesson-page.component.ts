@@ -9,7 +9,7 @@ import { LessonService } from '../../shared/services/lesson.service';
 import { StudentService } from '../../shared/services/student.service';
 import { GroupService } from '../../shared/services/group.service';
 import { Student } from '../../shared/models/student.model';
-import { Lesson, CommonLesson } from '../../shared/models/lesson.model';
+import { Lesson, CommonLesson, PersonalLesson } from '../../shared/models/lesson.model';
 import { StudentInfoComponent } from './student-info/student-info.component';
 import { AddStudentComponent } from './add-student/add-student.component';
 
@@ -24,6 +24,7 @@ export class LessonPageComponent implements OnInit, OnDestroy {
   studentsLoadedSub: Subscription;
   students: Student[] = [];
   pending = false;
+  lessonPrice: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,7 +45,7 @@ export class LessonPageComponent implements OnInit, OnDestroy {
         this.lesson = this.ls.getLesson(params.id);
         this.getStudents();
 
-        if (this.lesson.studentsMarked) {
+        if (this.lesson.studentsMarked || !this.isLessonEnded()) {
           return;
         }
         this.ss.markStudents(this.students);
@@ -60,8 +61,9 @@ export class LessonPageComponent implements OnInit, OnDestroy {
       if (!loaded) {
         return;
       }
-      if (this.lesson.kind === 'personal') {
+      if (this.lesson.kind === 'personal' || this.isLessonEnded()) {
         this.students = this.ss.getStudentsByIdList(studentsIdList);
+        this.lessonPrice = (this.lesson as PersonalLesson).price;
       } else {
         this.students = this.ss.getStudentsByGroupId((this.lesson as CommonLesson).groupId);
         this.ls.checkStudentsCompatibility(this.lesson, this.students);
@@ -83,7 +85,10 @@ export class LessonPageComponent implements OnInit, OnDestroy {
 
   onShowStudentInfo(student: Student) {
     this.dialog.open(StudentInfoComponent,
-      { data: { student, lessonKind: this.lesson.kind }, panelClass: 'overlay-narrow' })
+      {
+        data: { student, lessonKind: this.lesson.kind, enableDeletion: !this.isLessonEnded() },
+        panelClass: 'overlay-narrow'
+      })
       .afterClosed()
       .subscribe(async res => {
         if (!res) {
@@ -92,7 +97,12 @@ export class LessonPageComponent implements OnInit, OnDestroy {
         this.pending = true;
 
         this.ls.removeStudentFromLessons([this.lesson.id], student.id);
-        this.ss.removeLessonFromStudents([student.id], this.lesson.id);
+
+        if (this.lesson.kind === 'personal') {
+          this.ss.removeLessonFromStudents([student.id], this.lesson.id, this.lessonPrice);
+        } else {
+          this.ss.removeLessonFromStudents([student.id], this.lesson.id);
+        }
 
         if (this.lesson.kind === 'common') {
           this.gs.replaceStudent((this.lesson as CommonLesson).groupId, null, student.id);
@@ -117,11 +127,14 @@ export class LessonPageComponent implements OnInit, OnDestroy {
         }
         this.pending = true;
 
-        this.ss.markStudents(students);
         const studentIdList = students.map(student => student.id);
 
         this.ls.addStudentsToLesson(this.lesson.id, studentIdList);
-        this.ss.addLessonToStudents(studentIdList, this.lesson.id);
+        if (this.lesson.kind === 'personal') {
+          this.ss.addLessonToStudents(studentIdList, this.lesson.id, this.lessonPrice);
+        } else {
+          this.ss.addLessonToStudents(studentIdList, this.lesson.id);
+        }
 
         if (this.lesson.kind === 'common') {
           students.forEach(student => {
@@ -164,6 +177,9 @@ export class LessonPageComponent implements OnInit, OnDestroy {
   }
 
   onChangeAttendance(attended: boolean, studentId: string) {
+    if (!this.isLessonEnded()) {
+      return;
+    }
     this.lesson.studentsInfo.forEach(info => {
       if (info.id === studentId) {
         info.attended = attended;
@@ -183,6 +199,9 @@ export class LessonPageComponent implements OnInit, OnDestroy {
   }
 
   changeStudentBehavior({ value }, studentId: string) {
+    if (!this.isLessonEnded()) {
+      return;
+    }
     this.lesson.studentsInfo.forEach(info => {
       if (studentId === info.id) {
         info.behavior = value;
@@ -192,12 +211,27 @@ export class LessonPageComponent implements OnInit, OnDestroy {
   }
 
   changeStudentMark({ value }, studentId: string) {
+    if (!this.isLessonEnded()) {
+      return;
+    }
     this.lesson.studentsInfo.forEach(info => {
       if (studentId === info.id) {
         info.mark = value;
       }
     });
     this.ls.updateLesson(this.lesson);
+  }
+
+  onChangeStudentPayment(e: Event, id: string) {
+    const student = this.students.find(student => student.id === id);
+    const startSum = student.paid - student.owed + this.lessonPrice;
+    const endSum = +(e.target as HTMLInputElement).value;
+    student.paid += (endSum - startSum);
+    this.ss.updateStudent(student);
+  }
+
+  isLessonEnded(): boolean {
+    return this.ls.isLessonEnded(this.lesson);
   }
 
 }

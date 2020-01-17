@@ -38,6 +38,9 @@ export class AddStudentComponent implements OnInit {
   }
 
   onAddStudents() {
+    if (this.pickedStudents.length === 0) {
+      return this.dialogRef.close();
+    }
     this.dialogRef.close(this.pickedStudents);
   }
 

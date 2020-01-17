@@ -36,6 +36,9 @@ export class StudentService {
     student.id = uuid();
     student.passedLessons = 0;
     student.visitedLessons = 0;
+    student.lessonsIdList = [];
+    student.owed = 0;
+    student.paid = 0;
 
     this.gs.replaceStudent(null, student.groupId, student.id);
 
@@ -125,15 +128,13 @@ export class StudentService {
     return this.students.filter(student => student.groupId === id);
   }
 
-  addLessonToStudents(studentsIdList: string[], lessonId): Promise<any> {
+  addLessonToStudents(studentsIdList: string[], lessonId, price: number = 0): Promise<any> {
     const studentsUpdated: Promise<any>[] = [];
     this.students.forEach(student => {
       if (!studentsIdList.includes(student.id)) {
         return;
       }
-      if (!student.lessonsIdList) {
-        student.lessonsIdList = [];
-      }
+      student.owed += price;
       student.lessonsIdList.push(lessonId);
       studentsUpdated.push(this.updateStudent(student, false));
     });
@@ -141,14 +142,15 @@ export class StudentService {
     return Promise.all(studentsUpdated);
   }
 
-  removeLessonFromStudents(studentsIdList, lessonId): Promise<any> {
+  removeLessonFromStudents(studentsIdList, lessonId, price: number = 0): Promise<any> {
     const studentsUpdated: Promise<any>[] = [];
     this.students.forEach(student => {
       if (!studentsIdList.includes(student.id)) {
         return;
       }
-      if (student.lessonsIdList) {
+      if (student.lessonsIdList.length !== 0) {
         student.lessonsIdList = student.lessonsIdList.filter(id => id !== lessonId);
+        student.owed -= price;
         studentsUpdated.push(this.updateStudent(student, false));
       }
     });

@@ -8,8 +8,6 @@ import { HeaderComponent } from './main/header/header.component';
 import { NavMenuComponent } from './main/header/nav-menu/nav-menu.component';
 import { AccountComponent } from './main/header/account/account.component';
 import { SidenavComponent } from './main/sidenav/sidenav.component';
-import { ReportsComponent } from './reports/reports.component';
-import { AuthComponent } from './auth/auth.component';
 import { MainComponent } from './main/main.component';
 import { StudentFormComponent } from './catalog/students/student-form/student-form.component';
 import { RelativeFormComponent } from './catalog/students/relative-form/relative-form.component';
@@ -25,9 +23,7 @@ import { LessonsModule } from './lessons/lessons.module';
     NavMenuComponent,
     AccountComponent,
     SidenavComponent,
-    ReportsComponent,
     HeaderComponent,
-    AuthComponent,
     MainComponent,
   ],
   imports: [

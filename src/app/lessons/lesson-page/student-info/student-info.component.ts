@@ -12,6 +12,7 @@ import { ConfirmDialog } from '../../../shared/components/confirm/confirm.compon
 export class StudentInfoComponent implements OnInit {
   student: Student;
   lessonKind: string;
+  enableDeletion: boolean;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data,
@@ -22,11 +23,12 @@ export class StudentInfoComponent implements OnInit {
   ngOnInit() {
     this.student = this.data.student;
     this.lessonKind = this.data.lessonKind;
+    this.enableDeletion = this.data.enableDeletion;
   }
 
   onRemoveStudent() {
     this.dialog.open(ConfirmDialog).afterClosed().subscribe(res => {
-      if (res) {
+      if (res && this.enableDeletion) {
         this.dialogRef.close(true);
       }
     });

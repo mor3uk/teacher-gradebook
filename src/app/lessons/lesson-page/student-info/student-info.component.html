@@ -1,6 +1,6 @@
 <div class="student-info">
   <div class="student-info__title">
-    Информация об учащемся
+    <mat-icon>info</mat-icon>Информация об учащемся:
   </div>
   <div class="student-info__piece">
     Имя: {{ student | fullname:4 }}
@@ -16,7 +16,7 @@
   </div>
   <hr>
   <div class="student-info__title">
-    Родственники учащегося
+    <mat-icon>face</mat-icon>Родственники учащегося:
   </div>
   <div class="student-info__piece">
     <div *ngFor="let relative of student.relatives" class="student-info__relative">
@@ -31,13 +31,24 @@
   </div>
 
   <hr>
-  <div class="student-info__title">Оплата</div>
+  <div class="student-info__title">
+    <mat-icon>payment</mat-icon>Оплата:
+  </div>
   <div class="student-info__piece">
-    Оплатил: 900р, Должен: 1200р
+    К оплате за всё время: {{ student.owed }}р.
+  </div>
+  <div class="student-info__piece">
+    Оплачено за всё время: {{ student.paid }}р.
+  </div>
+  <div *ngIf="student.owed - student.paid >= 0" class="student-info__piece">
+    Должен: {{ student.owed - student.paid }}р.
+  </div>
+  <div *ngIf="student.owed - student.paid < 0" class="student-info__piece">
+    Остаток: {{ student.paid - student.owed }}р.
   </div>
 
   <div class="drop-controls">
-    <button (click)="onRemoveStudent()" class="btn btn_primary">
+    <button *ngIf="enableDeletion" (click)="onRemoveStudent()" class="btn btn_primary">
       Убрать из {{ lessonKind === 'personal' ? 'занятия' : 'группы' }}
     </button>
     <button (click)="onClose()" class="btn btn_danger">

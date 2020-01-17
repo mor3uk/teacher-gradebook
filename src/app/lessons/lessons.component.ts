@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { LessonService } from '../shared/services/lesson.service';
 import { StudentService } from '../shared/services/student.service';
-import { Lesson } from '../shared/models/lesson.model';
+import { Lesson, PersonalLesson } from '../shared/models/lesson.model';
 import { AddLessonComponent } from './add-lesson/add-lesson.component';
 import { ConfirmDialog } from '../shared/components/confirm/confirm.component';
 
@@ -50,7 +50,11 @@ export class LessonsComponent implements OnInit, OnDestroy {
           this.pending = true;
           const newLesson = await this.ls.addLesson(lesson);
           const idList = newLesson.studentsInfo.map(info => info.id);
-          await this.ss.addLessonToStudents(idList, newLesson.id);
+          if (lesson.kind === 'personal') {
+            await this.ss.addLessonToStudents(idList, newLesson.id, lesson.price);
+          } else {
+            await this.ss.addLessonToStudents(idList, newLesson.id);
+          }
           this.ls.getLessons();
         }
       });
@@ -63,7 +67,12 @@ export class LessonsComponent implements OnInit, OnDestroy {
           this.pending = true;
           const lesson = await this.ls.deleteLesson(id);
           const studentsIdList = lesson.studentsInfo.map(info => info.id);
-          this.ss.removeLessonFromStudents(studentsIdList, lesson.id);
+          if (this.ls.isLessonEnded(lesson) || lesson.kind === 'common') {
+            this.ss.removeLessonFromStudents(studentsIdList, lesson.id);
+          } else {
+            this.ss.removeLessonFromStudents(studentsIdList, lesson.id, (lesson as PersonalLesson).price);
+          }
+
           this.ls.getLessons();
           this.snackBar.open(`Занятие удалено`, 'Ок', {
             duration: 2000,

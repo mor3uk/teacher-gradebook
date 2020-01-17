@@ -4,6 +4,7 @@
 <section class="section lesson-students">
   <table class="table lesson-students__table">
     <button
+      *ngIf="!isLessonEnded()"
       (click)="onAddStudents()"
       class="btn btn_success table__add lesson-students__add"
       [matTooltip]="lesson?.kind === 'personal' ? 'Добавить учащегося в занятие' : 'Добавить учащегося в группу'"
@@ -53,6 +54,7 @@
           >{{ student | fullname:0 }}</td>
           <td>
             <ui-switch
+              [disabled]="!isLessonEnded()"
               [checked]="studentAttended(student.id)"
               (change)="onChangeAttendance($event, student.id)"
               size="small"
@@ -61,13 +63,19 @@
           <td *ngIf="lesson?.kind === 'personal'">
             <div class="inputs">
               <div class="inputs__input">
-                <span>100</span>
+                <span>{{ lessonPrice }}</span>
               </div>
-              <input type="number" class="inputs__input">
+              <input
+                type="number"
+                [value]="student.paid - student.owed + lessonPrice"
+                class="inputs__input"
+                (change)="onChangeStudentPayment($event, student.id)"
+              >
             </div>
           </td>
           <td fxHide.lt-md>
             <mat-radio-group
+              [disabled]="!isLessonEnded()"
               [value]="getStudentBehavior(student.id)"
               (change)="changeStudentBehavior($event, student.id)"
               color="primary"
@@ -77,6 +85,7 @@
           </td>
           <td fxHide.lt-md>
             <mat-radio-group
+              [disabled]="!isLessonEnded()"
               [value]="getStudentMark(student.id)"
               (change)="changeStudentMark($event, student.id)"
               color="primary"
@@ -98,6 +107,7 @@
                   <span>5</span>
                 </div>
                 <mat-radio-group
+                  [disabled]="!isLessonEnded()"
                   [value]="getStudentBehavior(student.id)"
                   (change)="changeStudentBehavior($event, student.id)"
                   color="primary"
@@ -115,6 +125,7 @@
                   <span>5</span>
                 </div>
                 <mat-radio-group
+                  [disabled]="!isLessonEnded()"
                   [value]="getStudentMark(student.id)"
                   (change)="changeStudentMark($event, student.id)"
                   color="primary"
