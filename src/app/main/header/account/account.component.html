@@ -4,7 +4,10 @@
     (click)="onToggleDetails()"
     [ngClass]="{'account__image_active': detailesOpen}"
   >
-    <img src="../../../assets/no-image.png" title="Детали" alt="image">
+    <img
+      src="../../../assets/no-image.png"
+      alt="image"
+    >
     <ul class="account__details drop-list" *ngIf="detailesOpen">
       <div class="account__name">Шурыгин Д.О.</div>
       <li class="list-item">

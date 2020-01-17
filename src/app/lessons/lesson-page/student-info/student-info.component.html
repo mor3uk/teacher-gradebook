@@ -11,6 +11,9 @@
   <div class="student-info__piece">
     Посещаемость: {{ student.passedLessons | attendance:student.visitedLessons }}
   </div>
+  <div class="student-info__piece">
+    Группа: {{ student.groupId | group }}
+  </div>
   <hr>
   <div class="student-info__title">
     Родственники учащегося
@@ -33,7 +36,7 @@
     Оплатил: 900р, Должен: 1200р
   </div>
 
-  <div class="student-info__controls">
+  <div class="drop-controls">
     <button (click)="onRemoveStudent()" class="btn btn_primary">
       Убрать из {{ lessonKind === 'personal' ? 'занятия' : 'группы' }}
     </button>

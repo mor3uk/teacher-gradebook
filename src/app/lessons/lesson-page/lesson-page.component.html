@@ -3,6 +3,12 @@
 </h2>
 <section class="section lesson-students">
   <table class="table lesson-students__table">
+    <button
+      (click)="onAddStudent()"
+      class="btn btn_success table__add lesson-students__add"
+      [matTooltip]="lesson?.kind === 'personal' ? 'Добавить учащегося в занятие' : 'Добавить учащегося в группу'"
+      matTooltipPosition="above"
+    >Добавить</button>
     <thead>
       <tr>
         <th>ФИО</th>

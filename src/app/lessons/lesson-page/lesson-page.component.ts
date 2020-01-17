@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
@@ -11,6 +11,7 @@ import { GroupService } from '../../shared/services/group.service';
 import { Student } from '../../shared/models/student.model';
 import { Lesson, CommonLesson } from '../../shared/models/lesson.model';
 import { StudentInfoComponent } from './student-info/student-info.component';
+import { AddStudentComponent } from './add-student/add-student.component';
 
 @Component({
   selector: 'app-lesson-page',
@@ -30,6 +31,7 @@ export class LessonPageComponent implements OnInit, OnDestroy {
     private ss: StudentService,
     private gs: GroupService,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit() {
@@ -81,18 +83,57 @@ export class LessonPageComponent implements OnInit, OnDestroy {
           return;
         }
         this.pending = true;
+
         this.ls.removeStudentFromLessons([this.lesson.id], student.id);
         this.ss.removeLessonFromStudents([student.id], this.lesson.id);
 
         if (this.lesson.kind === 'common') {
-          await this.gs.replaceStudent((this.lesson as CommonLesson).groupId, null, student.id);
-          await this.ss.unsetStudentsGroup([student.id]);
+          this.gs.replaceStudent((this.lesson as CommonLesson).groupId, null, student.id);
+          this.ss.unsetStudentsGroup([student.id]);
         }
 
-        this.lesson = this.ls.getLesson(this.lesson.id);
-        const studentsIdList = this.lesson.studentsInfo.map(info => info.id);
-        this.students = this.ss.getStudentsByIdList(studentsIdList);
-        this.pending = false;
+        this.getStudentsAfterChange();
+        this.snackBar.open('Учащийся был удалён', 'Ок', {
+          duration: 2000,
+        });
       });
+  }
+
+  onAddStudent() {
+    const studentsIdList = this.lesson.studentsInfo.map(info => info.id);
+    this.dialog.open(AddStudentComponent,
+      { data: { lessonKind: this.lesson.kind, studentsIdList }, panelClass: 'overlay-narrow' })
+      .afterClosed()
+      .subscribe(students => {
+        if (!students) {
+          return;
+        }
+        this.pending = true;
+
+        const studentIdList = students.map(student => student.id);
+
+        this.ls.addStudentsToLesson(this.lesson.id, studentIdList);
+        this.ss.addLessonToStudents(studentIdList, this.lesson.id);
+
+        if (this.lesson.kind === 'common') {
+          students.forEach(student => {
+            this.gs.replaceStudent(null, (this.lesson as CommonLesson).groupId, student.id);
+          });
+          const group = this.gs.getGroup((this.lesson as CommonLesson).groupId);
+          this.ss.setStudentsGroup(group);
+        }
+
+        this.getStudentsAfterChange();
+        this.snackBar.open('Учащиеся были добавлены', 'Ок', {
+          duration: 2000,
+        });
+      });
+  }
+
+  private getStudentsAfterChange() {
+    this.lesson = this.ls.getLesson(this.lesson.id);
+    const studentsIdList = this.lesson.studentsInfo.map(info => info.id);
+    this.students = this.ss.getStudentsByIdList(studentsIdList);
+    this.pending = false;
   }
 }

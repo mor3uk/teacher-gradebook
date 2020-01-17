@@ -97,6 +97,16 @@ export class LessonService {
     return Promise.all(lessonsUpdated);
   }
 
+  addStudentsToLesson(lessonId: string, studentsIdList: string[]) {
+    this.lessons.forEach(lesson => {
+      if (lessonId === lesson.id) {
+        const studentsInfo = studentsIdList.map(id => ({ id }));
+        lesson.studentsInfo.push(...studentsInfo);
+        this.updateLesson(lesson.id);
+      }
+    });
+  }
+
   checkStudentsCompatibility(lesson: Lesson, students: Student[]) {
     const studentsIdList = students.map(student => student.id);
     const startIdLength = lesson.studentsInfo.length;

@@ -1,6 +1,6 @@
 @import "./styles/reset";
 @import "~ng-pick-datetime/assets/style/picker.min.css";
-@import '~ngx-ui-switch/ui-switch.component.scss';
+@import "~ngx-ui-switch/ui-switch.component.scss";
 
 @import "./styles/settings/variables";
 
@@ -15,6 +15,7 @@
 @import "./styles/blocks/title";
 @import "./styles/blocks/drop-list";
 @import "./styles/blocks/list-item";
+@import "./styles/blocks/drop-controls";
 
 html,
 body {

@@ -59,6 +59,10 @@ export class StudentService {
     return this.students.find(student => student.id === id);
   }
 
+  getCurrentStudents(): Student[] {
+    return [...this.students];
+  }
+
   getStudents(): Promise<void> {
     return this.db.students.toArray().then(students => {
       this.students = students;
@@ -95,9 +99,13 @@ export class StudentService {
   setStudentsGroup(group: Group) {
     this.getStudents().then(() => {
       group.studentIdList.forEach(id => {
-        const student = this.getStudent(id);
-        student.groupId = group.id;
-        this.updateStudent(student, false);
+        this.students.forEach(student => {
+          if (student.id !== id) {
+            return;
+          }
+          student.groupId = group.id;
+          this.updateStudent(student, false);
+        });
       });
     });
   }

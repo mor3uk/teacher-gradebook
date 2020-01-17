@@ -1,0 +1,18 @@
+<div class="add-student">
+  <div class="add-student__title">
+    Добавить учащихся в {{ lessonKind === 'personal' ? 'занятие' : 'группу' }}
+  </div>
+  <app-student-picker
+      [students]="students"
+      [studentMode]="true"
+      (pickedStudentsChanged)="onPickStudents($event)"
+  ></app-student-picker>
+  <div class="drop-controls">
+    <button (click)="onAddStudents()" class="btn btn_primary">
+      Добавить в {{ lessonKind === 'personal' ? 'занятие' : 'группу' }}
+    </button>
+    <button (click)="onClose()" class="btn btn_danger">
+      Закрыть
+    </button>
+  </div>
+</div>

@@ -16,7 +16,7 @@ export class StudentInfoComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) private data,
     private dialogRef: MatDialogRef<StudentInfoComponent>,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
