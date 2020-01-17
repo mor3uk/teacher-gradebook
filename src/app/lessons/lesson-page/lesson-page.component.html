@@ -4,7 +4,7 @@
 <section class="section lesson-students">
   <table class="table lesson-students__table">
     <button
-      (click)="onAddStudent()"
+      (click)="onAddStudents()"
       class="btn btn_success table__add lesson-students__add"
       [matTooltip]="lesson?.kind === 'personal' ? 'Добавить учащегося в занятие' : 'Добавить учащегося в группу'"
       matTooltipPosition="above"
@@ -52,7 +52,11 @@
             matTooltipPosition="above"
           >{{ student | fullname:0 }}</td>
           <td>
-            <ui-switch size="small"></ui-switch>
+            <ui-switch
+              [checked]="studentAttended(student.id)"
+              (change)="onChangeAttendance($event, student.id)"
+              size="small"
+            ></ui-switch>
           </td>
           <td *ngIf="lesson?.kind === 'personal'">
             <div class="inputs">
@@ -63,12 +67,20 @@
             </div>
           </td>
           <td fxHide.lt-md>
-            <mat-radio-group color="primary">
+            <mat-radio-group
+              [value]="getStudentBehavior(student.id)"
+              (change)="changeStudentBehavior($event, student.id)"
+              color="primary"
+            >
               <mat-radio-button *ngFor="let i of [1, 2, 3, 4, 5];" [value]="i"></mat-radio-button>
             </mat-radio-group>
           </td>
           <td fxHide.lt-md>
-            <mat-radio-group color="primary">
+            <mat-radio-group
+              [value]="getStudentMark(student.id)"
+              (change)="changeStudentMark($event, student.id)"
+              color="primary"
+            >
               <mat-radio-button *ngFor="let i of [1, 2, 3, 4, 5];" [value]="i"></mat-radio-button>
             </mat-radio-group>
           </td>
@@ -85,7 +97,11 @@
                   <span>4</span>
                   <span>5</span>
                 </div>
-                <mat-radio-group color="primary">
+                <mat-radio-group
+                  [value]="getStudentBehavior(student.id)"
+                  (change)="changeStudentBehavior($event, student.id)"
+                  color="primary"
+                >
                   <mat-radio-button *ngFor="let i of [1, 2, 3, 4, 5];" [value]="i"></mat-radio-button>
                 </mat-radio-group>
               </div>
@@ -98,7 +114,11 @@
                   <span>4</span>
                   <span>5</span>
                 </div>
-                <mat-radio-group color="primary">
+                <mat-radio-group
+                  [value]="getStudentMark(student.id)"
+                  (change)="changeStudentMark($event, student.id)"
+                  color="primary"
+                >
                   <mat-radio-button *ngFor="let i of [1, 2, 3, 4, 5];" [value]="i"></mat-radio-button>
                 </mat-radio-group>
               </div>

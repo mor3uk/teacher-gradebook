@@ -31,8 +31,11 @@ export class LessonService {
     return this.db.lessons.add(lesson).then(() => lesson);
   }
 
-  updateLesson(id: string): Promise<any> {
-    const lesson = this.getLesson(id);
+  updateLesson(lesson: Lesson, updateState = false): Promise<any> {
+    if (updateState) {
+      const lessonI = this.lessons.findIndex(les => les.id === lesson.id);
+      this.lessons[lessonI] = lesson;
+    }
     return this.db.lessons.put(lesson);
   }
 
@@ -92,7 +95,7 @@ export class LessonService {
         return;
       }
       lesson.studentsInfo = lesson.studentsInfo.filter(info => info.id !== studentId);
-      lessonsUpdated.push(this.updateLesson(lesson.id));
+      lessonsUpdated.push(this.updateLesson(lesson));
     });
     return Promise.all(lessonsUpdated);
   }
@@ -102,7 +105,7 @@ export class LessonService {
       if (lessonId === lesson.id) {
         const studentsInfo = studentsIdList.map(id => ({ id }));
         lesson.studentsInfo.push(...studentsInfo);
-        this.updateLesson(lesson.id);
+        this.updateLesson(lesson);
       }
     });
   }
@@ -115,7 +118,7 @@ export class LessonService {
 
     if (lesson.studentsInfo.length === studentsIdList.length) {
       if (startIdLength !== studentsIdList2.length) {
-        this.updateLesson(lesson.id);
+        this.updateLesson(lesson);
       }
       return;
     }
@@ -126,7 +129,7 @@ export class LessonService {
       }
       lesson.studentsInfo.push({ id });
     });
-    this.updateLesson(lesson.id);
+    this.updateLesson(lesson);
   }
 
 }

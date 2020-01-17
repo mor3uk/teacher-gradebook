@@ -113,6 +113,8 @@ export class StudentFormComponent implements OnInit, OnDestroy {
         groupId: this.studentForm.value.groupId === 'null' ? null : this.studentForm.value.groupId,
         id: this.editMode && this.data.student.id,
         lessonsIdList: this.editMode && this.data.student.lessonsIdList,
+        passedLessons: this.editMode && this.data.student.passedLessons,
+        visitedLessons: this.editMode && this.data.student.visitedLessons,
       };
 
       this.dialogRef.close(this.student);

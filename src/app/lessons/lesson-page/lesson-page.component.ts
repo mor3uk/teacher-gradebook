@@ -43,6 +43,13 @@ export class LessonPageComponent implements OnInit, OnDestroy {
         }
         this.lesson = this.ls.getLesson(params.id);
         this.getStudents();
+
+        if (this.lesson.studentsMarked) {
+          return;
+        }
+        this.ss.markStudents(this.students);
+        this.lesson.studentsMarked = true;
+        this.ls.updateLesson(this.lesson);
       });
     });
   }
@@ -99,17 +106,18 @@ export class LessonPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  onAddStudent() {
+  onAddStudents() {
     const studentsIdList = this.lesson.studentsInfo.map(info => info.id);
     this.dialog.open(AddStudentComponent,
       { data: { lessonKind: this.lesson.kind, studentsIdList }, panelClass: 'overlay-narrow' })
       .afterClosed()
-      .subscribe(students => {
+      .subscribe(async students => {
         if (!students) {
           return;
         }
         this.pending = true;
 
+        this.ss.markStudents(students);
         const studentIdList = students.map(student => student.id);
 
         this.ls.addStudentsToLesson(this.lesson.id, studentIdList);
@@ -120,7 +128,7 @@ export class LessonPageComponent implements OnInit, OnDestroy {
             this.gs.replaceStudent(null, (this.lesson as CommonLesson).groupId, student.id);
           });
           const group = this.gs.getGroup((this.lesson as CommonLesson).groupId);
-          this.ss.setStudentsGroup(group);
+          await this.ss.setStudentsGroup(group);
         }
 
         this.getStudentsAfterChange();
@@ -136,4 +144,60 @@ export class LessonPageComponent implements OnInit, OnDestroy {
     this.students = this.ss.getStudentsByIdList(studentsIdList);
     this.pending = false;
   }
+
+  getStudentMark(id: string): number {
+    const studentInfo = this.lesson.studentsInfo.find(info => info.id === id);
+    const mark = studentInfo.mark;
+    return mark;
+  }
+
+  getStudentBehavior(id: string): number {
+    const studentInfo = this.lesson.studentsInfo.find(info => info.id === id);
+    const behavior = studentInfo.behavior;
+    return behavior;
+  }
+
+  studentAttended(id: string): boolean {
+    const studentInfo = this.lesson.studentsInfo.find(info => info.id === id);
+    const attended = studentInfo.attended;
+    return !!attended;
+  }
+
+  onChangeAttendance(attended: boolean, studentId: string) {
+    this.lesson.studentsInfo.forEach(info => {
+      if (info.id === studentId) {
+        info.attended = attended;
+      }
+    });
+    this.ls.updateLesson(this.lesson, true);
+    const student = this.students.find(student => studentId === student.id);
+    if (!student.visitedLessons) {
+      student.visitedLessons = 0;
+    }
+    if (attended) {
+      student.visitedLessons++;
+    } else {
+      student.visitedLessons--;
+    }
+    this.ss.updateStudent(student, false);
+  }
+
+  changeStudentBehavior({ value }, studentId: string) {
+    this.lesson.studentsInfo.forEach(info => {
+      if (studentId === info.id) {
+        info.behavior = value;
+      }
+    });
+    this.ls.updateLesson(this.lesson);
+  }
+
+  changeStudentMark({ value }, studentId: string) {
+    this.lesson.studentsInfo.forEach(info => {
+      if (studentId === info.id) {
+        info.mark = value;
+      }
+    });
+    this.ls.updateLesson(this.lesson);
+  }
+
 }

@@ -96,8 +96,8 @@ export class StudentService {
       .first();
   }
 
-  setStudentsGroup(group: Group) {
-    this.getStudents().then(() => {
+  setStudentsGroup(group: Group): Promise<any> {
+    return this.getStudents().then(() => {
       group.studentIdList.forEach(id => {
         this.students.forEach(student => {
           if (student.id !== id) {
@@ -154,6 +154,16 @@ export class StudentService {
     });
 
     return Promise.all(studentsUpdated);
+  }
+
+  markStudents(students: Student[]) {
+    students.forEach(student => {
+      if (!student.passedLessons) {
+        student.passedLessons = 0;
+      }
+      student.passedLessons++;
+      this.updateStudent(student);
+    });
   }
 
 }

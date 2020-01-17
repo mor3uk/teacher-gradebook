@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class AttendancePipe implements PipeTransform {
   transform(passedLessons: number, visitedLessons: number): string {
-    if (!passedLessons) {
+    if (!visitedLessons) {
       return '0%';
     }
     const percent = (visitedLessons / passedLessons) * 100;
