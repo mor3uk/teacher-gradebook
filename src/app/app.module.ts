@@ -15,6 +15,7 @@ import { GroupFormComponent } from './catalog/groups/group-form/group-form.compo
 import { AddLessonComponent } from './lessons/add-lesson/add-lesson.component';
 import { StudentsModule } from './catalog/students/students.module';
 import { GroupsModule } from './catalog/groups/groups.module';
+import { CalendarModule } from './catalog/calendar/calendar.module';
 import { LessonsModule } from './lessons/lessons.module';
 
 @NgModule({
@@ -32,6 +33,7 @@ import { LessonsModule } from './lessons/lessons.module';
     StudentsModule,
     GroupsModule,
     LessonsModule,
+    CalendarModule,
     MatSidenavModule,
     MatListModule,
     MatIconModule,

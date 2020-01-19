@@ -55,6 +55,10 @@ export class LessonService {
     return this.db.lessons.delete(id).then(() => lesson);
   }
 
+  getAllLessons(): Lesson[] {
+    return [...this.lessons];
+  }
+
   getTodayLessons(): Lesson[] {
     const now = moment();
     const startOfDay = +now.startOf('day');

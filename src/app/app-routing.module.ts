@@ -7,6 +7,8 @@ import { GroupsComponent } from './catalog/groups/groups.component';
 import { StudentsComponent } from './catalog/students/students.component';
 import { LessonPageComponent } from './lessons/lesson-page/lesson-page.component';
 import { LessonsGuard } from './lessons/lessons-guard.service';
+import { CalendarComponent } from './catalog/calendar/calendar.component';
+import { CalendarDayComponent } from './catalog/calendar/calendar-day/calendar-day.component';
 
 const routes: Routes = [
   {
@@ -23,6 +25,12 @@ const routes: Routes = [
           { path: '', redirectTo: 'groups', pathMatch: 'full' },
           { path: 'groups', component: GroupsComponent },
           { path: 'students', component: StudentsComponent },
+          {
+            path: 'calendar', children: [
+              { path: '', component: CalendarComponent, pathMatch: 'full' },
+              { path: ':years/:months/:date', component: CalendarDayComponent },
+            ]
+          },
         ]
       },
     ]

@@ -1,0 +1,41 @@
+<h2 class="title">Календарь</h2>
+<section class="section calendar">
+  <ng-container *ngIf="!pending">
+    <kendo-scheduler
+      [kendoSchedulerBinding]="events"
+      [selectedDate]="selectedDate"
+      (slotClick)="onClickSlot($event)"
+      (eventClick)="onEventClick($event)"
+      (navigate)="onChangeView($event)"
+      showWorkHours="true"
+      slotDivisions="1"
+      [workDayStart]="startWork"
+      [workDayEnd]="endWork"
+      [eventClass]="getEventClass.bind(this)"
+      [slotClass]="getSlotClass.bind(this)"
+    >
+    <ng-template kendoSchedulerEventTemplate let-event="event">
+        <span class="lala">{{ event.title }}</span>
+    </ng-template>
+    <kendo-scheduler-month-view></kendo-scheduler-month-view>
+      <kendo-scheduler-week-view></kendo-scheduler-week-view>
+      <kendo-scheduler-messages
+        calendarToday="Сегодня"
+        today="Сегодня"
+        allDay="Время"
+        dayViewTitle="День"
+        weekViewTitle="Неделя"
+        monthViewTitle="Месяц"
+        showWorkDay="Рабочие часы"
+        showFullDay="Весь день"
+        nextTitle="Дальше"
+        previousTitle="Назад"
+      >
+      </kendo-scheduler-messages>
+    </kendo-scheduler>
+  </ng-container>
+
+  <div *ngIf="pending" class="spinner">
+    <mat-spinner diameter="60"></mat-spinner>
+  </div>
+</section>

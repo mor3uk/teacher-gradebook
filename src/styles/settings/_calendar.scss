@@ -1,0 +1,45 @@
+@import "./variables";
+
+.event {
+  cursor: pointer !important;
+  &:hover::before {
+    display: none !important;
+  }
+  &_month {
+    width: 25px !important;
+    text-align: center !important;
+    border-radius: 100% !important;
+    background-color: $primaryColor !important;
+    outline: none !important;
+    margin-top: -22px;
+    margin-left: 5px;
+    cursor: initial !important;
+    &::before {
+      display: none !important;
+    }
+    span {
+      vertical-align: middle;
+    }
+  }
+}
+
+.slot {
+  height: 50px !important;
+  &:hover {
+    cursor: pointer !important;
+    background-color: #dce5f8;
+  }
+}
+
+.today {
+  background-color: #e5eaf7;
+}
+
+@media (max-width: 450px) {
+  .k-scheduler-navigation .k-nav-current {
+    display: none !important;
+  }
+  .event {
+    margin-top: 5px;
+  }
+}

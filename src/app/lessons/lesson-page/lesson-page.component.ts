@@ -68,8 +68,8 @@ export class LessonPageComponent implements OnInit, OnDestroy {
         this.students = this.ss.getStudentsByGroupId((this.lesson as CommonLesson).groupId);
         this.ls.checkStudentsCompatibility(this.lesson, this.students);
       }
+      this.pending = false;
     });
-    this.pending = false;
   }
 
   ngOnDestroy() {
@@ -223,9 +223,12 @@ export class LessonPageComponent implements OnInit, OnDestroy {
   }
 
   onChangeStudentPayment(e: Event, id: string) {
+    const endSum = +(e.target as HTMLInputElement).value;
+    if (isNaN(endSum)) {
+      return;
+    }
     const student = this.students.find(student => student.id === id);
     const startSum = student.paid - student.owed + this.lessonPrice;
-    const endSum = +(e.target as HTMLInputElement).value;
     student.paid += (endSum - startSum);
     this.ss.updateStudent(student);
   }
