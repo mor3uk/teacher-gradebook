@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
 
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
@@ -7,6 +8,7 @@ import * as moment from 'moment';
 import { LessonService } from '../../shared/services/lesson.service';
 import { CalendarService } from './calendar.service';
 import { DayEvent, LessonEvent } from './event.model';
+import { CalendarDayComponent } from './calendar-day/calendar-day.component';
 
 @Component({
   selector: 'app-calendar',
@@ -30,7 +32,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     private ls: LessonService,
     private cs: CalendarService,
     private router: Router,
-    private route: ActivatedRoute,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -54,13 +56,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   onClickSlot(e) {
     if (this.view === 'month') {
-      console.log(e);
-      const date = moment(+e.start);
-      const year = date.year();
-      const month = date.month();
-      const day = date.date();
-
-      this.router.navigate([year, month, day], { relativeTo: this.route });
+      this.dialog.open(CalendarDayComponent, { data: { ts: +e.start }, panelClass: 'calendar-day' })
+        .afterClosed()
+        .subscribe(() => { });
     }
   }
 

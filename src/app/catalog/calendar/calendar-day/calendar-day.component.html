@@ -1,1 +1,46 @@
-<p>calendar-day works!</p>
+<div class="day">
+  <div class="day__header">
+    <button
+      class="day__back"
+      mat-icon-button
+      matTooltip="Сохранить и выйти"
+      matTooltipPosition="above"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="day__date">
+      1 сентября 2019
+    </div>
+    <div class="day__controls">
+      <button
+        mat-icon-button
+        matTooltip="Сбросить изменения и выйти"
+        matTooltipPosition="above"
+      >
+        <mat-icon>undo</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        matTooltip="Сбросить изменения"
+        matTooltipPosition="above"
+      >
+        <mat-icon>redo</mat-icon>
+      </button>
+    </div>
+  </div>
+  <!-- <div class="day__lessons">
+    <app-calendar-lesson></app-calendar-lesson>
+  </div> -->
+  <div class="day__no-lessons">
+    Список занятий пуст
+  </div>
+  <div class="day__add-lesson">
+    <button
+      mat-icon-button
+      matTooltip="Добавить занятие"
+      matTooltipPosition="above"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>

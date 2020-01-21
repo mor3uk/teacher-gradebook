@@ -8,6 +8,13 @@
   }
 }
 
+.calendar-day {
+  max-width: 100% !important;
+  mat-dialog-container {
+    padding: 0;
+  }
+}
+
 @media (max-width: 860px) {
   .overlay-wide {
     width: 85%;
@@ -15,11 +22,14 @@
   }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 601px) {
   .overlay-wide {
     width: 95%;
   }
   .title {
     text-align: left;
+  }
+  .calendar-day {
+    width: 100%;
   }
 }

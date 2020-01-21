@@ -10,6 +10,7 @@ export class CalendarDayComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
   }
 
 }

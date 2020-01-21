@@ -8,11 +8,13 @@ import '@progress/kendo-angular-intl/locales/ru/all';
 import { SharedModule } from '../../shared/shared.module';
 import { CalendarComponent } from './calendar.component';
 import { CalendarDayComponent } from './calendar-day/calendar-day.component';
+import { CalendarLessonComponent } from './calendar-lesson/calendar-lesson.component';
 
 @NgModule({
   declarations: [
     CalendarComponent,
-    CalendarDayComponent
+    CalendarDayComponent,
+    CalendarLessonComponent,
   ],
   imports: [
     CommonModule,
@@ -20,6 +22,9 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
     SchedulerModule,
     BrowserAnimationsModule,
     DateInputsModule,
+  ],
+  entryComponents: [
+    CalendarDayComponent,
   ],
   exports: [],
   providers: [{

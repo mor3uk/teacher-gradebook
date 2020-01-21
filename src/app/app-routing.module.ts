@@ -25,12 +25,7 @@ const routes: Routes = [
           { path: '', redirectTo: 'groups', pathMatch: 'full' },
           { path: 'groups', component: GroupsComponent },
           { path: 'students', component: StudentsComponent },
-          {
-            path: 'calendar', children: [
-              { path: '', component: CalendarComponent, pathMatch: 'full' },
-              { path: ':years/:months/:date', component: CalendarDayComponent },
-            ]
-          },
+          { path: 'calendar', component: CalendarComponent },
         ]
       },
     ]

@@ -1,0 +1,107 @@
+@import "../../../../styles/settings/variables";
+
+.day-lesson {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px $bacgkroundDark solid;
+  text-align: center;
+  &__info {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & > div {
+      border-left: 1px $bacgkroundDark solid;
+      height: 121px;
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:first-child {
+        border-right: none;
+      }
+    }
+  }
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between !important;
+  }
+  &__student,
+  &__group,
+  &__students {
+    width: 42%;
+  }
+  &__students {
+    justify-content: space-between !important;
+    flex-wrap: wrap;
+    & > div {
+      font-size: 15px;
+      height: 32%;
+      border-top: 1px $bacgkroundDark solid;
+      width: 49%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:nth-child(1),
+      &:nth-child(2) {
+        border-top: none;
+      }
+      &:nth-child(2n) {
+        border-left: 1px $bacgkroundDark solid;
+      }
+    }
+  }
+  button {
+    border-radius: 0 !important;
+    border-top: 1px $bacgkroundDark solid;
+    border-left: 1px $bacgkroundDark solid;
+    &:first-child {
+      border-top: none;
+    }
+    &:hover {
+      background-color: $bacgkroundDark;
+    }
+  }
+}
+
+@media (max-width: 599px) {
+  .day-lesson {
+    &__info {
+      flex-wrap: wrap;
+      & > div {
+        height: 41px;
+        flex-grow: 1;
+        width: 32%;
+        &:last-child {
+          border-top: 1px $bacgkroundDark solid;
+          width: 100%;
+          height: 80px;
+        }
+      }
+    }
+    &__students {
+      & > div {
+        font-size: 14px;
+        width: 32%;
+        flex-grow: 1;
+        height: 40px;
+        border-left: 1px $bacgkroundDark solid;
+        &:nth-child(3) {
+          border-top: none;
+        }
+        &:nth-child(1),
+        &:nth-child(4) {
+          border-left: none;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 370px) {
+  .day-lesson__students > div {
+    font-size: 12px;
+  }
+}
