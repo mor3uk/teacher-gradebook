@@ -27,7 +27,12 @@ export class LessonService {
   }
 
   addLesson(lesson: Lesson): Promise<Lesson> {
-    lesson.id = uuid();
+    if (!lesson.id) {
+      lesson.id = uuid();
+    }
+    if (lesson.studentsInfo) {
+      lesson.studentsInfo = [];
+    }
     return this.db.lessons.add(lesson).then(() => lesson);
   }
 
@@ -60,25 +65,22 @@ export class LessonService {
   }
 
   getTodayLessons(): Lesson[] {
-    const now = moment();
-    const startOfDay = +now.startOf('day');
-    const endOfDay = +now.endOf('day');
-
-    return this.lessons.filter(lesson =>
-      lesson.startTime > startOfDay
-      && lesson.startTime < endOfDay
-    ).sort((a, b) => (a.startTime - b.startTime));
+    return this.lessons.filter(lesson => this.isLessonToday(lesson))
+      .sort((a, b) => (a.startTime - b.startTime));
   }
 
-  getDayLessonsByTimestamp(ts: number): Promise<Lesson[]> {
-    const pointInTime = moment(ts);
-    const startOfDay = +pointInTime.startOf('day');
-    const endOfDay = +pointInTime.endOf('day');
+  getDayLessonsByTimestamp(ts: number, lessons?: Lesson[]): Lesson[] {
+    const startOfDay1 = +moment(ts).startOf('day');
 
-    return this.db.lessons
-      .where('startTime')
-      .between(startOfDay, endOfDay)
-      .toArray();
+    if (!lessons) {
+      lessons = this.lessons;
+    }
+
+    return lessons.filter(lesson => {
+      const startOfDay2 = +moment(lesson.startTime).startOf('day');
+      return startOfDay1 === startOfDay2;
+    })
+      .sort((a, b) => (a.startTime - b.startTime));
   }
 
   getCommonLessons(): Promise<Lesson[]> {
@@ -142,4 +144,21 @@ export class LessonService {
     return diff > 0;
   }
 
+  makeLessonCopy(lesson: Lesson, time: number): Lesson {
+    const lessonCopy = { ...lesson };
+    lessonCopy.id = uuid();
+    lessonCopy.startTime = time;
+    lessonCopy.studentsMarked = false;
+    lessonCopy.studentsInfo.forEach(info => {
+      info = { id: info.id };
+    });
+
+    return lessonCopy;
+  }
+
+  isLessonToday(lesson) {
+    const startDay1 = +moment(lesson.startTime).startOf('day');
+    const startDay2 = +moment().startOf('day');
+    return startDay1 === startDay2;
+  }
 }

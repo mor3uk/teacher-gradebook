@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material';
 
-import { Student } from '../../../shared/models/student.model';
-import { ConfirmDialog } from '../../../shared/components/confirm/confirm.component';
+import { Student } from '../../models/student.model';
+import { ConfirmDialog } from '../confirm/confirm.component';
 
 @Component({
   selector: 'app-student-info',

@@ -17,7 +17,7 @@ export class FullnamePipe implements PipeTransform {
 
     switch (mode) {
       case 0:
-        fullNameString = surname + ' ' + name[0] + '. ';
+        fullNameString = surname + ' ' + name[0] + '.';
         if (fatherName) {
           fullNameString += fatherName[0] + '.';
         }

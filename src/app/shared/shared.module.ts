@@ -9,6 +9,7 @@ import {
   OwlDateTimeModule
 } from 'ng-pick-datetime';
 import { OwlMomentDateTimeModule } from 'ng-pick-datetime/date-time/adapter/moment-adapter/moment-date-time.module';
+import { MaterialModule } from '../material.module';
 import { AgePipe } from './pipes/age.pipe';
 import { BitrhDatePipe } from './pipes/birth-date.pipe';
 import { FullnamePipe } from './pipes/fullname.pipe';
@@ -16,9 +17,13 @@ import { GroupPipe } from './pipes/group.pipe';
 import { PluralPipe } from './pipes/plural.pipe';
 import { TrancatePipe } from './pipes/trancate.pipe';
 import { ConfirmDialog } from './components/confirm/confirm.component';
-import { MaterialModule } from '../material.module';
 import { StudentPickerComponent } from './components/student-picker/student-picker.component';
 import { AttendancePipe } from './pipes/attendance.pipe';
+import { TimePipe } from './pipes/time.pipe';
+import { AddLessonComponent } from './components/add-lesson/add-lesson.component';
+import { StudentInfoComponent } from './components/student-info/student-info.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 const sharedComponentsAndPipes = [
   AgePipe,
@@ -29,7 +34,10 @@ const sharedComponentsAndPipes = [
   TrancatePipe,
   ConfirmDialog,
   StudentPickerComponent,
-  AttendancePipe
+  AttendancePipe,
+  TimePipe,
+  StudentInfoComponent,
+  AddLessonComponent,
 ];
 
 const sharedModules = [
@@ -39,6 +47,7 @@ const sharedModules = [
   NgxTrimDirectiveModule,
   MatTooltipModule,
   MatSnackBarModule,
+  ReactiveFormsModule,
 ];
 
 class DefaultIntl extends OwlDateTimeIntl {
@@ -51,6 +60,8 @@ class DefaultIntl extends OwlDateTimeIntl {
   imports: sharedModules,
   entryComponents: [
     ConfirmDialog,
+    StudentInfoComponent,
+    AddLessonComponent,
   ],
   exports: [...sharedComponentsAndPipes, ...sharedModules],
   providers: [

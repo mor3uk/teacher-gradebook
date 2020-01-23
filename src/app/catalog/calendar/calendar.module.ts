@@ -9,12 +9,14 @@ import { SharedModule } from '../../shared/shared.module';
 import { CalendarComponent } from './calendar.component';
 import { CalendarDayComponent } from './calendar-day/calendar-day.component';
 import { CalendarLessonComponent } from './calendar-lesson/calendar-lesson.component';
+import { CalendarDateComponent } from './calendar-date/calendar-date.component';
 
 @NgModule({
   declarations: [
     CalendarComponent,
     CalendarDayComponent,
     CalendarLessonComponent,
+    CalendarDateComponent,
   ],
   imports: [
     CommonModule,
@@ -24,6 +26,7 @@ import { CalendarLessonComponent } from './calendar-lesson/calendar-lesson.compo
     DateInputsModule,
   ],
   entryComponents: [
+    CalendarDateComponent,
     CalendarDayComponent,
   ],
   exports: [],

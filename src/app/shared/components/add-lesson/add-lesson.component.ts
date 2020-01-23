@@ -1,18 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { Moment } from 'moment';
 import * as moment from 'moment';
 
-import { GroupService } from '../../shared/services/group.service';
-import { StudentService } from '../../shared/services/student.service';
-import { Group } from '../../shared/models/group.model';
-import { CommonLesson, Lesson, PersonalLesson } from '../../shared/models/lesson.model';
-import { Student } from '../../shared/models/student.model';
-import { studentsRequired, timeTaken } from './add-lesson.validator';
-import { LessonService } from '../../shared/services/lesson.service';
+import { GroupService } from '../../services/group.service';
+import { StudentService } from '../../services/student.service';
+import { Group } from '../../models/group.model';
+import { CommonLesson, Lesson, PersonalLesson } from '../../models/lesson.model';
+import { Student } from '../../models/student.model';
+import { studentsRequired } from './add-lesson.validator';
+import { timeTaken } from '../../validators/timeTaken.validator';
+import { LessonService } from '../../services/lesson.service';
 
 @Component({
   selector: 'app-add-lesson',
@@ -24,7 +25,7 @@ export class AddLessonComponent implements OnInit, OnDestroy {
   groups: Group[] = [];
   group: Group;
   lessonForm: FormGroup;
-  minTime: Moment = moment().subtract('1', 'hour');
+  minTime: Moment = moment().add('1', 'hour');
   studentsSub: Subscription;
   submitTry = false;
   students: Student[] = [];
@@ -34,6 +35,7 @@ export class AddLessonComponent implements OnInit, OnDestroy {
     private gs: GroupService,
     private ss: StudentService,
     private ls: LessonService,
+    @Inject(MAT_DIALOG_DATA) private data: any,
   ) { }
 
   async ngOnInit() {
@@ -45,7 +47,7 @@ export class AddLessonComponent implements OnInit, OnDestroy {
         null, [Validators.required, Validators.min(30), Validators.max(180), Validators.pattern(/^[0-9]*$/)]
       ),
       pickedGroup: new FormControl(null, [Validators.required]),
-    }, [], [timeTaken(this.ls)]);
+    }, [timeTaken(this.ls, this.data)]);
 
     this.studentsSub = this.ss.studentsChanged
       .subscribe(students => {

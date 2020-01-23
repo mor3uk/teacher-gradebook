@@ -10,7 +10,7 @@ import { StudentService } from '../../shared/services/student.service';
 import { GroupService } from '../../shared/services/group.service';
 import { Student } from '../../shared/models/student.model';
 import { Lesson, CommonLesson, PersonalLesson } from '../../shared/models/lesson.model';
-import { StudentInfoComponent } from './student-info/student-info.component';
+import { StudentInfoComponent } from '../../shared/components/student-info/student-info.component';
 import { AddStudentComponent } from './add-student/add-student.component';
 
 @Component({

@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { LessonService } from '../shared/services/lesson.service';
 import { StudentService } from '../shared/services/student.service';
 import { Lesson, PersonalLesson } from '../shared/models/lesson.model';
-import { AddLessonComponent } from './add-lesson/add-lesson.component';
+import { AddLessonComponent } from '../shared/components/add-lesson/add-lesson.component';
 import { ConfirmDialog } from '../shared/components/confirm/confirm.component';
 
 @Component({
@@ -51,7 +51,7 @@ export class LessonsComponent implements OnInit, OnDestroy {
           const newLesson = await this.ls.addLesson(lesson);
           const idList = newLesson.studentsInfo.map(info => info.id);
           if (lesson.kind === 'personal') {
-            await this.ss.addLessonToStudents(idList, newLesson.id, lesson.price);
+            await this.ss.addLessonToStudents(idList, newLesson.id, (newLesson as PersonalLesson).price);
           } else {
             await this.ss.addLessonToStudents(idList, newLesson.id);
           }
@@ -74,7 +74,7 @@ export class LessonsComponent implements OnInit, OnDestroy {
           }
 
           this.ls.getLessons();
-          this.snackBar.open(`Занятие удалено`, 'Ок', {
+          this.snackBar.open('Занятие удалено', 'Ок', {
             duration: 2000,
           });
         }

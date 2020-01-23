@@ -1,0 +1,41 @@
+<form [formGroup]="dateForm" (submit)="onSubmit()">
+  <div class="form__label">
+    Время начала занятия
+  </div>
+  <div class="form__input-container">
+    <input
+      class="form__input"
+      [owlDateTime]="startTimePicker"
+      formControlName="startTime"
+      [min]="minTime"
+      placeholder="Дата и время начала занятия"
+    >
+    <span
+      *ngIf="dateForm.controls.startTime.touched && dateForm.controls.startTime.errors?.required"
+      class="error-message">
+      Укажите время и дату занятия
+    </span>
+    <span
+      *ngIf="dateForm.controls.startTime.errors?.owlDateTimeMin"
+      class="error-message">
+      Занятие добавляется минимум за час
+    </span>
+    <span
+      *ngIf="dateForm.errors?.timeTaken && !dateForm.controls.startTime.errors?.owlDateTimeMin"
+      class="error-message">
+      Время занято другим занятием
+    </span>
+    <owl-date-time [pickerMode]="'dialog'" #startTimePicker></owl-date-time>
+    <button type="button" mat-icon-button>
+      <mat-icon [owlDateTimeTrigger]="startTimePicker">home</mat-icon>
+    </button>
+  </div>
+  <div class="form__controls">
+    <button class="btn btn_success form__btn">Сохранить</button>
+    <button
+      (click)="onCancel()"
+      type="button"
+      class="btn btn_danger form__btn"
+    >Отменить</button>
+  </div>
+</form>

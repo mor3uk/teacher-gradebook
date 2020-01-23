@@ -8,20 +8,14 @@ import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from '../shared/shared.module';
 import { LessonsComponent } from './lessons.component';
 import { LessonComponent } from './lesson/lesson.component';
-import { AddLessonComponent } from './add-lesson/add-lesson.component';
-import { TimePipe } from '../shared/pipes/time.pipe';
 import { LessonPageComponent } from './lesson-page/lesson-page.component';
-import { StudentInfoComponent } from './lesson-page/student-info/student-info.component';
 import { AddStudentComponent } from './lesson-page/add-student/add-student.component';
 
 @NgModule({
   declarations: [
     LessonsComponent,
     LessonComponent,
-    AddLessonComponent,
-    TimePipe,
     LessonPageComponent,
-    StudentInfoComponent,
     AddStudentComponent,
   ],
   imports: [
@@ -32,7 +26,6 @@ import { AddStudentComponent } from './lesson-page/add-student/add-student.compo
     FlexLayoutModule,
   ],
   entryComponents: [
-    StudentInfoComponent,
     AddStudentComponent,
   ],
   exports: [],

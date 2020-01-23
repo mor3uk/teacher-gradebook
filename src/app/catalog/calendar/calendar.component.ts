@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
@@ -32,7 +32,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
     private ls: LessonService,
     private cs: CalendarService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit() {
@@ -42,13 +43,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.dayEvents = this.cs.getDayEvents();
-      this.lessonEvents = this.cs.getLessonEvents();
-      this.events = this.dayEvents;
-
-      const bounds = this.cs.getWorkBounds();
-      this.startWork = bounds.start + ':00';
-      this.endWork = bounds.end + ':00';
+      this.setCalendar();
 
       this.pending = false;
     });
@@ -58,7 +53,20 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if (this.view === 'month') {
       this.dialog.open(CalendarDayComponent, { data: { ts: +e.start }, panelClass: 'calendar-day' })
         .afterClosed()
-        .subscribe(() => { });
+        .subscribe(async changes => {
+          if (!changes) {
+            return;
+          }
+          this.pending = true;
+
+          await this.cs.setUpdates(changes);
+          await this.ls.getLessons();
+
+          this.setCalendar();
+          this.snackBar.open('Изменения применены', 'Ок', { duration: 2000 });
+
+          this.pending = false;
+        });
     }
   }
 
@@ -82,7 +90,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if (this.view === 'month') {
       className += 'slot';
     }
-    if (this.isToday(+e.start)) {
+    if (this.cs.isOneDay(+e.start, +moment())) {
       className += ' today';
     }
 
@@ -101,10 +109,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
   }
 
-  private isToday(ms: number) {
-    const ms1 = +moment().startOf('day');
-    const ms2 = +moment(ms).startOf('day');
-    return ms1 === ms2;
+  private setCalendar() {
+    this.dayEvents = this.cs.getDayEvents();
+    this.lessonEvents = this.cs.getLessonEvents();
+    this.events = this.dayEvents;
+
+    const bounds = this.cs.getWorkBounds();
+    this.startWork = bounds.start + ':00';
+    this.endWork = bounds.end + ':00';
   }
 
   ngOnDestroy() {

@@ -5,6 +5,7 @@
       mat-icon-button
       matTooltip="Сохранить и выйти"
       matTooltipPosition="above"
+      (click)="onSaveAndClose()"
     >
       <mat-icon>arrow_back</mat-icon>
     </button>
@@ -16,6 +17,7 @@
         mat-icon-button
         matTooltip="Сбросить изменения и выйти"
         matTooltipPosition="above"
+        (click)="onResetAndClose()"
       >
         <mat-icon>undo</mat-icon>
       </button>
@@ -23,22 +25,33 @@
         mat-icon-button
         matTooltip="Сбросить изменения"
         matTooltipPosition="above"
+        (click)="onReset()"
       >
         <mat-icon>redo</mat-icon>
       </button>
     </div>
   </div>
-  <!-- <div class="day__lessons">
-    <app-calendar-lesson></app-calendar-lesson>
-  </div> -->
-  <div class="day__no-lessons">
+  <div *ngIf="!pending" class="day__lessons">
+    <app-calendar-lesson
+      *ngFor="let lesson of lessonsToChange"
+      [lesson]="lesson"
+      (lessonToDelete)="onDeleteLesson($event)"
+      (lessonToCopy)="onCopyLesson($event)"
+      (lessonToMove)="onMoveLesson($event)"
+    ></app-calendar-lesson>
+  </div>
+  <div class="day__no-lessons" *ngIf="!pending && lessonsToChange.length === 0">
     Список занятий пуст
+  </div>
+  <div *ngIf="pending" class="spinner day__spinner">
+    <mat-spinner diameter="60"></mat-spinner>
   </div>
   <div class="day__add-lesson">
     <button
       mat-icon-button
       matTooltip="Добавить занятие"
       matTooltipPosition="above"
+      (click)="onAddLesson()"
     >
       <mat-icon>add</mat-icon>
     </button>

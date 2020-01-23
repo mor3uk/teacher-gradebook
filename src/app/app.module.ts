@@ -12,7 +12,6 @@ import { MainComponent } from './main/main.component';
 import { StudentFormComponent } from './catalog/students/student-form/student-form.component';
 import { RelativeFormComponent } from './catalog/students/relative-form/relative-form.component';
 import { GroupFormComponent } from './catalog/groups/group-form/group-form.component';
-import { AddLessonComponent } from './lessons/add-lesson/add-lesson.component';
 import { StudentsModule } from './catalog/students/students.module';
 import { GroupsModule } from './catalog/groups/groups.module';
 import { CalendarModule } from './catalog/calendar/calendar.module';
@@ -42,7 +41,6 @@ import { LessonsModule } from './lessons/lessons.module';
     StudentFormComponent,
     RelativeFormComponent,
     GroupFormComponent,
-    AddLessonComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

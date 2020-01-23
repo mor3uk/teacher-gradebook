@@ -31,11 +31,14 @@
     border-top: 1px $bacgkroundDark solid;
   }
   &__no-lessons {
-    border-top: 1px $bacgkroundDark solid;
     border-bottom: 1px $bacgkroundDark solid;
     padding: 25px 0;
     text-align: center;
     font-size: 19px;
+  }
+  &__spinner {
+    border-bottom: 1px $bacgkroundDark solid;
+    border-top: 1px $bacgkroundDark solid;
   }
   button {
     border-radius: 0 !important;

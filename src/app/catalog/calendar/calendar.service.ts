@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 
 import { LessonService } from '../../shared/services/lesson.service';
+import { StudentService } from '../../shared/services/student.service';
 import { DayEvent, LessonEvent } from './event.model';
-import { Lesson } from '../../shared/models/lesson.model';
+import { Lesson, PersonalLesson } from '../../shared/models/lesson.model';
+import { Changes } from './changes.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,10 @@ import { Lesson } from '../../shared/models/lesson.model';
 export class CalendarService {
   lessons: Lesson[] = [];
 
-  constructor(private ls: LessonService) { }
+  constructor(
+    private ls: LessonService,
+    private ss: StudentService,
+  ) { }
 
   getDayEvents(): DayEvent[] {
     this.lessons = this.ls.getAllLessons();
@@ -67,5 +72,43 @@ export class CalendarService {
     };
   }
 
+  setUpdates(changes: Changes): Promise<any> {
+    const promises = [];
+    changes.delete.forEach(id => {
+      promises.push(
+        this.ls.deleteLesson(id).then(lesson => {
+          const studentsIdList = lesson.studentsInfo.map(info => info.id);
+          if (this.ls.isLessonEnded(lesson) || lesson.kind === 'common') {
+            this.ss.removeLessonFromStudents(studentsIdList, lesson.id);
+          } else {
+            this.ss.removeLessonFromStudents(studentsIdList, lesson.id, (lesson as PersonalLesson).price);
+          }
+
+        })
+      );
+    });
+
+    changes.add.forEach(lesson => {
+      this.ls.addLesson(lesson).then(newLesson => {
+        const idList = newLesson.studentsInfo.map(info => info.id);
+        if (lesson.kind === 'personal') {
+          promises.push(
+            this.ss.addLessonToStudents(idList, newLesson.id, (newLesson as PersonalLesson).price)
+          );
+        } else {
+          promises.push(this.ss.addLessonToStudents(idList, newLesson.id));
+        }
+      });
+    });
+
+
+    return Promise.all(promises);
+  }
+
+  isOneDay(ts1: number, ts2: number) {
+    const startOfDay1 = +moment(ts1).startOf('day');
+    const startOfDay2 = +moment(ts2).startOf('day');
+    return startOfDay1 === startOfDay2;
+  }
 
 }

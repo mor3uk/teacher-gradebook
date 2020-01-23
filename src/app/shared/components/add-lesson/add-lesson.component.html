@@ -35,7 +35,7 @@
       Занятие назначается минимум за час
     </span>
     <span
-      *ngIf="lessonForm.errors?.timeTaken"
+      *ngIf="lessonForm.errors?.timeTaken && !lessonForm.controls.startTime.errors?.owlDateTimeMin"
       class="error-message">
       Время занято другим занятием
     </span>

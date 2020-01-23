@@ -1,20 +1,20 @@
-import { ValidationErrors, AbstractControl, FormGroup } from '@angular/forms';
+import { ValidationErrors, FormGroup } from '@angular/forms';
 
-import { LessonService } from '../../shared/services/lesson.service';
+import { LessonService } from '../services/lesson.service';
 
-export const studentsRequired = (control: AbstractControl): ValidationErrors => {
-  if (control.value.length === 0) {
-    return { studentsRequired: true };
-  }
-
-  return null;
-};
-
-export const timeTaken = (ls: LessonService) => {
-  return async (form: FormGroup): Promise<ValidationErrors> => {
-    const startMs = form.controls.startTime.value;
+export const timeTaken = (ls: LessonService, data: any) => {
+  return (form: FormGroup): ValidationErrors => {
+    const startMs = +form.controls.startTime.value;
     const endMs = startMs + form.controls.durationMinutes.value * 60 * 1000;
-    const lessonsAtDay = await ls.getDayLessonsByTimestamp(startMs);
+    let lessonsAtDay = ls.getDayLessonsByTimestamp(startMs);
+
+    if (data) {
+      const idsToDelete = data.changes.delete;
+      const lessonsToAdd = [...data.changes.add];
+      const dayLessonsToAddd = ls.getDayLessonsByTimestamp(startMs, lessonsToAdd);
+      lessonsAtDay = lessonsAtDay.filter(lesson => !idsToDelete.includes(lesson.id));
+      lessonsAtDay.push(...dayLessonsToAddd);
+    }
 
     const timeBoundList = lessonsAtDay.map(lesson => ({
       startMs: lesson.startTime,

@@ -1,34 +1,42 @@
 <div class="day-lesson">
   <div class="day-lesson__info">
     <div class="day-lesson__kind">
-      <span>Общ.</span>
+      <span>{{ lesson.kind === 'common' ? 'Общ.' : 'Перс.' }}</span>
     </div>
     <div class="day-lesson__start">
-      <span>10:00</span>
+      <span>{{ lesson.startTime | time }}</span>
     </div>
     <div class="day-lesson__duration">
-      <span>45 мин.</span>
+      <span>{{ lesson.durationMinutes }} мин.</span>
     </div>
-    <!-- <div class="day-lesson__student">
-      <span>Шурыгин Д.О.</span>
-    </div> -->
-    <div class="day-lesson__group">
-      <span>Аутсайдеры</span>
+
+    <div
+      *ngIf="lesson.kind === 'personal' && students.length <= 1"
+      class="day-lesson__student"
+    >
+      <span>{{ students[0] ? (students[0] | fullname:0) : 'Нет учащихся' }}</span>
     </div>
-    <!-- <div class="day-lesson__students">
-      <div>Шурыгин Д.О.</div>
-      <div>Шурыгин Д.О.</div>
-      <div>Шурыгин Д.О.</div>
-      <div>Шурыгин Д.О.</div>
-      <div>Шурыгин Д.О.</div>
-      <div>Шурыгин Д.О.</div>
-    </div> -->
+
+    <div *ngIf="lesson.kind === 'common'" class="day-lesson__group">
+      <span>{{ groupId | group }}</span>
+    </div>
+
+    <div
+      *ngIf="lesson.kind === 'personal' && students.length > 1"
+      class="day-lesson__students"
+    >
+      <div *ngFor="let i of [0, 1, 2, 3, 4, 5]">
+        {{ students[i] ? (students[i] | fullname:0) : '-' }}
+      </div>
+    </div>
+
   </div>
   <div class="day-lesson__controls">
     <button
       mat-icon-button
       matTooltip="Копировать"
       matTooltipPosition="above"
+      (click)="onCopyLesson()"
     >
       <mat-icon>file_copy</mat-icon>
     </button>
@@ -36,6 +44,7 @@
       mat-icon-button
       matTooltip="Удалить"
       matTooltipPosition="above"
+      (click)="onDeleteLesson()"
     >
       <mat-icon>remove</mat-icon>
     </button>
@@ -43,6 +52,7 @@
       mat-icon-button
       matTooltip="Переместить"
       matTooltipPosition="above"
+      (click)="onMoveLesson()"
     >
       <mat-icon>arrow_forward</mat-icon>
     </button>
