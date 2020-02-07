@@ -30,7 +30,7 @@ export class LessonService {
     if (!lesson.id) {
       lesson.id = uuid();
     }
-    if (lesson.studentsInfo) {
+    if (!lesson.studentsInfo || !lesson.studentsInfo.length) {
       lesson.studentsInfo = [];
     }
     return this.db.lessons.add(lesson).then(() => lesson);
