@@ -11,7 +11,6 @@ export class StudentPickerComponent implements OnInit {
   @Input() students: Student[];
   @Input() studentMode: boolean;
   @Input() pickedStudents: Student[] = [];
-  selectedStudent: Student;
 
   @Output() newStudentToAdd = new EventEmitter<void>();
   @Output() pickedStudentsChanged = new EventEmitter<{
@@ -21,29 +20,22 @@ export class StudentPickerComponent implements OnInit {
 
   ngOnInit() { }
 
-  onSelectStudent(e: Event) {
-    const id = (e.target as HTMLInputElement).value;
-    this.selectedStudent = this.students.find(student => student.id === id);
-    (e.target as HTMLInputElement).value = '';
-  }
-
   onAddNewStudent() {
     this.newStudentToAdd.emit();
   }
 
-  onUnselectStudent() {
-    this.selectedStudent = null;
-  }
+  onPickStudent(e: Event) {
+    const id = (e.target as HTMLInputElement).value;
+    const selectedStudent = this.students.find(student => student.id === id);
+    (e.target as HTMLInputElement).value = '';
 
-  onPickStudent() {
     this.students = this.students.filter(student => {
-      if (student.id !== this.selectedStudent.id) {
+      if (student.id !== selectedStudent.id) {
         return true;
       }
-      this.pickedStudents.push(this.selectedStudent);
+      this.pickedStudents.push(selectedStudent);
       return false;
     });
-    this.selectedStudent = null;
     this.pickedStudentsChanged.emit({
       pickedStudents: [...this.pickedStudents],
       students: [...this.students],

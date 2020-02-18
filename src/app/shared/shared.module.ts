@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatTooltipModule, MatSnackBarModule } from '@angular/material';
 
 import { NgxTrimDirectiveModule } from 'ngx-trim-directive';
@@ -13,25 +14,20 @@ import { MaterialModule } from '../material.module';
 import { AgePipe } from './pipes/age.pipe';
 import { BitrhDatePipe } from './pipes/birth-date.pipe';
 import { FullnamePipe } from './pipes/fullname.pipe';
-import { GroupPipe } from './pipes/group.pipe';
 import { PluralPipe } from './pipes/plural.pipe';
-import { TrancatePipe } from './pipes/trancate.pipe';
 import { ConfirmDialog } from './components/confirm/confirm.component';
 import { StudentPickerComponent } from './components/student-picker/student-picker.component';
 import { AttendancePipe } from './pipes/attendance.pipe';
 import { TimePipe } from './pipes/time.pipe';
 import { AddLessonComponent } from './components/add-lesson/add-lesson.component';
 import { StudentInfoComponent } from './components/student-info/student-info.component';
-import { ReactiveFormsModule } from '@angular/forms';
 
 
 const sharedComponentsAndPipes = [
   AgePipe,
   BitrhDatePipe,
   FullnamePipe,
-  GroupPipe,
   PluralPipe,
-  TrancatePipe,
   ConfirmDialog,
   StudentPickerComponent,
   AttendancePipe,

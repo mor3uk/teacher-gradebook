@@ -12,6 +12,7 @@ import { Group } from '../../models/group.model';
 import { CommonLesson, Lesson, PersonalLesson } from '../../models/lesson.model';
 import { Student } from '../../models/student.model';
 import { studentsRequired } from './add-lesson.validator';
+import { minTime } from '../../validators/minTime.validator';
 import { timeTaken } from '../../validators/timeTaken.validator';
 import { LessonService } from '../../services/lesson.service';
 
@@ -42,7 +43,7 @@ export class AddLessonComponent implements OnInit, OnDestroy {
     this.ss.getStudents();
 
     this.lessonForm = new FormGroup({
-      startTime: new FormControl(null, [Validators.required]),
+      startTime: new FormControl(null, [Validators.required, minTime(this.minTime)]),
       durationMinutes: new FormControl(
         null, [Validators.required, Validators.min(30), Validators.max(180), Validators.pattern(/^[0-9]*$/)]
       ),

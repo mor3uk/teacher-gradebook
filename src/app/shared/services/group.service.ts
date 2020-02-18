@@ -80,4 +80,29 @@ export class GroupService {
     return Promise.all(promiseArray);
   }
 
+  getGroupName(id: string): string {
+    if (id === null) {
+      return '-';
+    }
+
+    const group = this.getGroup(id);
+
+    if (!group) {
+      return 'Группа удалена';
+    }
+
+    const name: string = group.name;
+
+    if (!isNaN(+name)) {
+      return '№' + name;
+    }
+
+    if (name.length > 14) {
+      return name.substr(0, 11) + '...';
+    }
+
+    return name;
+
+  }
+
 }

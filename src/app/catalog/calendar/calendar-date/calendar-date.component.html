@@ -7,7 +7,6 @@
       class="form__input"
       [owlDateTime]="startTimePicker"
       formControlName="startTime"
-      [min]="minTime"
       placeholder="Дата и время начала занятия"
     >
     <span
@@ -16,12 +15,12 @@
       Укажите время и дату занятия
     </span>
     <span
-      *ngIf="dateForm.controls.startTime.errors?.owlDateTimeMin"
+      *ngIf="dateForm.controls.startTime.errors?.minTime"
       class="error-message">
       Занятие добавляется минимум за час
     </span>
     <span
-      *ngIf="dateForm.errors?.timeTaken && !dateForm.controls.startTime.errors?.owlDateTimeMin"
+      *ngIf="dateForm.errors?.timeTaken && !dateForm.controls.startTime.errors?.minTime"
       class="error-message">
       Время занято другим занятием
     </span>

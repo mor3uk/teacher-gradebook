@@ -10,6 +10,7 @@ import { CalendarComponent } from './calendar.component';
 import { CalendarDayComponent } from './calendar-day/calendar-day.component';
 import { CalendarLessonComponent } from './calendar-lesson/calendar-lesson.component';
 import { CalendarDateComponent } from './calendar-date/calendar-date.component';
+import { CalendarDayPipe } from './calendar-day/calendar-day.pipe';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { CalendarDateComponent } from './calendar-date/calendar-date.component';
     CalendarDayComponent,
     CalendarLessonComponent,
     CalendarDateComponent,
+    CalendarDayPipe,
   ],
   imports: [
     CommonModule,

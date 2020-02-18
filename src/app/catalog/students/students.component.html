@@ -5,16 +5,16 @@
     <thead>
       <tr>
         <th>ФИО</th>
-        <th>{{ 'Группа' | trancate:4:960 }}</th>
-        <th>{{ 'Возраст' | trancate:4:960 }}</th>
-        <th>{{ 'Посещаемость' | trancate:5:960 }}</th>
+        <th>{{ 'Группа' }}</th>
+        <th>{{ 'Возраст' }}</th>
+        <th>{{ 'Посещаемость'}}</th>
       </tr>
     </thead>
     <tbody *ngIf="!pending">
       <ng-container *ngFor="let student of students">
         <tr>
-          <td>{{ student | fullname:0 }}</td>
-          <td>{{ student.groupId | group }}</td>
+          <td>{{ student | fullname:'{S} {n}{f}' }}</td>
+          <td>{{ getGroupName(student.groupId) }}</td>
           <td>{{ student.birthDate | age }}</td>
           <td>{{ student.passedLessons | attendance:student.visitedLessons }}</td>
           <div fxHide.lt-sm class="table__btn-group">

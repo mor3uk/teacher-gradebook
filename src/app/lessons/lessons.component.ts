@@ -45,7 +45,7 @@ export class LessonsComponent implements OnInit, OnDestroy {
   onAddLesson() {
     this.dialog.open(AddLessonComponent, { panelClass: 'overlay-narrow' })
       .afterClosed()
-      .subscribe(async lesson => {
+      .subscribe(async (lesson: Lesson) => {
         if (lesson) {
           this.pending = true;
           const newLesson = await this.ls.addLesson(lesson);

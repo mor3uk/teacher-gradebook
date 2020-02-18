@@ -8,38 +8,24 @@ import { Relative } from '../models/relative.model';
   pure: true,
 })
 export class FullnamePipe implements PipeTransform {
-  transform(student: Student | Relative, mode: number): string {
+  transform(student: Student | Relative, formatString: string): string {
     const name = student.name[0].toUpperCase() + student.name.substr(1);
     const surname = student.surname[0].toUpperCase() + student.surname.substr(1);
     const fatherName = student.fatherName && student.fatherName[0].toUpperCase() + student.fatherName.substr(1);
 
-    let fullNameString: string;
+    let fullNameString = formatString;
 
-    switch (mode) {
-      case 0:
-        fullNameString = surname + ' ' + name[0] + '.';
-        if (fatherName) {
-          fullNameString += fatherName[0] + '.';
-        }
-        break;
-      case 1:
-        fullNameString = surname + ' ' + name;
-        break;
-      case 2:
-        fullNameString = name + ' ' + surname;
-        break;
-      case 3:
-        fullNameString = surname + ' ' + name;
-        if (fatherName) {
-          fullNameString += fatherName[0];
-        }
-        break;
-      case 4:
-        fullNameString = surname + ' ' + name + ' ';
-        if (fatherName) {
-          fullNameString += fatherName;
-        }
-        break;
+    fullNameString = fullNameString.replace('{N}', name);
+    fullNameString = fullNameString.replace('{S}', surname);
+    fullNameString = fullNameString.replace('{n}', name[0] + '.');
+    fullNameString = fullNameString.replace('{s}', surname[0] + '.');
+
+    if (fatherName) {
+      fullNameString = fullNameString.replace('{F}', fatherName);
+      fullNameString = fullNameString.replace('{f}', fatherName[0] + '.');
+    } else {
+      fullNameString = fullNameString.replace('{F}', '');
+      fullNameString = fullNameString.replace('{f}', '');
     }
 
     return fullNameString;

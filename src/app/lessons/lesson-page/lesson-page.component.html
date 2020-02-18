@@ -51,7 +51,7 @@
             class="lesson-students__student-name"
             matTooltip="Подробная информация"
             matTooltipPosition="above"
-          >{{ student | fullname:0 }}</td>
+          >{{ student | fullname:'{S} {n}{f}' }}</td>
           <td>
             <ui-switch
               [disabled]="!isLessonEnded()"

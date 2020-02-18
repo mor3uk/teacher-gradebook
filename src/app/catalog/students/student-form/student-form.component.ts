@@ -129,7 +129,7 @@ export class StudentFormComponent implements OnInit, OnDestroy {
       data: { leftRelatives: this.leftRelatives }
     });
 
-    dialogRef.afterClosed().subscribe((relative) => {
+    dialogRef.afterClosed().subscribe((relative: Relative) => {
       if (relative) {
         relative.id = uuid();
         this.relatives.push(relative);
@@ -159,7 +159,7 @@ export class StudentFormComponent implements OnInit, OnDestroy {
       }
     });
 
-    dialogRef.afterClosed().subscribe(relativeToUpdate => {
+    dialogRef.afterClosed().subscribe((relativeToUpdate: Relative) => {
       if (!relativeToUpdate) {
         return;
       }

@@ -126,7 +126,7 @@
         <div *ngFor="let relative of relatives" class="form__list-item student-form__relative">
           <span>
             {{ relative.kind | titlecase }}:
-            {{ relative | fullname:4 }}
+            {{ relative | fullname:'{S} {N} {F}' }}
           </span>
           <hr>
           <span>

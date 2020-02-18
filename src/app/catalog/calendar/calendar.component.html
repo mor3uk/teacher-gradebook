@@ -14,9 +14,6 @@
       [eventClass]="getEventClass.bind(this)"
       [slotClass]="getSlotClass.bind(this)"
     >
-    <ng-template kendoSchedulerEventTemplate let-event="event">
-        <span class="lala">{{ event.title }}</span>
-    </ng-template>
     <kendo-scheduler-month-view></kendo-scheduler-month-view>
       <kendo-scheduler-week-view></kendo-scheduler-week-view>
       <kendo-scheduler-messages

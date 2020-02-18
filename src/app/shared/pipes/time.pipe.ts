@@ -5,7 +5,6 @@ import * as moment from 'moment';
 @Pipe({ name: 'time' })
 export class TimePipe implements PipeTransform {
   transform(timestamp: number): string {
-    const timeString = moment(timestamp).format('HH:mm');
-    return timeString;
+    return moment(timestamp).format('HH:mm');
   }
 }

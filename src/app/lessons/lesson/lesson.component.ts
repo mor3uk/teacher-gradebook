@@ -85,5 +85,8 @@ export class LessonComponent implements OnInit, OnDestroy {
     this.lessonToDelete.emit(this.lesson.id);
   }
 
+  getGroupName(id: string) {
+    return this.gs.getGroupName(id);
+  }
 
 }

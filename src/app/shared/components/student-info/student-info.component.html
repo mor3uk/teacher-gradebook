@@ -3,7 +3,7 @@
     <mat-icon>info</mat-icon>Информация об учащемся:
   </div>
   <div class="student-info__piece">
-    Имя: {{ student | fullname:4 }}
+    Имя: {{ student | fullname:'{S} {N} {F}' }}
   </div>
   <div class="student-info__piece">
     Дата рождения: {{ student.birthDate | birthdate }}
@@ -12,7 +12,7 @@
     Посещаемость: {{ student.passedLessons | attendance:student.visitedLessons }}
   </div>
   <div class="student-info__piece">
-    Группа: {{ student.groupId | group }}
+    Группа: {{ getGroupName(student.groupId) }}
   </div>
   <hr>
   <div class="student-info__title">
@@ -22,7 +22,7 @@
     <div *ngFor="let relative of student.relatives" class="student-info__relative">
       <div class="student-info__piece">
         {{ relative.kind }}:
-        {{ relative | fullname:4 }}
+        {{ relative | fullname:'{S} {N} {F}' }}
       </div>
       <div *ngIf="relative.number" class="student-info__piece">
         Номер: {{ relative.number }}

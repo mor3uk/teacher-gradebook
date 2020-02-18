@@ -7,6 +7,7 @@ import { Lesson, CommonLesson } from '../../../shared/models/lesson.model';
 import { StudentService } from '../../../shared/services/student.service';
 import { Student } from '../../../shared/models/student.model';
 import { ConfirmDialog } from '../../../shared/components/confirm/confirm.component';
+import { GroupService } from '../../../shared/services/group.service';
 
 @Component({
   selector: 'app-calendar-lesson',
@@ -26,6 +27,7 @@ export class CalendarLessonComponent implements OnInit {
     private ss: StudentService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
+    private gs: GroupService,
   ) { }
 
   ngOnInit() {
@@ -55,6 +57,10 @@ export class CalendarLessonComponent implements OnInit {
     } else {
       this.lessonToMove.emit(this.lesson.id);
     }
+  }
+
+  getGroupName(id: string) {
+    return this.gs.getGroupName(id);
   }
 
 }

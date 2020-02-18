@@ -21,7 +21,6 @@
       class="form__input"
       [owlDateTime]="startTimePicker"
       formControlName="startTime"
-      [min]="minTime"
       placeholder="Дата и время начала занятия"
     >
     <span
@@ -30,16 +29,20 @@
       Укажите время и дату занятия
     </span>
     <span
-      *ngIf="lessonForm.controls.startTime.errors?.owlDateTimeMin"
+      *ngIf="lessonForm.controls.startTime.errors?.minTime"
       class="error-message">
       Занятие назначается минимум за час
     </span>
     <span
-      *ngIf="lessonForm.errors?.timeTaken && !lessonForm.controls.startTime.errors?.owlDateTimeMin"
+      *ngIf="lessonForm.errors?.timeTaken && !lessonForm.controls.startTime.errors?.minTime"
       class="error-message">
       Время занято другим занятием
     </span>
-    <owl-date-time [pickerMode]="'dialog'" #startTimePicker></owl-date-time>
+    <owl-date-time
+      [pickerMode]="'dialog'"
+      #startTimePicker
+      firstDayOfWeek="1"
+    ></owl-date-time>
     <button type="button" mat-icon-button>
       <mat-icon [owlDateTimeTrigger]="startTimePicker">home</mat-icon>
     </button>

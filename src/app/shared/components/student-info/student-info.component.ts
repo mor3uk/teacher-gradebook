@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material';
 
 import { Student } from '../../models/student.model';
 import { ConfirmDialog } from '../confirm/confirm.component';
+import { GroupService } from '../../services/group.service';
 
 @Component({
   selector: 'app-student-info',
@@ -18,6 +19,7 @@ export class StudentInfoComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private data,
     private dialogRef: MatDialogRef<StudentInfoComponent>,
     private dialog: MatDialog,
+    private gs: GroupService,
   ) { }
 
   ngOnInit() {
@@ -36,6 +38,10 @@ export class StudentInfoComponent implements OnInit {
 
   onClose() {
     this.dialogRef.close();
+  }
+
+  getGroupName(id: string) {
+    return this.gs.getGroupName(id);
   }
 
 }

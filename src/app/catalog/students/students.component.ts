@@ -52,7 +52,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
   }
 
   onAddStudent() {
-    this.openDialog('add').subscribe(async (student) => {
+    this.openDialog('add').subscribe(async (student: Student) => {
       if (student) {
         await this.ss.addStudent(student as Student);
         this.getStudentsWithPending();
@@ -62,7 +62,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
 
   async onEditStudent(id: string) {
     const student = this.students.find(student => student.id === id);
-    this.openDialog('edit', student).subscribe(async student => {
+    this.openDialog('edit', student).subscribe(async (student: Student) => {
       if (student) {
         await this.ss.updateStudent(student);
         this.getStudentsWithPending();
@@ -77,7 +77,7 @@ export class StudentsComponent implements OnInit, OnDestroy {
     this.openDialog('delete').subscribe(async res => {
       if (res) {
         const deletedStudent = await this.ss.deleteStudent(id);
-        const fullname = this.fullnamePipe.transform(deletedStudent, 1);
+        const fullname = this.fullnamePipe.transform(deletedStudent, '{S} {n}{f}');
         this.getStudentsWithPending();
         this.snackBar.open(`Учащийся ${fullname} удалён`, 'Ок', {
           duration: 2000,
@@ -105,6 +105,10 @@ export class StudentsComponent implements OnInit, OnDestroy {
   getStudentsWithPending() {
     this.pending = true;
     this.ss.getStudents();
+  }
+
+  getGroupName(id: string) {
+    return this.gs.getGroupName(id);
   }
 
   ngOnDestroy() {

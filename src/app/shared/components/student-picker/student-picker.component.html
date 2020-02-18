@@ -2,31 +2,16 @@
   Выберите учащегося
 </div>
 <div class="form__input-container">
-  <select [disabled]="students.length === 0" (change)="onSelectStudent($event)" class="form__input">
+  <select [disabled]="students.length === 0" (change)="onPickStudent($event)" class="form__input">
     <option value="" disabled [selected]="true">
       {{ students.length === 0 ? 'Список пуст' : 'Список учащихся' }}
     </option>
     <option *ngFor="let student of students" [value]="student.id">
-      {{ student | fullname:0 }}
+      {{ student | fullname:'{S} {n}{f}' }}
     </option>
   </select>
 </div>
 <div>
-  <div *ngIf="selectedStudent" class="selected-student">
-    <div>
-      {{ selectedStudent | fullname:1 }}
-      {{ selectedStudent.birthDate | birthdate }}
-    </div>
-    <div>
-      <button mat-icon-button (click)="onUnselectStudent()">
-        <mat-icon>remove_circle</mat-icon>
-      </button>
-      <button mat-icon-button (click)="onPickStudent()">
-        <mat-icon>add_box</mat-icon>
-      </button>
-    </div>
-    <hr>
-  </div>
   <div class="form__label">
     <span>
       Список учащихся:
@@ -50,7 +35,7 @@
   <div class="form__list">
     <div *ngFor="let student of pickedStudents" class="form__list-item student-item">
       <span>
-        {{ student | fullname:1 }}
+        {{ student | fullname:'{S} {N}' }}
         {{ student.birthDate | birthdate }}
       </span>
       <span>

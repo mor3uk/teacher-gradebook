@@ -4,7 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import * as moment from 'moment';
 import { LessonService } from '../../../shared/services/lesson.service';
-import { timeTaken } from 'src/app/shared/validators/timeTaken.validator';
+import { timeTaken } from '../../../shared/validators/timeTaken.validator';
+import { minTime } from '../../../shared/validators/minTime.validator';
 
 @Component({
   selector: 'app-calendar-date',
@@ -23,7 +24,7 @@ export class CalendarDateComponent implements OnInit {
 
   ngOnInit() {
     this.dateForm = new FormGroup({
-      startTime: new FormControl(null, [Validators.required]),
+      startTime: new FormControl(null, [Validators.required, minTime(this.minTime)]),
       durationMinutes: new FormControl(this.data.durationMinutes),
     }, timeTaken(this.ls, this.data));
   }

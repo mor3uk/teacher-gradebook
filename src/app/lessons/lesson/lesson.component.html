@@ -20,7 +20,7 @@
   <ng-container *ngIf="!pending">
     <div *ngIf="lesson.kind === 'common'" class="lesson__group">
       <mat-icon>group</mat-icon>
-      <span>{{ groupId | group }}</span>
+      <span>{{ getGroupName(groupId) }}</span>
     </div>
 
     <div
@@ -28,7 +28,7 @@
       class="lesson__single">
       <mat-icon>person</mat-icon>
       <span *ngIf="students[0]">
-        {{ students[0] | fullname:0 }}
+        {{ students[0] | fullname:'{S} {n}{f}' }}
       </span>
       <span *ngIf="!students[0]">
         Нет учащихся
@@ -46,7 +46,7 @@
         <div
           *ngFor="let i of [0, 1, 2, 3, 4, 5]"
           class="lesson__student"
-          >{{ students[i] ? (students[i] | fullname:0) : '-' }}
+          >{{ students[i] ? (students[i] | fullname:'{S} {n}{f}') : '-' }}
         </div>
       </div>
     </div>

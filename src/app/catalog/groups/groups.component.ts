@@ -35,7 +35,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
   }
 
   onAddGroup() {
-    this.openDialog('add').subscribe(async group => {
+    this.openDialog('add').subscribe(async (group: Group) => {
       if (group) {
         this.pending = true;
         await this.gs.addGroup(group);
@@ -48,7 +48,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
   }
 
   onEditGroup(group: Group) {
-    this.openDialog('edit', group).subscribe(async group => {
+    this.openDialog('edit', group).subscribe(async (group: Group) => {
       if (group) {
         await this.gs.updateGroup(group);
         await this.ss.setStudentsGroup(group);

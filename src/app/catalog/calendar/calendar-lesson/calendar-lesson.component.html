@@ -14,11 +14,11 @@
       *ngIf="lesson.kind === 'personal' && students.length <= 1"
       class="day-lesson__student"
     >
-      <span>{{ students[0] ? (students[0] | fullname:0) : 'Нет учащихся' }}</span>
+      <span>{{ students[0] ? (students[0] | fullname:'{S} {n}{f}') : 'Нет учащихся' }}</span>
     </div>
 
     <div *ngIf="lesson.kind === 'common'" class="day-lesson__group">
-      <span>{{ groupId | group }}</span>
+      <span>{{ getGroupName(groupId) }}</span>
     </div>
 
     <div
@@ -26,7 +26,7 @@
       class="day-lesson__students"
     >
       <div *ngFor="let i of [0, 1, 2, 3, 4, 5]">
-        {{ students[i] ? (students[i] | fullname:0) : '-' }}
+        {{ students[i] ? (students[i] | fullname:'{S} {n}{f}') : '-' }}
       </div>
     </div>
 

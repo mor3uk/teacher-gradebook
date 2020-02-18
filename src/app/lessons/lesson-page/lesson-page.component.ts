@@ -190,11 +190,8 @@ export class LessonPageComponent implements OnInit, OnDestroy {
     if (!student.visitedLessons) {
       student.visitedLessons = 0;
     }
-    if (attended) {
-      student.visitedLessons++;
-    } else {
-      student.visitedLessons--;
-    }
+
+    student.visitedLessons += attended ? 1 : -1;
     this.ss.updateStudent(student, false);
   }
 
