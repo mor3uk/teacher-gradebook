@@ -46,7 +46,7 @@ const sharedModules = [
   ReactiveFormsModule,
 ];
 
-class DefaultIntl extends OwlDateTimeIntl {
+export class DefaultIntl extends OwlDateTimeIntl {
   cancelBtnLabel = 'Закрыть';
   setBtnLabel = 'Установить';
 }
